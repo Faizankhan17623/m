@@ -1,0 +1,31 @@
+const BASE_URL = import.meta.env.VITE_MAIN_BACKEND_URL_ORG
+
+export const CreateOrgainezer = {
+    createorgainezer:BASE_URL+"/Create-Orgainezer",
+    orgainezerlogin:BASE_URL+"/Orgainezer-login",
+}
+
+export const Ticket = {
+    CreateTicket:BASE_URL+"/Create-Ticket"
+}
+
+export const AllotTheatre = {
+    Allotheatre:BASE_URL+"/Allot-Theatre",
+}
+
+
+export const GetAllSHowsDetails = { 
+    Getallshowsdetails:BASE_URL+"/All-Shows"
+}
+
+export const GetAllTheatreDetails = {
+    Getalltheatredetails:BASE_URL+"/Get-All-Theatre-Details"
+}
+
+export const orgainezerdata = {
+    OrgainezerData:BASE_URL + "/Org-Data",
+    DirectorFresher:BASE_URL + "/Dir-Fresh",
+    DirectorExperience:BASE_URL + "/Dir-Experience",
+    ProducerFresher:BASE_URL + "/Pro-Fresh",
+    ProducerExperience:BASE_URL + "/Pro-Expe"
+}
