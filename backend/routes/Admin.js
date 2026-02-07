@@ -2,7 +2,7 @@ const express = require('express')
 const route = express.Router()
 const {auth,IsAdmin,IsOrganizer} = require('../middlewares/verification')
 const {Creategenre,Updategenre,deletegenre,deleteAllgenre,getAllGenres} = require('../controllers/Administrator/CreateGenre')
-const {GetAllTheatres,TheatreCreationRequest,CreateTheatres} = require('../controllers/Administrator/CreateTheatres')
+const {GetAllTheatres,TheatreCreationRequest,CreateTheatres,VerifyTheatrer,GetTheatreDetails} = require('../controllers/Administrator/CreateTheatres')
 const {CreateSubgenre,UpdateSubGenre,deletesubgenre,deleteAllsubGenres,getAllgenre} = require('../controllers/Administrator/CreateSubGenre')
 const{VerifyOrgainezer,GetAllorg,deleteOrgainezer,DeleteAllOrgainezers} = require('../controllers/Administrator/AdminVerification')
 const {VerifyShow,GetAllShows,verifiedSHows,AllShows} = require('../controllers/Administrator/ShowVerify')
@@ -10,6 +10,7 @@ const {VerifyShow,GetAllShows,verifiedSHows,AllShows} = require('../controllers/
 const{CreateLanguage,updateLanguage,deleteLanguage,Getalllanguage,deleteallanguage,GetSingleLanguage} = require('../controllers/Orgainezer/CreateLanguage')
 const {OrgainesersVerifylength,Theatrelength,GetAllUsersDetailsVerified,GetAllUsersDetailsVerifiedfalse,GetAllOrganizerDetailsVerified,GetAllOrganizerDetailsVerifiedfalse,GetAllTheatrerDetailsVerified,GetAllTheatrerDetailsVerifiedfalse} = require('../controllers/Dashboard/AdminDashboard')
 
+const {notUploadedShows,VerifiedButnotUploaded} = require("../controllers/common/Showlist")
 
 
 // This is the extra route that is been added so that the admin can delete all the comments
@@ -51,7 +52,7 @@ route.get("/Get-AllSubGenre",auth,IsAdmin,getAllgenre)
 // This is the route that is going to create the theatres
 route.get("/Theatre-Request",auth,IsAdmin,TheatreCreationRequest)
 // ya wo route hain jo ke saare thatre ka data show karena 
-route.get("/Get-AllTheatres",auth,IsAdmin,GetAllTheatres)
+// route.get("/Get-AllTheatres",auth,IsAdmin,GetAllTheatres)
 // 3 This is the third step for creating the theatre and the fianl step for creating the theatre
 route.post("/Theatre-FormData",auth,IsAdmin,CreateTheatres)
 // This is the route using which you can forcefully delete a theatre  ... Thinking of it as of now 
@@ -60,9 +61,13 @@ route.post("/Theatre-FormData",auth,IsAdmin,CreateTheatres)
 // DOne 
 // This is the route that is gonng to verify the show
 route.put("/Verify-Show",auth,IsAdmin,VerifyShow)
-route.get("/Unverified-Shows",auth,IsAdmin,GetAllShows)
+route.get("/Unverified-Shows",auth,IsAdmin,AllShows)
 route.get("/Verified-Shows",auth,IsAdmin,verifiedSHows)
 route.get("/All-Shows",auth,IsAdmin,AllShows)
+
+route.get("/not-uploaded",auth,IsAdmin,notUploadedShows)
+route.get("/verified-not-uploaded",auth,IsAdmin,VerifiedButnotUploaded)
+
 // DONE this are all the routes that are present in the show verify file in the admin folder
 
 // DONE
@@ -80,12 +85,14 @@ route.get("/Single-Languages",auth,IsAdmin,GetSingleLanguage)
 // THis will be all the routes that are going to be used for the Admin dashboard
 route.get("/Orgaineser-Request",auth,IsAdmin,OrgainesersVerifylength)
 route.get("/Theatre-Request",auth,IsAdmin,Theatrelength)
+route.get("/Get-AllTheatres",auth,IsAdmin,GetTheatreDetails)
+// Verify Theatre
 
 route.get("/Verified-Users",auth,IsAdmin,GetAllUsersDetailsVerified)
 route.get("/Unverified-Users",auth,IsAdmin,GetAllUsersDetailsVerifiedfalse)
 route.get("/Verified-Orgainesers",auth,IsAdmin,GetAllOrganizerDetailsVerified)
 route.get("/Unverified-Orgainesers",auth,IsAdmin,GetAllOrganizerDetailsVerifiedfalse)
-route.get("/Verified-Theatres",auth,IsAdmin,GetAllTheatrerDetailsVerified)
+route.put("/Verify-Theatres",auth,IsAdmin,VerifyTheatrer)
 route.get("/Unverified-Theatres",auth,IsAdmin,GetAllTheatrerDetailsVerifiedfalse)
 // DONE this are all the routes that are present in the admin dashboard file in the dashboard folder
 

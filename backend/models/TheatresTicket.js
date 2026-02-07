@@ -50,7 +50,7 @@
             }],
             Owner:{
                 type:mongoose.Schema.Types.ObjectId,
-                ref:'User'
+                ref:'Theatrees'
             },
             Status:{
                 type:String,

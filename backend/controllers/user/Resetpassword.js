@@ -9,7 +9,7 @@ const ResetPasword = require("../../templates/userTemplates/Updatepasswordtempla
 exports.LinkSend = async(req,res)=>{
     try {
         const email = req.body.email
-        const Finding = await USER.findOne({email:email})
+        const Finding = await USER.findOne({email:email.toLowerCase()})
         if(!Finding){
             return res.status(400).json({
                 message:`This email id ${email} is not present please is create it`,
@@ -25,7 +25,7 @@ exports.LinkSend = async(req,res)=>{
                 token:token,
                 resetPasswordExpires:Date.now() +  300000,
             },{new:true})
-            console.log("This is the updated details",updateDetails)
+            // console.log("This is the updated details",updateDetails)
 
             const url = `http://localhost:5173/Reset-Password/${token}`
             

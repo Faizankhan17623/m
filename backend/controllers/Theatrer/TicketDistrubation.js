@@ -42,7 +42,7 @@ exports.TicketDistributionSystem = async (req, res) => {
             });
         }
 
-        const TheatreFinding = await Theatre.findById(UserFinding.theatreCreated);
+        const TheatreFinding = await Theatre.findById(UserFinding.theatresCreated);
         if (!TheatreFinding) {
             return res.status(404).json({
                 message: "Theatre not found or not created",
@@ -57,7 +57,7 @@ exports.TicketDistributionSystem = async (req, res) => {
             });
         }
 
-        const existingTicketForDate = await Theatrestickets.findOne({ theatreId: UserFinding.theatreCreated, showId: ShowId, Date: ReleaseDate });
+        const existingTicketForDate = await Theatrestickets.findOne({ theatreId: UserFinding.theatresCreated, showId: ShowId, Date: ReleaseDate });
         if (existingTicketForDate) {
             return res.status(400).json({
                 message: `Tickets have already been created for this date: ${ReleaseDate}`,
@@ -102,7 +102,7 @@ exports.TicketDistributionSystem = async (req, res) => {
 
 
         // console.log("This is the index",index,"This is the ticket price",TicketPrice,"This are the total tickets received,",TicketReceived)
-        const ExistingTickets = await Theatrestickets.find({ showId: ShowId, theatreId: UserFinding.theatreCreated }).sort({ Date: -1 }).limit(1);
+        const ExistingTickets = await Theatrestickets.find({ showId: ShowId, theatreId: UserFinding.theatresCreated }).sort({ Date: -1 }).limit(1);
         let Remaining = ExistingTickets.length > 0 ? ExistingTickets[0].TicketsRemaining - totalTicketsCreated : TicketReceived - totalTicketsCreated;
 
         if (Remaining < 0) {
@@ -161,7 +161,7 @@ if (parsedReleaseDate.getTime() === formattedNow.getTime()) {
 
         const TicketCreations = await Theatrestickets.create({
             showId: ShowId,
-            theatreId: UserFinding.theatreCreated,
+            theatreId: UserFinding.theatresCreated,
             userId: userId,
             Date: ReleaseDate,
             pricefromtheorg: TicketPrice,
@@ -221,8 +221,8 @@ exports.GetAllticketsCreated = async (req, res) => {
             });
         }
 
-        const theatreData = await Theatre.findOne({ _id: Finding.theatreCreated });
-        console.log(theatreData.ticketCreation)
+        const theatreData = await Theatre.findOne({ _id: Finding.theatresCreated });
+        // console.log(theatreData.ticketCreation)
         if (!theatreData) {
             return res.status(400).json({
                 message: "No theatre assigned to this user",

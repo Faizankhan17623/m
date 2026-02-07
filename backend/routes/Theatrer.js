@@ -14,8 +14,7 @@ route.post("/Create-Theatre",CreateTheatrere)
 // uske badh jo admin hain wo 
 // ya wala jo route hain wo using the form logo ke leya use hoga
 // 2 This is the second step for creating the theatre
-route.put("/Theatre-info",auth,IsTheatrer,TheatreCreationRequestPassing)
-
+route.post("/Theatre-info",TheatreCreationRequestPassing)
 
 route.get("/All-Theatres",auth,IsTheatrer,GetAllTheatres)
 

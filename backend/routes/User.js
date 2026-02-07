@@ -10,7 +10,7 @@ const {LinkSend,ResetPassword} = require('../controllers/user/Resetpassword')
 const {AllShows,usingtitle} = require('../controllers/common/Showlist')
 const {createRating,getAverageRating,getAllRatingReview} = require("../controllers/common/RatingAndRviews")
 const {TicketPurchased,TicketPurchasedFullDetails} = require("../controllers/Dashboard/UserDashboard")
-const {GetAlluserDetails,FindUserNames,FindEmail,FindNumber} = require('../controllers/user/User')
+const {GetAlluserDetails,FindUserNames,FindLoginEmail,FindNumber,FindCreationEmail} = require('../controllers/user/User')
 
 // DONE 
 // This is the first route that will be used to create the user and all the things that the user will do releated to his personal info
@@ -19,7 +19,8 @@ route.post("/Create-OTP",CreateOtp)
 // This is the extra route that was added to get all the user details
 route.get("/Get-All-UserDetails",auth,GetAlluserDetails)
 route.post("/Find-UserNames",FindUserNames)
-route.post("/Find-Email",FindEmail)
+route.post("/Find-Login-Email",FindLoginEmail)
+route.post("/Find-creation-Email",FindCreationEmail)
 route.post("/Find-Number",FindNumber)
 
 route.put("/Update-userName",auth,updateUserName)

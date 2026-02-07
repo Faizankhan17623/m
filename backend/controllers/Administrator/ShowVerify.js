@@ -55,17 +55,21 @@ exports.VerifyShow = async (req, res) => {
 exports.GetAllShows = async(req,res)=>{
     try{
         const Finding = await CreateShow.find({VerifiedByTheAdmin:false})
-        if(!Finding){
-            return res.status(400).json({
-                message:"There are not show to verify",
-                success:false
+            .populate('genre')
+            .populate('SUbGenre')
+            .populate('language')
+            .populate('castName')
+            .populate('hashtags')
+        if(!Finding || Finding.length === 0){
+            return res.status(200).json({
+                message:"There are no shows to verify",
+                success:true,
+                data:[]
             })
         }
 
-
-        // return Finding
         return res.status(200).json({
-            message:"these are the list of all the shows",
+            message:"These are the list of all unverified shows",
             success:true,
             data:Finding
         })
@@ -74,7 +78,7 @@ exports.GetAllShows = async(req,res)=>{
         console.log(error)
         console.log(error.message)
         return res.status(500).json({
-            message: "There was an error in the Get All  show code",
+            message: "There was an error in the Get All show code",
             success: false,
         });
     }
@@ -83,17 +87,21 @@ exports.GetAllShows = async(req,res)=>{
 exports.verifiedSHows = async(req,res)=>{
     try{
         const Finding = await CreateShow.find({VerifiedByTheAdmin:true})
-        if(!Finding){
-            return res.status(400).json({
-                message:"There are not show to verify",
-                success:false
+            .populate('genre')
+            .populate('SUbGenre')
+            .populate('language')
+            .populate('castName')
+            .populate('hashtags')
+        if(!Finding || Finding.length === 0){
+            return res.status(200).json({
+                message:"There are no verified shows",
+                success:true,
+                data:[]
             })
         }
 
-
-        // return Finding
         return res.status(200).json({
-            message:"these are the list of all the shows",
+            message:"These are the list of all verified shows",
             success:true,
             data:Finding
         })
@@ -102,7 +110,7 @@ exports.verifiedSHows = async(req,res)=>{
         console.log(error)
         console.log(error.message)
         return res.status(500).json({
-            message: "There was an error in the Get All  show code",
+            message: "There was an error in the Get All show code",
             success: false,
         });
     }
@@ -111,17 +119,21 @@ exports.verifiedSHows = async(req,res)=>{
 exports.AllShows = async(req,res)=>{
     try{
         const Finding = await CreateShow.find()
-        if(!Finding){
-            return res.status(400).json({
-                message:"There are not show to verify",
-                success:false
+            .populate('genre')
+            .populate('SUbGenre')
+            .populate('language')
+            .populate('castName')
+            .populate('hashtags')
+        if(!Finding || Finding.length === 0){
+            return res.status(200).json({
+                message:"There are no shows",
+                success:true,
+                data:[]
             })
         }
 
-
-        // return Finding
         return res.status(200).json({
-            message:"these are the list of all the shows",
+            message:"These are the list of all shows",
             success:true,
             data:Finding
         })
@@ -130,7 +142,7 @@ exports.AllShows = async(req,res)=>{
         console.log(error)
         console.log(error.message)
         return res.status(500).json({
-            message: "There was an error in the Get All  show code",
+            message: "There was an error in the Get All show code",
             success: false,
         });
     }

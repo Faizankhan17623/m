@@ -6,6 +6,11 @@ const USER  = require('../../models/user')
 const TheatreCreation = require('../../models/TheatrerRequest')
 const Theatres = require('../../models/Theatres')
 const Theatrestickets = require('../../models/TheatresTicket')
+const bcrypt = require('bcrypt')
+const SendMessage = require("../../models/Createmessage");
+const mailSender = require("../../utils/mailsender");
+const sendingOtpTeemplate = require("../../templates/userTemplates/emailTemplate");
+// const date = require('date-and-time')
 
 
 // Theare is a warning to the theatre that he cannot edit any of his details and he cannot change anything without the authorization of the administrator 
@@ -177,89 +182,638 @@ exports.TheatreCreationRequest = async(req,res)=>{
 // using this route we will get all the details that the use has provided to us
 // /And THis is the only function that will be going to be used as the form input
 // This is the function that is going to be used in the route of the theatreer on line no 16
-exports.TheatreCreationRequestPassing = async(req,res)=>{
-    try{
-        const {email,name,locationname,locationurl,typesofseats,Screentypes,languageAvailable,parking} = req.body
-        const TheareImages = req.files.TheareImages
-        const userid = req.USER.id
-        if(!email || !name || !locationname || !locationurl || !typesofseats || !Screentypes||!parking || !languageAvailable ){
-            return res.status(404).json({
-                message:"The input are been required",
-                success:false
-            })
+
+ exports.TheatreCreationRequestPassing = async(req, res) => {
+    try {
+        // Extract non-array fields
+        const {
+            email,
+            Username,
+            theatrename,
+            password,
+            countrycode,
+            mobilenumber,
+            locationname,
+            locationurl,
+            TheatreOwner
+        } = req.body;
+
+        // Helper function to parse arrays from form-data
+        const parseArray = (value) => {
+            if (Array.isArray(value)) return value;
+            
+            if (typeof value === 'string') {
+                try {
+                    const parsed = JSON.parse(value);
+                    return Array.isArray(parsed) ? parsed : [];
+                } catch (e) {
+                    return [];
+                }
+            }
+            
+            return [];
+        };
+
+        // Parse all array fields
+        const typesofseats = parseArray(req.body.typesofseats);
+        const Screentypes = parseArray(req.body.Screentypes);
+        const languageAvailable = parseArray(req.body.languageAvailable);
+        const parking = parseArray(req.body.parking);
+        const theatreformat = parseArray(req.body.theatreformat);
+
+        // Get images
+        const TheareOutsideImages = req.files?.TheareOutsideImages;
+        const TheatreInsideImages = req.files?.TheatreInsideImages;
+
+        // Define required fields
+        const requiredFields = [
+            { field: email, message: "Email is required" },
+            { field: Username, message: "Username is required" },
+            { field: theatrename, message: "Theatre name is required" },
+            { field: password, message: "Password is required" },
+            { field: countrycode, message: "Country code is required" },
+            { field: mobilenumber, message: "Mobile number is required" },
+            { field: locationname, message: "Location name is required" },
+            { field: locationurl, message: "Location URL is required" },
+            { field: TheatreOwner, message: "Theatre owner is required" }
+        ];
+
+        // Check each required field
+        for (const { field, message } of requiredFields) {
+            if (!field && field !== 0 && field !== false) {
+                return res.status(400).json({
+                    message: message,
+                    success: false
+                });
+            }
         }
 
+        // Check arrays (must have at least one item)
+        const requiredArrays = [
+            { array: typesofseats, message: "At least one seat type is required" },
+            { array: Screentypes, message: "At least one screen type is required" },
+            { array: languageAvailable, message: "At least one language is required" },
+            { array: theatreformat, message: "At least one theatre format is required" },
+            { array: parking, message: "At least one parking option is required" }
+        ];
 
-        if(!TheareImages || !req.files.TheareImages){
-            return res.status({
-                message:"The images are been required",
-                success:false
-            })
+        for (const { array, message } of requiredArrays) {
+            if (!Array.isArray(array) || array.length === 0) {
+                return res.status(400).json({
+                    message: message,
+                    success: false
+                });
+            }
         }
 
-
-        const EmailFinding = await USER.findOne({email:email})
-
-        if(!EmailFinding){
+        // Check theatre images
+        if (!TheareOutsideImages) {
             return res.status(400).json({
-                message:"This email is not found please enter the email that you have given to us while careating the theatre account",
-                success:false
-            })
+                message: "Please insert the images outside of the theatre",
+                success: false
+            });
         }
 
-        const NameFinding = await USER.findOne({userName:name})
-        if(NameFinding){
+        if (Array.isArray(TheareOutsideImages) && TheareOutsideImages.length === 0) {
             return res.status(400).json({
-                message:"The name is already been taken please take another one",
-                success:false
-            })
+                message: "At least one outside theatre image is required",
+                success: false
+            });
         }
 
-
-
-        const TheatreFinding = await Theatre.findOne({Theatrename:locationname})
-
-        if(TheatreFinding){
+        if (!TheatreInsideImages) {
             return res.status(400).json({
-                message:"The theatre in this location is already been taken please choose another one",
-                success:false
-            })
+                message: "Please insert the images from inside of the theatre",
+                success: false
+            });
+        }
+
+        if (Array.isArray(TheatreInsideImages) && TheatreInsideImages.length === 0) {
+            return res.status(400).json({
+                message: "At least one inside theatre image is required",
+                success: false
+            });
+        }
+
+        // Check for existing email
+        // const EmailFinding = await Theatres.findOne({ email: email });
+        // if (EmailFinding) {
+        //     return res.status(400).json({
+        //         message: "This email is already taken. Use another email",
+        //         success: false
+        //     });
+        // }
+
+        // // Check for existing username
+        // const NameFinding = await Theatres.findOne({ username: Username });
+        // if (NameFinding) {
+        //     return res.status(400).json({
+        //         message: "The name is already taken. Please take another one",
+        //         success: false
+        //     });
+        // }
+
+        // Check for existing mobile number
+        const NumberFinding = await USER.findOne({ number: mobilenumber });
+        if (NumberFinding) {
+            return res.status(400).json({
+                message: "The mobile number is already taken. Use another number",
+                success: false
+            });
         }
 
 
-        let ImageUpload = await Promise.all(
-            TheareImages.map(async(data)=>{
-                let uploadingImages = await uploadDatatoCloudinary(data,process.env.CLOUDINARY_FOLDER_NAME,1000,1000)
-                return uploadingImages.secure_url
+         const UserNameFinding = await USER.findOne({ userName: Username });
+        if (UserNameFinding) {
+            return res.status(400).json({
+                message: "The name is already taken. Please take another one",
+                success: false
+            });
+        }
+
+        // Check for existing mobile number
+        const UserNumberFinding = await USER.findOne({ number: mobilenumber });
+        if (UserNumberFinding) {
+            return res.status(400).json({
+                message: "The mobile number is already taken. Use another number",
+                success: false
+            });
+        }
+
+        // FIX THIS LINE - Change "Theatre" to "Theatres"
+        const TheatreFinding = await Theatres.findOne({ Theatrename: theatrename });
+        if (TheatreFinding) {
+            return res.status(400).json({
+                message: "The theatre in this location is already taken. Please choose another one",
+                success: false
+            });
+        }
+
+        // Constants for validation
+        const SEAT_TYPES = [
+            "Regular", "Premium", "Recliner", "Couple Seat", "Executive",
+            "Royal/VIP", "D-BOX Motion", "Wheelchair Accessible",
+            "Gold Class", "Silver Class", "Bronze Class"
+        ];
+
+        const SCREEN_TYPES = [
+            "2D", "3D", "IMAX 2D", "IMAX 3D", "4DX 2D", "4DX 3D",
+            "ScreenX", "Dolby Cinema", "MX4D", "ICE", "Standard Screen",
+            "Premium Large Format", "Laser Projection"
+        ];
+
+        const LANGUAGES = [
+            "Hindi", "English", "Tamil", "Telugu", "Malayalam", "Kannada",
+            "Bengali", "Marathi", "Gujarati", "Punjabi", "Spanish", "French",
+            "German", "Japanese", "Korean", "Chinese", "Arabic", "Dubbed", "Subtitled"
+        ];
+
+        const THEATRE_FORMATS = [
+            "Dolby Atmos", "Dolby Digital 7.1", "DTS:X", "Dolby Digital 5.1",
+            "Auro 3D", "4K Digital", "2K Digital", "Laser Projection",
+            "Standard Cinema", "Premium Cinema", "Luxury Cinema", "Dine-in Cinema",
+            "IMAX", "4DX", "Drive-in"
+        ];
+
+        const PARKING_OPTIONS = [
+            "Available - Free", "Available - Paid", "Valet Parking Available",
+            "Street Parking Only", "No Parking Available", "Two-Wheeler Parking",
+            "Four-Wheeler Parking", "Multi-level Parking"
+        ];
+
+        const ALLOWED_IMAGE_TYPES = [
+            "image/jpeg", "image/jpg", "image/png", "image/webp"
+        ];
+
+        // Validate seat types
+        if (!typesofseats.every(seat => SEAT_TYPES.includes(seat))) {
+            const invalidSeatTypes = typesofseats.filter(seat => !SEAT_TYPES.includes(seat));
+            return res.status(400).json({
+                message: `Invalid seat type(s): ${invalidSeatTypes.join(', ')}`,
+                success: false
+            });
+        }
+
+        // Validate screen types
+        if (!Screentypes.every(screen => SCREEN_TYPES.includes(screen))) {
+            const invalidScreenTypes = Screentypes.filter(screen => !SCREEN_TYPES.includes(screen));
+            return res.status(400).json({
+                message: `Invalid screen type(s): ${invalidScreenTypes.join(', ')}`,
+                success: false
+            });
+        }
+
+        // Validate languages
+        if (!languageAvailable.every(lang => LANGUAGES.includes(lang))) {
+            const invalidLanguages = languageAvailable.filter(lang => !LANGUAGES.includes(lang));
+            return res.status(400).json({
+                message: `Invalid language(s): ${invalidLanguages.join(', ')}`,
+                success: false
+            });
+        }
+
+        // Validate theatre formats
+        if (!theatreformat.every(format => THEATRE_FORMATS.includes(format))) {
+            const invalidFormats = theatreformat.filter(format => !THEATRE_FORMATS.includes(format));
+            return res.status(400).json({
+                message: `Invalid theatre format(s): ${invalidFormats.join(', ')}`,
+                success: false
+            });
+        }
+
+        // Validate parking
+        if (!parking.every(p => PARKING_OPTIONS.includes(p))) {
+            const invalid = parking.filter(p => !PARKING_OPTIONS.includes(p));
+            return res.status(400).json({
+                message: `Invalid parking option(s): ${invalid.join(', ')}`,
+                success: false
+            });
+        }
+
+        // Validate images function
+        const validateImages = (files, fieldName) => {
+            if (!files) {
+                return `${fieldName} images are required`;
+            }
+
+            const imagesArray = Array.isArray(files) ? files : [files];
+
+            if (imagesArray.length === 0) {
+                return `At least one ${fieldName} image is required`;
+            }
+
+            for (const file of imagesArray) {
+                if (!ALLOWED_IMAGE_TYPES.includes(file.mimetype)) {
+                    return `Invalid file type in ${fieldName}. Allowed types: jpg, jpeg, png, webp`;
+                }
+            }
+
+            return null;
+        };
+
+        // Validate outside images
+        const outsideImageError = validateImages(TheareOutsideImages, "outside theatre");
+        if (outsideImageError) {
+            return res.status(400).json({
+                success: false,
+                message: outsideImageError
+            });
+        }
+
+        // Validate inside images
+        const insideImageError = validateImages(TheatreInsideImages, "inside theatre");
+        if (insideImageError) {
+            return res.status(400).json({
+                success: false,
+                message: insideImageError
+            });
+        }
+
+        // Define maximum file size (5 MB)
+        const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB in bytes
+
+        // Validate file sizes
+        const validateFileSize = (files, fieldName) => {
+            const imagesArray = Array.isArray(files) ? files : [files];
+            for (const file of imagesArray) {
+                if (file.size > MAX_FILE_SIZE) {
+                    return `File size for ${fieldName} must not exceed 5 MB`; 
+                }
+            }
+            return null;
+        };
+
+        // Validate outside images size
+        const outsideImageSizeError = validateFileSize(TheareOutsideImages, "outside theatre");
+        if (outsideImageSizeError) {
+            return res.status(400).json({
+                success: false,
+                message: outsideImageSizeError
+            });
+        }
+
+        // Validate inside images size
+        const insideImageSizeError = validateFileSize(TheatreInsideImages, "inside theatre");
+        if (insideImageSizeError) {
+            return res.status(400).json({
+                success: false,
+                message: insideImageSizeError
+            });
+        }
+
+        // Upload outside images to Cloudinary
+        let OutsideImages = await Promise.all(
+            (Array.isArray(TheareOutsideImages) ? TheareOutsideImages : [TheareOutsideImages]).map(async(data) => {
+                let uploadingImages = await uploadDatatoCloudinary(
+                    data, 
+                    process.env.CLOUDINARY_FOLDER_NAME, 
+                    1000, 
+                    1000
+                );
+                return uploadingImages.secure_url;
             })
-        )
-        const Creation = await TheatreCreation.create({
-            email:email,
-            username:name,
-            locationName:locationname,
-            locationurl:locationurl,
-            Theatreimages:ImageUpload,
-            typesofseatsAvailable:typesofseats,
-            movieScreeningType:Screentypes,
-            parkingAvailable:parking,
-            languagesAvailable:languageAvailable
+        );
+
+        // Upload inside images to Cloudinary
+        let InsideImages = await Promise.all(
+            (Array.isArray(TheatreInsideImages) ? TheatreInsideImages : [TheatreInsideImages]).map(async(data) => {
+                let uploadingImages = await uploadDatatoCloudinary(
+                    data, 
+                    process.env.CLOUDINARY_FOLDER_NAME, 
+                    1000, 
+                    1000
+                );
+                return uploadingImages.secure_url;
+            })
+        );
+
+        // Create date
+        const now = new Date();
+        const pattern = date.compile('ddd, YYYY/MM/DD HH:mm:ss');
+        let ps = date.format(now, pattern);
+
+        // Hash password
+        const hasing = await bcrypt.hash(password, 10);
+
+        const UserCreation = await USER.create({
+            email: email,
+            userName: Username,
+            number: mobilenumber,
+            password: hasing,
+            confirmpass: hasing,
+            usertype:"Theatrer",
+            countrycode:countrycode,
+            image:`https://ui-avatars.com/api/?name=${encodeURIComponent(Username)}&background=random`,
+            createdAt:ps,
         })
+        // Create theatre
+        const Creation = await Theatres.create({
+            locationName: locationname,
+            locationurl: locationurl,
+            TheatreInsideimages: InsideImages,
+            Theatreoutsideimages: OutsideImages,
+            typesofseatsAvailable: typesofseats,
+            movieScreeningType: Screentypes,
+            languagesAvailable: languageAvailable,
+            Theatrename: theatrename,
+            theatreformat: theatreformat,
+            CreationDate: ps,
+            TheatreOwner: TheatreOwner,
+            parking: parking,
+            Verified:false,
+            status:"Pending"
+        });
 
-        await USER.updateOne({_id:userid},{TheatreDataSend:Creation._id})
-        
-                await Theatres.updateOne({_id:userid},{Owner:Creation._id})
-                await Theatrestickets.updateOne({_id:userid},{Owner:Creation._id})
+
+        await USER.updateOne({_id:UserCreation._id},{theatresCreated:Creation._id})
+        // Update theatre with owner
+        await Theatres.updateOne(
+            { _id: Creation._id },
+            { $set: { Owner: UserCreation._id } }
+        );
+        // Update theatre tickets
+        await Theatrestickets.updateOne(
+            { _id: Creation._id },
+            { $set: { Owner: Creation._id } }
+        );
+
         return res.status(200).json({
-            message:"The data is send to the admin to create your theatre",
-            success:true,
-            data:Creation
-        })
-    }catch(error){
-        console.log(error)
-        console.log(error.message)
+            message: "The data is sent to the admin to be verified",
+            success: true,
+            data: Creation
+        });
+
+    } catch (error) {
+        console.log(error);
+        console.log(error.message);
         return res.status(500).json({
-            message:"There is an error in the create TheatreCreationRequestPassing code",
-            success:false
+            message: "There is an error in the TheatreCreationRequestPassing code",
+            success: false,
+            error: error.message
+        });
+    }
+};
+
+
+
+
+exports.VerifyTheatrer = async (req, res) => {
+  try {
+    const {
+      id,
+      verify,    // true or false
+    } = req.body;
+
+    // console.log("=== THEATRE VERIFICATION REQUEST ===");
+    // console.log("Received ID:", id);
+    // console.log("Verify:", verify);
+    // console.log("Verify type:", typeof verify);
+
+    /* ================= BASIC VALIDATION ================= */
+    if (!id) {
+      console.log("Validation failed: ID is missing");
+      return res.status(400).json({
+        success: false,
+        message: "Theatre owner ID is required",
+      });
+    }
+
+    if (typeof verify !== "boolean") {
+    //   console.log("Validation failed: verify is not a boolean, received:", typeof verify);
+      return res.status(400).json({
+        success: false,
+        message: "verify must be a boolean (true/false)",
+      });
+    }
+
+    const user = await USER.findById(id);
+    // console.log("User found:", user ? `${user._id} (${user.usertype})` : "NOT FOUND");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found with the provided ID"
+      });
+    }
+
+    if (user.usertype !== "Theatrer") {
+    //   console.log("User type mismatch. Expected: Theatrer, Got:", user.usertype);
+      return res.status(403).json({
+        success: false,
+        message: `User is not a Theatrer. Current type: ${user.usertype}`,
+      });
+    }
+
+    if (!user.theatresCreated) {
+      console.log("Theatre not linked to user");
+      return res.status(400).json({
+        success: false,
+        message: "No theatre is linked to this user account",
+      });
+    }
+
+    const org = await Theatres.findById(user.theatresCreated);
+    // console.log("Theatre found:", org ? `${org._id} (${org.Theatrename})` : "NOT FOUND");
+
+    if (!org) {
+      return res.status(404).json({
+        success: false,
+        message: "Theatre profile not found in database",
+      });
+    }
+
+     const now = new Date();
+        const pattern = date.compile('ddd, YYYY/MM/DD HH:mm:ss');
+        let ps = date.format(now, pattern);
+
+
+        if(org.status === "Approved" && Verified === true){
+            return res.status(400).json({
+                message:"This Theatrere is already verified you cannot verify him again",
+                success:false
+            })
+        }
+
+    /* ================= APPROVE ================= */
+    if (verify === true) {
+      // ✅ FIX: Use org._id (Org document ID), not org.id (User ID)
+      const o = await Theatres.findByIdAndUpdate(org._id, {
+        status: "Approved",
+        VerifiedAt:ps,
+        Verified:true
+      }, { new: true });
+// console.log("This ist e org date from ",o)
+      // ✅ FIX: Use user._id (User document ID), not user.id
+      const u = await USER.findByIdAndUpdate(user._id, {
+        verified: true,
+      }, { new: true });
+// console.log(u)
+      await SendMessage.create({
+        to: id,
+        message: ["Your account verification request was Accepted. Good Luck!"],
+        typeOfmessage: 'Chat'
+      });
+      
+      await mailSender(
+        user.email,
+        "Your Account Has Been Verified",
+        sendingOtpTeemplate("Account Verified")
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: "Organizer verified successfully",
+        data:o
+      });
+    }
+
+    /* ================= REJECT ================= */
+    if (verify === false) {
+
+      // ✅ FIX: Use org._id and user._id
+     const orgReject =  await Theatres.findByIdAndUpdate(org._id, {
+        status: "Rejected",
+        RejectedAt:ps,
+        Verified:false
+      }, { new: true });
+// console.log(orgReject)
+      const userReject = await USER.findByIdAndUpdate(user._id, {
+        verified: false,
+      }, { new: true });
+// console.log(userReject)
+      await SendMessage.create({
+        to: id,
+        message: ["Your account verification request was Rejected"],
+        typeOfmessage: 'Chat'
+      });
+      
+      await mailSender(
+        user.email,
+        "Your Account Has Been Rejected",
+        sendingOtpTeemplate("Account Verification Failed")
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: "Theatre Verification Rejected",
+      });
+    }
+
+  } catch (error) {
+    console.error("=== THEATRE VERIFICATION ERROR ===");
+    console.error("Error name:", error.name);
+    console.error("Error message:", error.message);
+    console.error("Stack trace:", error.stack);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server error during theatre verification: " + error.message,
+    });
+  }
+};
+
+
+exports.GetTheatreDetails = async (req, res) => {
+    try {
+        // Get ALL users who are theatre owners (not just one)
+        const TheatreUsers = await USER.find({ usertype: "Theatrer" })
+        
+        if (!TheatreUsers || TheatreUsers.length === 0) {
+            return res.status(400).json({
+                message: "No theatre users present",
+                success: false
+            })
+        }
+
+        // console.log("Found theatre users:", TheatreUsers)
+
+        // Extract all theatre IDs from all users
+        const theatreIds = TheatreUsers
+            .map(user => user.theatresCreated)
+            .filter(id => id) // Remove null/undefined
+
+        if (theatreIds.length === 0) {
+            return res.status(400).json({
+                message: "No theatres created yet",
+                success: false
+            })
+        }
+
+        // Get ALL theatres using those IDs
+        const TheatreDetails = await Theatres.find({ _id: { $in: theatreIds } })
+
+        if (!TheatreDetails || TheatreDetails.length === 0) {
+            return res.status(400).json({
+                message: "No theatre details found",
+                success: false
+            })
+        }
+
+        // console.log("These are the details", TheatreDetails)
+
+        // Filter verified and unverified
+        const VerifiedReject = TheatreDetails.filter((data) => {
+            return data.Verified === false
         })
+
+        const VerifiedAccept = TheatreDetails.filter((data) => {
+            return data.Verified === true
+        })
+
+        return res.status(200).json({
+            message: "Theatre data retrieved successfully",
+            users:TheatreUsers,
+            data: TheatreDetails,
+            verified: VerifiedAccept,
+            unverified: VerifiedReject,
+            success: true
+        })
+
+    } catch (error) {
+        console.error("Error in getting theatre details:", error);
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
     }
 }

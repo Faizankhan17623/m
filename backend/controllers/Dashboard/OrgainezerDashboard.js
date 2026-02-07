@@ -1,12 +1,23 @@
+const USER = require('../../models/user')
 const Theatres = require('../../models/Theatres')
 exports.GetAllTheatreDetails = async(req,res)=>{
     try {
-        const Finding = await Theatres.find({});
-        if(!Finding) {
-            return res.status(404).json({ message: "No theatres created" });
-        }        
+       const Finding = await USER.find({usertype:'Theatrer',verified:true});
 
-        return res.status(200).json({message:"All theatres",success:true,Finding:Finding})
+if(!Finding || Finding.length === 0) {  // Check if array is empty
+    return res.status(404).json({ message: "No theatres created" });
+}
+
+// Get all theatre IDs from the array of users
+const theatreIds = Finding.map(user => user.theatresCreated).flat(); // .flat() in case it's an array of arrays
+
+const TheatreFinding = await Theatres.find({
+    _id: {$in: theatreIds},  // Use $in operator with array
+    Verified: true,
+    status: "Approved"
+})
+
+        return res.status(200).json({message:"All theatres",success:true,data:TheatreFinding})
     } catch (error) {
         console.log(error)
         console.log("Error in GetAllTheatreDetails controller",error.message)
@@ -14,15 +25,3 @@ exports.GetAllTheatreDetails = async(req,res)=>{
     }
 }
 
-// exports.CreateOrgData = async(req,res)=>{
-//     try{
-//         const {} = req.body
-//     }catch(error){
-//         console.log(error)
-//         console.log(error,message)
-//         return res.status(500).json({
-//             message:"There is an error in the create org data",
-//             successs:false
-//         })
-//     }
-// }

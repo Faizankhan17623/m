@@ -114,7 +114,7 @@ exports.OrgaineserLogin = async(req,res)=>{
                 })
             }
     
-            const user = await USER.findOne({email:email}) 
+            const user = await USER.findOne({email:email.toLowerCase()})
                 .populate('resetPasswordExpires')
                 .populate({path:'showsCreated',model:'Show'})
                 .populate({path:'UserBannerliked',model:'Show'})

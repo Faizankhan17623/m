@@ -7,7 +7,7 @@ const fileUpload = require('express-fileupload')
 const colors = require('colors')
 var morgan = require('morgan')
 const VisitorCounter = require('express-visitor-counter')
-const formData = require('express-form-data')
+const formData = require('express-form-data') // DISABLED: conflicts with express-fileupload (uses multiparty internally) and can consume the request stream twice, causing "BadRequestError: stream ended unexpectedly"
 require('./Background_Process/Shows/movieStatusCronjobs')
 require('./Background_Process/Tickets/Tickets')
 require('./Background_Process/ReturnnsoldTickets')
@@ -43,7 +43,7 @@ app.use(cors())
 
 app.use(fileUpload({
     useTempFiles : true,
-    tempFileDir : '/tmp/',
+    tempFileDir : require('os').tmpdir(),
     limits: { fileSize: 100 * 1024 * 1024 },
 }))
 
@@ -56,11 +56,10 @@ app.use('/api/v1/createAccount',auth)
 app.use('/api/v1/Admin',Admin)
 app.use('/api/v1/Org',Orgainezer)
 app.use('/api/v1/Show',Show)
-app.use('/api/v1/Theatrer',Theatre)
+app.use('/api/v1/Theatre',Theatre)
 app.use('/api/v1/Payment',payment)
 
-
-app.use(formData.parse())
+// app.use(formData.parse()) // DISABLED: express-form-data (multiparty) conflicts with express-fileupload. Using both can end the stream unexpectedly. Use express-fileupload for handling file uploads globally or apply middleware per-route if needed.
 
 app.use('/',(req,res)=>{
     res.status(200).json({

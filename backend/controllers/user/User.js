@@ -58,7 +58,7 @@ exports.FindUserNames = async (req, res) => {
 };
 
 
-exports.FindEmail = async (req,res)=>{
+exports.FindLoginEmail = async (req,res)=>{
     const {email} = req.body
     try{
         if(!email){
@@ -67,18 +67,20 @@ exports.FindEmail = async (req,res)=>{
             success:false
         })
     }
-        const user = await USER.findOne({email:email})
+        const user = await USER.findOne({email:email.toLowerCase()})
+
         if(!user){
             return res.status(200).json({
-                message:"Email is Available",
-                success:true
+                message:"No account found for this email",
+                success:true,
+                exists: false
             })
         }
 
-        return res.status(409).json({
+        return res.status(200).json({
             success:true,
-            message:"Email is already taken",
-            data:user
+            exists: true,
+            message: "Account found"
         })
     }catch(error){
         console.log(error)
@@ -109,6 +111,39 @@ exports.FindNumber = async (req,res)=>{
         return res.status(409).json({
             success:true,
             message:"Number is already taken",
+            data:user
+        })
+    }catch(error){
+        console.log(error)
+        return res.status(500).json({
+            message:"Internal server error",
+            success:false
+        })
+    }
+}
+
+exports.FindCreationEmail = async (req,res)=>{
+     const {email} = req.body
+    try{
+        if(!email){
+        return res.status(400).json({
+            message:"Please provide an email",
+            success:false
+        })
+    }
+        const user = await USER.findOne({email:email.toLowerCase()})
+        if(!user){
+            return res.status(200).json({
+                message:"No account found for this email",
+                success:true,
+                exists: false
+            })
+        }
+
+        return res.status(200).json({
+            success:true,
+            exists: true,
+            message: "Account found",
             data:user
         })
     }catch(error){

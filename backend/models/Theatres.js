@@ -1,31 +1,47 @@
 const mongoose = require('mongoose')
 const CreateLanguageSchema =  new mongoose.Schema({
+     locationName:{
+        type:String,
+        required:true,
+        unique:true
+    },
+     locationurl:{
+            type:String,
+            required:true
+        },
+        TheatreInsideimages:[{
+            type:String,
+            required:true
+        }],
+        Theatreoutsideimages:[{
+            type:String,
+            required:true
+        }],
+        typesofseatsAvailable:[{
+            type:String,
+            required:true
+        }],
+        CustomMessage:[{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Message'
+        }],
+        movieScreeningType:[{
+            type:String,
+            required:true
+        }],
+        languagesAvailable:[{
+            type:String,
+            required:true
+        }],
+
     Theatrename:{
         type:String,
         required:true
     },
-    locationname:{
-        type:String,
-        required:true,
-        unique:true,
-        maxlength:100
-    },
-    locationurl:{
-        type:String,
-        required:true
-    },
-    locationimagesurl:[{ 
+    theatreformat:[{
         type:String,
         required:true
     }],
-    languagesavailable:[{
-        type:String,
-        required:true
-    }],
-    theatreformat:{
-        type:String,
-        required:true
-    },
     CreationDate:{
         type:String,
     },
@@ -46,10 +62,6 @@ const CreateLanguageSchema =  new mongoose.Schema({
         type:String,
         maxlength:200
     },
-    Owner:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User'
-    },
     TheatreOwner:{
         type:String,
         required:true
@@ -58,9 +70,30 @@ const CreateLanguageSchema =  new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'CreateTicket'
     }],
-    parking:{
-        type:Boolean ,
+    parking:[{
+        type:String ,
         required:true
+    }],
+    Owner:{
+         type:mongoose.Schema.Types.ObjectId,
+        ref:'User'
+    },
+    Verified:{
+        type:Boolean,
+        required:true,
+        default:false
+    },
+    VerifiedAt:{
+        type:String
+    },
+    RejectedAt:{
+        type:String
+    },
+    status:{
+        type:String,
+        required:true,
+        default:"Pending",
+        enum :["Pending","Approved","Rejected"]
     }
 },{timestamps:true})
 module.exports = mongoose.model('Theatrees',CreateLanguageSchema)

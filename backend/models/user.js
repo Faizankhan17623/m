@@ -121,10 +121,6 @@ const userSchema =  new mongoose.Schema({
     lastNumberUpdate: { 
         type: String
     },
-    theatreCreated:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Theatrees"
-    },
     PaymentId:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"payment"

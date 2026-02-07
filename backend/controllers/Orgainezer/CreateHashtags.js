@@ -1,32 +1,71 @@
 const hashtags = require('../../models/CreateHashtags')
-
+const USER = require('../../models/user')
 // Done
 // THis is the function that is present in the create show route on line no 12
-exports.Createtags = async(req,res)=>{
+exports.Createtags = async(req, res) => {
     try {
-        const {tagname} = req.body
-        const Finding = await hashtags.findOne({name:tagname})
-        if(Finding){
+        const userId = req.USER.id;
+        const { name } = req.body;
+
+        // Validate tagname exists and is not empty
+        // console.log(name)
+        if (!name ) {
             return res.status(400).json({
-                message:"This name is already been taken please take another one",
-                success:false
-            })
+                message: "Tag name is required and cannot be empty",
+                success: false
+            });
         }
-        const Creation = await hashtags.create({name:tagname})
+
+        // Clean the tagname (trim and lowercase)
+        // const cleanName = tagname.trim().toLowerCase();
+
+        // Check if tag already exists
+        const existing = await hashtags.findOne({ name: name });
+        if (existing) {
+            return res.status(400).json({
+                message: "This tag name is already taken",
+                success: false
+            });
+        }
+
+        // Create the hashtag
+        const creation = await hashtags.create({
+            name: name,
+            userid: userId
+        });
+
         return res.status(200).json({
-            message:"The tag is benn created",
-            success:true,
-            data:Creation
-        })
+            message: "Tag created successfully",
+            success: true,
+            data: creation
+        });
+
     } catch (error) {
-        console.log(error)
-        console.log(error.message)
+        console.error("Create Hashtag Error:", error);
+        
+        // Handle mongoose validation errors
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({
+                message: error.message,
+                success: false
+            });
+        }
+
+        // Handle duplicate key errors (unique constraint)
+        if (error.code === 11000) {
+            return res.status(400).json({
+                message: "This tag name already exists",
+                success: false
+            });
+        }
+
         return res.status(500).json({
-            message:"There is an error in the create hashtags code ",
-            success:false
-        })
+            message: "Error creating hashtag",
+            success: false,
+            error: error.message
+        });
     }
-}
+};
 // This is the function that is present in the create show route on line no 13
 exports.updateTagsname = async(req,res)=>{
     try{
@@ -94,7 +133,9 @@ exports.DeleteTagsname = async(req,res)=>{
 // This is the function that is present in the create show route on line no 15
 exports.getAlltags = async (req,res)=>{
     try{
-         const data = await hashtags.find()
+        const userId = req.USER.id
+
+         const data = await hashtags.find({userid:userId})
                 if(!data){
                     return res.status(400).json({
                         message:"no cast is been created till now",
@@ -119,6 +160,8 @@ exports.getAlltags = async (req,res)=>{
 // THis is the function that is present in the create show route on line no 16
 exports.SearchTags = async (req,res)=>{
     try {
+        const userId = req.USER.id
+
         const name = req.body
         if(!name){
             return res.status(400).json({
@@ -126,7 +169,7 @@ exports.SearchTags = async (req,res)=>{
                 success:false
             })
         }
-        const Finding = await hashtags.find({name:name})
+        const Finding = await hashtags.find({name:name,userid:userId})
         if(!Finding){
             return res.status(400).json({
                 message:"The tag is not been found",

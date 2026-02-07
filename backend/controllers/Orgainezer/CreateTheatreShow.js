@@ -107,6 +107,10 @@ exports.CreateShow = async(req,res)=>{
 
 
         const castFinding = await cast.find({_id:{$in:castid}})
+        
+        // console.log(castFinding)
+        // console.log(castid)
+
         const haahsFinding = await hashtags.findOne({_id:hashid})
 
         if(FindingTitle){
@@ -243,8 +247,11 @@ if (castFinding.length !== castid.length) {
             hashtags:hashid,
             uploadingTime:ps,
             movieDuration:Duration,
-            movieStatus:'Upcoming'
+            movieStatus:'Upcoming',
+            castName:castid
         })
+        // castName
+
         await USER.updateOne({_id:req.USER.id},{$push:{showsCreated:Creation._id}})
         return res.status(200).json({
             message:"The show is been created",
@@ -594,8 +601,6 @@ exports.DeleteAllShow = async(req,res)=>{
         })
     }
 }
-
-
 
 
 

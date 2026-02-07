@@ -7,7 +7,9 @@ const {Getalllanguage,GetSingleLanguage} = require('../controllers/Orgainezer/Cr
 const {CreateShow,updateMovieStatus,UpdateShowtitle,UpdateShowtagline,UpdateTitleImage,UpdateTitletrailer,deleteShow,DeleteAllShow} = require('../controllers/Orgainezer/CreateTheatreShow')
 const {CreateCast,updateCastname,updatecastimage,deletecast,getwholecastlist,FindSingleCast} = require('../controllers/Orgainezer/CreateCast')
 const {uploadtheshow} = require('../controllers/Orgainezer/upload')
-
+const {getAllGenres} = require('../controllers/Administrator/CreateGenre')
+const {getAllgenre} = require('../controllers/Administrator/CreateSubGenre')
+const {AllShows} = require('../controllers/common/Showlist')
 // THis is the route that will create the tags for the show
 // DONE
 // These all the function are present in the create hashtags file 
@@ -19,6 +21,9 @@ route.get("/Get-Alltags",auth,IsOrganizer,getAlltags)
 route.get("/Search-tags",auth,IsOrganizer,SearchTags)
 // DONE
 
+route.get('/Both-Verified_data',auth,IsOrganizer,AllShows)
+route.get('/genre',auth,IsOrganizer,getAllGenres)
+route.get('/sub-genre',auth,IsOrganizer,getAllgenre)
 // DONE
 // This is the route that is going to be used to get all the languages that are been available
 route.get("/Get-AllLanguages",auth,IsOrganizer,Getalllanguage)

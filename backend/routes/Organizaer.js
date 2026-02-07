@@ -3,10 +3,11 @@ const express = require('express')
 const route = express.Router()
 const {CreateOrgainezer,OrgaineserLogin,OrgData,DirectorFresher,DirectorExperience,ProducerFresher,ProducerExperience} = require('../controllers/Orgainezer/CreateOrg')
 const {auth,IsOrganizer,DF,DE,PF,PE} = require('../middlewares/verification')
-const {AllShows} = require('../controllers/common/Showlist')
+const {AllShows, VerifiedButnotUploaded} = require('../controllers/common/Showlist')
 const {AllotTheatre} = require('../controllers/Orgainezer/Allotment')
 const {CreateTicket} = require('../controllers/Orgainezer/CreateTicket')
 const {GetAllTheatreDetails} = require("../controllers/Dashboard/OrgainezerDashboard")
+const {notUploadedShows} = require("../controllers/common/Showlist")
 // DONE
 
 route.post('/Create-Orgainezer',CreateOrgainezer)
@@ -17,8 +18,12 @@ route.post('/Orgainezer-login',OrgaineserLogin)
 route.put("/Create-Ticket",auth,IsOrganizer,CreateTicket)
 route.put("/Allot-Theatre",auth,IsOrganizer,AllotTheatre)
 route.get("/All-Shows",auth,IsOrganizer,AllShows)
-// DONE
+route.get("/not-uploaded",auth,IsOrganizer,notUploadedShows)
+route.get("/verified-not-uploaded",auth,IsOrganizer,VerifiedButnotUploaded)
 
+// notUploadedShows
+// DONE
+    
 // new 
 route.get("/Get-All-Theatre-Details",auth,IsOrganizer,GetAllTheatreDetails)
 route.post("/Org-Data", auth, IsOrganizer ,OrgData)

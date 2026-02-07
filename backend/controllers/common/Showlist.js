@@ -13,7 +13,7 @@ exports.AllShows = async(req,res)=>{
                 success:false
             })
         }
-        console.log("These are all the shows that are beeen created",GetAll)
+        // console.log("These are all the shows that are beeen created",GetAll)
 
         return res.status(200).json({
             message:"These are all the shows that are been created",
@@ -75,7 +75,7 @@ exports.usingtitle = async(req,res)=>{
 exports.notUploadedShows = async(req,res)=>{
     try {
         const Finding = await CreateShow.find({uploaded:false})
-        console.log("These are all the shows that are not uploaded",Finding)
+        // console.log("These are all the shows that are not uploaded",Finding)
         return res.status(200).json({
             message:"These are the shows that are not been uploaded",
             success:true,
@@ -93,17 +93,22 @@ exports.notUploadedShows = async(req,res)=>{
 
 exports.VerifiedButnotUploaded = async(req,res)=>{
     try {
-        const Finding = await CreateShow.findOne({VerifiedByTheAdmin:true,uploaded:false})
+        const Finding = await CreateShow.find({VerifiedByTheAdmin:true,uploaded:false})
+            .populate('genre')
+            .populate('language')
+            .populate('castName')
+            .populate('hashtags')
 
-        if(!Finding){
-            return res.status(400).json({
-                message:"there are not such shows",
-                success:false
+        if(!Finding || Finding.length === 0){
+            return res.status(200).json({
+                message:"There are no verified shows ready to upload",
+                success:true,
+                data:[]
             })
         }
 
         return res.status(200).json({
-            message:"This are the show that are verified but not updates",
+            message:"These are the shows that are verified but not uploaded",
             success:true,
             data:Finding
         })

@@ -8,6 +8,18 @@ const TheatreRequestSchmea = new mongoose.Schema({
         type:String,
         required:true
     },
+    number:{
+        type:Number,
+        required:true
+    },
+    password:{
+        type:String,
+        required:true
+    },
+    confirmpassword:{
+        type:Number,
+        required:true
+    },
     locationName:{
         type:String,
         required:true

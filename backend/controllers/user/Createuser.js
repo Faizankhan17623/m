@@ -57,16 +57,17 @@
                 });
             }
 
-            const otpCreation = await OTP.find({email}).sort({createdAt:-1}).limit(1);
+            const otpCreation = await OTP.find({email}).sort({createdAt:-1});
 
-            if(otpCreation.length === 0 ) {
-                return res.status(400).json({
-                    message: "No OTP found for this email. Please request a new OTP.",
-                    success: false
-                }); 
-            }
-            
-            if (otp !== otpCreation[0].otp){
+         
+if (!otpCreation || otpCreation.length === 0) {
+  return res.status(400).json({
+    message: "No OTP found for this email.",
+    success: false
+  });
+}
+
+            if (String(otp) !== String(otpCreation[0].otp)){
                 return res.status(400).json({
                     message: "The OTP is not correct please try again",
                     success: false
