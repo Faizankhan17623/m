@@ -10,7 +10,6 @@ const Join = () => {
   const [User, setUser] = useState('User')
   const [loading, setLoading] = useState(false)
 
-  // Handler for selecting User or Organizer
   const handleSelect = (type) => {
     setUser(type)
     setLoading(true)
@@ -19,45 +18,82 @@ const Join = () => {
     }, 2000)
   }
 
-  // Decide which component to show
+  const loader = (
+    <div className="w-full min-h-[400px] flex justify-center items-center">
+      <Loading data="relative" />
+    </div>
+  )
+
   let content = null
   if (User === 'User') {
-    content = loading ? <Loading data={`relative top-10 left-50`}/> : <Users />
+    content = loading ? loader : <Users />
   } else if (User === 'Organizer') {
-    content = loading ? <Loading data={`relative top-10 left-50`}/> : <Org />
+    content = loading ? loader : <Org />
   }
 
   return (
-    <div className="w-full h-full flex flex-col justify-evenly items-center">
+    <div className="min-h-screen w-full bg-richblack-900">
       <Navbar />
-      <div className='w-full h-full flex flex-row text-white justify-around items-center'>
-        <div className='w-1/3 h-[730px]'>
-          <div className='w-1/2 h-1/3 flex flex-col justify-center items-center'>
-          <div className='flex flex-col justify-center items-center w-full Banner'>
-            <h1 className='text-bold text-2xl'>WELCOME BACK</h1>
-            <p className='font-italic'>
-              Discover Your Passion <br /> <span className='text-blue-100'>Be Unstoppable</span>
+
+      <div className="w-full max-w-7xl mx-auto px-6 py-10 flex flex-col lg:flex-row items-start justify-between gap-10">
+
+        {/* Left Side - Form Area */}
+        <div className="w-full lg:w-[55%] flex flex-col items-center">
+
+          {/* Welcome Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-extrabold text-white tracking-tight">
+              WELCOME <span className="bg-gradient-to-r from-yellow-200 to-yellow-50 bg-clip-text text-transparent">BACK</span>
+            </h1>
+            <p className="mt-2 text-richblack-200 text-base">
+              Discover Your Passion &mdash; <span className="text-blue-300 font-medium">Be Unstoppable</span>
             </p>
           </div>
-            <div className='w-78 Slider slide h-14  flex  rounded-3xl bg-richblack-400 '>
-              <button onClick={() => handleSelect('User')} className={`hover:border-richblack-500 rounded-3xl w-40 h-14 ${
-    User === 'User' ? 'bg-richblack-900 border-richblack-900 ' : 'bg-richblack-400'
-  }`}>User</button>
-              <button onClick={() => handleSelect('Organizer')} className={`hover:border-richblack-500 rounded-3xl w-40 h-14 ${
-    User === 'Organizer' ? 'bg-richblack-900 border-richblack-900' : 'bg-richblack-400'
-  }`}>Organizer</button>
-            </div>
 
+          {/* Toggle Pill */}
+          <div className="relative flex w-72 h-12 rounded-full bg-richblack-700 border border-richblack-600 p-1 mb-8 shadow-lg">
+            {/* Sliding Indicator */}
+            <div
+              className={`absolute top-1 h-10 w-[calc(50%-4px)] rounded-full bg-gradient-to-r from-yellow-200 to-yellow-100 shadow-md transition-all duration-300 ease-in-out ${
+                User === 'Organizer' ? 'left-[calc(50%+2px)]' : 'left-1'
+              }`}
+            />
+            <button
+              onClick={() => handleSelect('User')}
+              className={`relative z-10 flex-1 rounded-full text-sm font-bold transition-colors duration-300 ${
+                User === 'User' ? 'text-richblack-900' : 'text-richblack-200 hover:text-white'
+              }`}
+            >
+              User
+            </button>
+            <button
+              onClick={() => handleSelect('Organizer')}
+              className={`relative z-10 flex-1 rounded-full text-sm font-bold transition-colors duration-300 ${
+                User === 'Organizer' ? 'text-richblack-900' : 'text-richblack-200 hover:text-white'
+              }`}
+            >
+              Organizer
+            </button>
           </div>
-          <div className='text-white'>
+
+          {/* Form Container */}
+          <div className="w-full max-w-lg signup-form-animate">
             {content}
           </div>
         </div>
 
-        <div className='w-1/2 h-[450px] flex justify-center items-center'>
-        <div>
-          <img src={User === 'User'?Review:review2} alt="This is the image" draggable="false" className="w-[500px] rounded-md Image_tops"/>
-        </div>
+        {/* Right Side - Image Area */}
+        <div className="hidden lg:flex w-[42%] justify-center items-start pt-16 sticky top-28">
+          <div className="relative group">
+            {/* Glow behind image */}
+            <div className="absolute -inset-4 bg-gradient-to-br from-yellow-200/20 via-blue-300/10 to-transparent rounded-2xl blur-2xl opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+            <img
+              src={User === 'User' ? Review : review2}
+              alt="Welcome illustration"
+              draggable="false"
+              className="relative w-[460px] rounded-2xl shadow-2xl border border-richblack-700/50 transition-transform duration-500 group-hover:scale-[1.02]"
+            />
+          </div>
         </div>
       </div>
     </div>

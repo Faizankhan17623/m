@@ -1,83 +1,113 @@
 import InputBox from '../extra/InputBox'
-import { FaGooglePlay,FaAppStore,FaLinkedin,FaInstagram ,FaTwitter ,FaGithub ,FaRegCopyright,FaHeart  } from "react-icons/fa";
-// import SD from '../../assets/Logo/sd-removebg-preview.png'
-import { IoIosSunny } from "react-icons/io";
-import { FaMoon } from "react-icons/fa6";
+import { FaGooglePlay, FaAppStore, FaLinkedin, FaInstagram, FaTwitter, FaGithub, FaRegCopyright, FaHeart, FaFilm } from "react-icons/fa"
 
 const Footer = () => {
   return (
-  <div className='w-full h-max'>
-    <InputBox/>
-    <div className='w-full h-[400px]  text-white flex flex-col justify-end'>
-      {/* This div is forr thee footeer first section  */}
-      <div className='flex justify-evenly items-center w-full h-[300px]'>
-        
-       
-        <div className='flex flex-col w-[300px] h-[300px] justify-center items-center gap-4'>
-          <img src={'https://res.cloudinary.com/dit2bnxnd/image/upload/v1767978923/cc41_abjbkq.png'} alt="This is the logo" className='h-[100px] w-full'/>
-          <p>This is a Ticket Booking Website Project that is done by Faizan Khan. Please like the website and if there is anything you do not like, please write to us.</p>
-          <div className='flex items-center justify-around gap-5 group relative'>
-            <span className='absolute -top-15 left-0 w-[300px] h-[50px] border bg-white text-black px-2 py-1 rounded shadow-lg hidden group-hover:block'>
-              Our Team is Working on making this Project a mobile app, please bear with us
-            </span>
-            <button className='rounded-md BUTTON_DESIGN bg-grey-300 gap-3 flex justify-center items-center text-black'><FaGooglePlay/>Play Store</button>
-            <button className='rounded-md BUTTON_DESIGN bg-grey-300 gap-3 flex justify-center items-center text-black'><FaAppStore/>App Store</button>
+    <div className='w-full'>
+      <InputBox />
+
+      <footer className='w-full bg-richblack-800 border-t border-richblack-700'>
+        {/* Main Footer Content */}
+        <div className='max-w-6xl mx-auto px-6 py-12 lg:py-16'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8'>
+
+            {/* Brand Column */}
+            <div className='sm:col-span-2 lg:col-span-1 flex flex-col gap-5'>
+              <div className='flex items-center gap-3'>
+                <div className='w-10 h-10 bg-yellow-400 rounded-xl flex items-center justify-center'>
+                  <FaFilm className='text-black text-lg' />
+                </div>
+                <span className='text-xl font-bold text-white'>Cine Circuit</span>
+              </div>
+              <p className='text-richblack-300 text-sm leading-relaxed'>
+                A Ticket Booking platform built by Faizan Khan. Discover the best shows, book effortlessly, and enjoy the cinema experience.
+              </p>
+              <div className='flex items-center gap-3'>
+                <button className='flex items-center gap-2 px-4 py-2.5 bg-richblack-700 border border-richblack-600 rounded-xl text-sm text-white hover:border-richblack-400 transition-colors'>
+                  <FaGooglePlay className='text-base' />
+                  <div className='text-left'>
+                    <span className='block text-[10px] text-richblack-400 leading-none'>GET IT ON</span>
+                    <span className='block text-xs font-semibold leading-tight'>Google Play</span>
+                  </div>
+                </button>
+                <button className='flex items-center gap-2 px-4 py-2.5 bg-richblack-700 border border-richblack-600 rounded-xl text-sm text-white hover:border-richblack-400 transition-colors'>
+                  <FaAppStore className='text-base' />
+                  <div className='text-left'>
+                    <span className='block text-[10px] text-richblack-400 leading-none'>DOWNLOAD ON</span>
+                    <span className='block text-xs font-semibold leading-tight'>App Store</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            {/* Company Links */}
+            <div className='flex flex-col gap-4'>
+              <h3 className='text-sm font-bold text-white uppercase tracking-wider'>Company</h3>
+              <div className='flex flex-col gap-2.5'>
+                <a href="/" className='text-richblack-300 text-sm hover:text-yellow-400 transition-colors'>About Us</a>
+                <a href="/" className='text-richblack-300 text-sm hover:text-yellow-400 transition-colors'>Legal Information</a>
+                <a href="/" className='text-richblack-300 text-sm hover:text-yellow-400 transition-colors'>Contact Us</a>
+                <a href="/" className='text-richblack-300 text-sm hover:text-yellow-400 transition-colors'>Blogs</a>
+              </div>
+            </div>
+
+            {/* Help Center Links */}
+            <div className='flex flex-col gap-4'>
+              <h3 className='text-sm font-bold text-white uppercase tracking-wider'>Help Center</h3>
+              <div className='flex flex-col gap-2.5'>
+                <a href="/" className='text-richblack-300 text-sm hover:text-yellow-400 transition-colors'>Become an Organizer</a>
+                <a href="/" className='text-richblack-300 text-sm hover:text-yellow-400 transition-colors'>Become a Theatre Partner</a>
+                <a href="/" className='text-richblack-300 text-sm hover:text-yellow-400 transition-colors'>Complaints</a>
+                <a href="/" className='text-richblack-300 text-sm hover:text-yellow-400 transition-colors'>Careers</a>
+                <a href="mailto:Faizankhan901152@gmail.com" className='text-richblack-300 text-sm hover:text-yellow-400 transition-colors'>Report a Bug</a>
+              </div>
+            </div>
+
+            {/* Contact Info */}
+            <div className='flex flex-col gap-4'>
+              <h3 className='text-sm font-bold text-white uppercase tracking-wider'>Contact Info</h3>
+              <div className='flex flex-col gap-2.5'>
+                <a href="tel:+0000000000" className='text-richblack-300 text-sm hover:text-yellow-400 transition-colors'>+91 000 000 0</a>
+                <a href="mailto:Faizankhan901152@gmail.com" className='text-richblack-300 text-sm hover:text-yellow-400 transition-colors'>Faizankhan901152@gmail.com</a>
+                <p className='text-richblack-400 text-sm'>Made by Faizan Khan</p>
+              </div>
+
+              {/* Social Icons */}
+              <div className='flex items-center gap-3 mt-1'>
+                <a href="/" className='w-9 h-9 bg-richblack-700 border border-richblack-600 rounded-lg flex items-center justify-center text-richblack-300 hover:text-blue-400 hover:border-blue-400/40 transition-all'>
+                  <FaLinkedin className='text-sm' />
+                </a>
+                <a href="/" className='w-9 h-9 bg-richblack-700 border border-richblack-600 rounded-lg flex items-center justify-center text-richblack-300 hover:text-pink-400 hover:border-pink-400/40 transition-all'>
+                  <FaInstagram className='text-sm' />
+                </a>
+                <a href="/" className='w-9 h-9 bg-richblack-700 border border-richblack-600 rounded-lg flex items-center justify-center text-richblack-300 hover:text-blue-500 hover:border-blue-500/40 transition-all'>
+                  <FaTwitter className='text-sm' />
+                </a>
+                <a href="" className='w-9 h-9 bg-richblack-700 border border-richblack-600 rounded-lg flex items-center justify-center text-richblack-300 hover:text-white hover:border-richblack-400 transition-all'>
+                  <FaGithub className='text-sm' />
+                </a>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        
-        <div className='flex flex-col gap-3'>
-          <h1>COMPANY</h1>
-          <a href="/">About Us</a>
-          <a href="/">Legal Information</a>
-          <a href="/">Contact Us</a>
-          <a href="/">Blogs</a>
-        </div>
-
-
-        <div className='flex flex-col gap-3'>
-          <h1>HELP CENTER</h1>
-          <a href="/">BECOME AN ORGAAINEZER</a>
-          <a href="/">BECOME AN THEATRER</a>
-          <a href="/">COMPLAENT</a>
-          <a href="/">CARRERS</a>
-          <a href="mailto:Faizankhan901152@gmail.com">Report a Bug</a>
-        </div>
-
-        <div className='flex flex-col gap-3'>
-          <h1>CONTACT INFO</h1>
-          <a href="tel:+91 9011575978">Phone</a>
-          <a href="mailto:Faizankhan901152@gmail.com">Email:Contact@gmail.com</a>
-          <p>Made by Faizan khan</p>
-          
-          <div className='flex gap-4'>
-            <FaLinkedin className='text-2xl fill-blue-100'/>
-            <FaInstagram className='text-2xl fill-pink-300'/>
-            <FaTwitter className='text-2xl fill-blue-500'/>
-            <a href="https://github.com/Faizankhan17623?tab=repositories"><FaGithub className='text-2xl '/></a>
-          </div>
-          <div className='w-full  h-10 flex justify-evenly items-center group relative'>
-            <span className='absolute -top-15 left-0 w-[250px] h-[50px] border bg-white text-black px-2 py-1 Contentt rounded shadow-lg hidden group-hover:block'>We are Still Working on this it will start soon</span>
-            <button className='Day_Night rounded-xl bg-white hover:text-orange-300'><IoIosSunny className='text-Orange-100 text-2xl hover:text-orange-300'/></button>
-            <button className='Day_Night rounded-xl bg-richblack-500'><FaMoon className='text-white text-2xl '/></button>
+        {/* Bottom Bar */}
+        <div className='border-t border-richblack-700'>
+          <div className='max-w-6xl mx-auto px-6 py-5 flex flex-col sm:flex-row justify-between items-center gap-3'>
+            <div className='flex items-center gap-2 text-richblack-400 text-sm'>
+              <FaRegCopyright className='text-xs' />
+              <span>2026 Cine Circuit</span>
+              <span className='text-richblack-600'>|</span>
+              <span>All Rights Reserved</span>
+            </div>
+            <div className='flex items-center gap-1.5 text-richblack-400 text-sm'>
+              Made with <FaHeart className='text-red-500 text-xs' /> by Faizan Khan
+            </div>
           </div>
         </div>
-
-      </div>
-
-      {/* Thiis is for thee second section of thee footeer */}
-      <div className='w-full h-20 flex justify-around items-center border-t-4'>
-        <div className='flex justify-center items-center gap-2'>
-          <FaRegCopyright /> 2025 Cine Circuit <span>|</span> All Rights Reserved With the Developer
-        </div>
-        |
-        <div className='flex justify-center items-center gap-2'>
-          Made with <FaHeart className='fill-red-500'/> by Faizan Khan
-        </div>
-      </div>
-
+      </footer>
     </div>
-  </div>
   )
 }
 

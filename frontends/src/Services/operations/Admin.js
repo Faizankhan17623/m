@@ -1,12 +1,18 @@
 // new update gaha par lageggnage wahe functino create kar ke usko usee kar lenga apun
 import toast from "react-hot-toast";
-import  {Orgaineser, Genre, SubGenre, Language, VerifiedUsers, UnverifiedUsers, VerifiedOrgainesers, UnverifiedOrgainesers, VerifiedTheatres, UnverifiedTheatres} from '../Apis/AdminApi'
+import  {Orgaineser, Genre, SubGenre, Language, VerifiedUsers, UnverifiedUsers, VerifiedOrgainesers, UnverifiedOrgainesers, VerifiedTheatres, UnverifiedTheatres, ShowVerification,Theatre,TheatreVerification} from '../Apis/AdminApi'
 import {apiConnector} from '../apiConnector'
 import {setLoading} from '../../Slices/orgainezerSlice'
 import {setAttempts,setStatus,setEditUntil,setRoleProfile,setRoleExperience,setRejectedData,setLockedUntill} from '../../Slices/orgainezerSlice'
 const {Org_details,Org_verification,Org_delete,Org_deleteAll} = Orgaineser
 import {setverification} from '../../Slices/ProfileSlice'
-
+import {setVerifiedShows, setUnverifiedShows, setAdminAllShows, setlaoding, setVerifyingShowId, moveToVerified, moveToUnverified} from '../../Slices/ShowSlice'
+import Loading from "../../Components/extra/Loading";
+// import {setLoading} from '../../Slices/TheatreSlice'
+// Show Verification API endpoints
+const { VerifyShow, UnverifiedShows, VerifiedShows, AllShows: AdminAllShows } = ShowVerification
+const {GetAllTheatres} = Theatre
+const {Verify_Theatres} = TheatreVerification
 export function GetAllOrgDetails (token,navigate){
     return async (dispatch) => {
         if(!token){
@@ -528,6 +534,239 @@ export function DeleteLanguageOp(token, id, navigate) {
       console.error("Error deleting language:", error)
       toast.error(error?.response?.data?.message || error.message || "Failed to delete language")
       return { success: false }
+    } finally {
+      toast.dismiss(ToastId)
+    }
+  }
+}
+
+// ==================== SHOW VERIFICATION OPERATIONS ====================
+// ya jo four hain inlo waha verifyshow main use karna hain 
+// Get All Unverified Shows (Admin)
+export function GetUnverifiedShows(token, navigate) {
+  return async (dispatch) => {
+    if (!token) {
+      navigate("/Login")
+      toast.error("Token is Expired Please Create a new One")
+      return { success: false }
+    }
+
+    dispatch(setlaoding(true))
+
+    try {
+      const response = await apiConnector("GET", UnverifiedShows, null, {
+        Authorization: `Bearer ${token}`
+      })
+
+      if (!response.data.success) {
+        throw new Error(response.data.message || "Failed to fetch unverified shows")
+      }
+
+      dispatch(setUnverifiedShows(response.data.data || []))
+      return { success: true, data: response.data.data }
+    } catch (error) {
+      console.error("Error fetching unverified shows:", error)
+      return { success: false, error: error.message, data: [] }
+    } finally {
+      dispatch(setlaoding(false))
+    }
+  }
+}
+
+// Get All Verified Shows (Admin)
+export function GetVerifiedShowsAdmin(token, navigate) {
+  return async (dispatch) => {
+    if (!token) {
+      navigate("/Login")
+      toast.error("Token is Expired Please Create a new One")
+      return { success: false }
+    }
+
+    dispatch(setlaoding(true))
+
+    try {
+      const response = await apiConnector("GET", VerifiedShows, null, {
+        Authorization: `Bearer ${token}`
+      })
+
+      if (!response.data.success) {
+        throw new Error(response.data.message || "Failed to fetch verified shows")
+      }
+
+      dispatch(setVerifiedShows(response.data.data || []))
+      return { success: true, data: response.data.data }
+    } catch (error) {
+      console.error("Error fetching verified shows:", error)
+      return { success: false, error: error.message, data: [] }
+    } finally {
+      dispatch(setlaoding(false))
+    }
+  }
+}
+
+// Get All Shows (Admin)
+export function GetAllShowsAdmin(token, navigate) {
+  return async (dispatch) => {
+    if (!token) {
+      navigate("/Login")
+      toast.error("Token is Expired Please Create a new One")
+      return { success: false }
+    }
+
+    dispatch(setlaoding(true))
+
+    try {
+      const response = await apiConnector("GET", AdminAllShows, null, {
+        Authorization: `Bearer ${token}`
+      })
+
+      if (!response.data.success) {
+        throw new Error(response.data.message || "Failed to fetch all shows")
+      }
+
+      dispatch(setAdminAllShows(response.data.data || []))
+      return { success: true, data: response.data.data }
+    } catch (error) {
+      console.error("Error fetching all shows:", error)
+      return { success: false, error: error.message, data: [] }
+    } finally {
+      dispatch(setlaoding(false))
+    }
+  }
+}
+
+// Verify a Show (Admin)
+export function VerifyShowAdmin(token, showId, validation, navigate) {
+  return async (dispatch) => {
+    if (!token) {
+      navigate("/Login")
+      toast.error("Token is Expired Please Create a new One")
+      return { success: false }
+    }
+
+    dispatch(setVerifyingShowId(showId))
+    const ToastId = toast.loading(validation ? "Verifying show..." : "Rejecting show...")
+
+    try {
+      const response = await apiConnector("PUT", `${VerifyShow}?id=${showId}`,
+        { Validation: validation },
+        { Authorization: `Bearer ${token}` }
+      )
+
+      if (!response.data.success) {
+        throw new Error(response.data.message || "Failed to verify show")
+      }
+
+      // Update local state
+      if (validation) {
+        dispatch(moveToVerified(showId))
+        toast.success("Show verified successfully!")
+      } else {
+        dispatch(moveToUnverified(showId))
+        toast.success("Show rejected successfully!")
+      }
+
+      return { success: true, data: response.data.updatedShow }
+    } catch (error) {
+      console.error("Error verifying show:", error)
+      toast.error(error?.response?.data?.message || error.message || "Failed to verify show")
+      return { success: false, error: error.message }
+    } finally {
+      toast.dismiss(ToastId)
+      dispatch(setVerifyingShowId(null))
+    }
+  }
+}
+
+
+export function GetAllTheatreDetails (token,navigate){
+  return async (dispatch)=>{
+     if (!token) {
+      navigate("/Login")
+      toast.error("Token is Expired Please Create a new One")
+      return { success: false }
+    }
+      const ToastId = toast.loading("Loading...")
+    dispatch(setLoading(true))
+    try{
+        const response = await apiConnector("GET", GetAllTheatres,null,{
+                Authorization: `Bearer ${token}`
+            }
+      )
+// console.log("Backend log",response)
+      if (!response.data.success) {
+        throw new Error(response.data.message || "Failed to verify show")
+      }
+
+      return { success: true, data: response }
+    }catch(error){
+         console.error("Error verifying show:", error)
+      toast.error(error?.response?.data?.message || error.message || "Failed to verify show")
+      return { success: false, error: error.message }
+    }finally{
+      dispatch(setLoading(false))
+      toast.dismiss(ToastId)
+    }
+  }
+}
+
+export function VerifyTheatres(token, navigate, id, verification) {
+  return async () => {
+    // Validate token
+    if (!token || token === "null" || token === "undefined") {
+      console.error("VerifyTheatres: Token is missing or invalid", { token })
+      return { success: false, reason: "NO_TOKEN", message: "Authentication token not found" }
+    }
+
+    // Validate id
+    if (!id) {
+      console.error("VerifyTheatres: Owner ID is missing")
+      return { success: false, message: "Theatre owner ID is required" }
+    }
+
+    const ToastId = toast.loading(verification ? "Verifying theatre..." : "Rejecting theatre...")
+
+    try {
+      // console.log("VerifyTheatres API call:", {
+      //   endpoint: Verify_Theatres,
+      //   id,
+      //   verification: Boolean(verification),
+      //   tokenLength: token?.length
+      // })
+
+      const response = await apiConnector(
+        "PUT",
+        Verify_Theatres,
+        { id: id, verify: Boolean(verification) },
+        {
+          Authorization: `Bearer ${token}`,
+        }
+      )
+
+      // console.log("VerifyTheatres API response:", response?.data)
+
+      if (!response.data?.success) {
+        const errorMsg = response.data?.message || "Verification failed"
+        toast.error(errorMsg)
+        return {
+          success: false,
+          message: errorMsg,
+        }
+      }
+
+      toast.success(verification ? "Theatre verified successfully!" : "Theatre rejected successfully!")
+      return {
+        success: true,
+        data: response.data,
+      }
+    } catch (error) {
+      console.error("VerifyTheatres API error:", error)
+      const errorMsg = error?.response?.data?.message || error.message || "Server error occurred"
+      toast.error(errorMsg)
+      return {
+        success: false,
+        message: errorMsg,
+      }
     } finally {
       toast.dismiss(ToastId)
     }

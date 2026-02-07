@@ -10,12 +10,14 @@ export const Ticket = {
 }
 
 export const AllotTheatre = {
-    Allotheatre:BASE_URL+"/Allot-Theatre",
+    Allotment:BASE_URL+"/Allot-Theatre",
 }
 
 
-export const GetAllSHowsDetails = { 
-    Getallshowsdetails:BASE_URL+"/All-Shows"
+export const GetAllSHowsDetails = {
+    Getallshowsdetails:BASE_URL+"/All-Shows",
+    notuploaded:BASE_URL+"/not-uploaded",
+    verifiedNotUploaded:BASE_URL+"/verified-not-uploaded"
 }
 
 export const GetAllTheatreDetails = {

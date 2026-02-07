@@ -608,11 +608,24 @@ input:checked + .slider:before {
 } 
 
 
-.Slider,.Banner{
-  margin-left: 200px;
-}
 .slide{
   margin-top: 20px;
+}
+
+/* Signup form entrance animation */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.signup-form-animate {
+  animation: fadeSlideUp 0.4s ease-out;
 }
 
 
@@ -1020,4 +1033,20 @@ input:checked + .slider:before {
 
 .Seperation{
   padding-left: 10px;
+}
+
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.15s ease-out;
 }

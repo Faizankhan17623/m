@@ -9,11 +9,11 @@ import { Changeimage } from "../../Services/operations/User";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { LiaEyeSolid,LiaEyeSlashSolid  } from "react-icons/lia";
-  
+
 const Settings = () => {
   const { image, token } = useSelector((state) => state.auth);
   const { cooldownDate } = useSelector((state) => state.profile);
-  
+
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
@@ -68,25 +68,33 @@ const Settings = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full h-[1000px] bg-richblack-900 flex flex-col items-center gap-5 px-4 py-6 overflow-x-hidden overflow-y-auto"
+      className="w-full min-h-full bg-richblack-900 flex flex-col items-center gap-6 px-4 sm:px-6 py-8 overflow-y-auto"
     >
       {/* Header */}
-      <div className="w-full max-w-3xl flex flex-col gap-2">
-        <button className="text-richblack-300 flex items-center gap-2">
-          <IoIosArrowBack />
-          <span className="text-richblack-400">Back</span>
+      <div className="w-full max-w-3xl flex flex-col gap-3">
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-1.5 text-sm text-richblack-300 hover:text-white transition-colors w-fit"
+        >
+          <IoIosArrowBack className="text-lg" />
+          <span>Back</span>
         </button>
-        <h1 className="text-white font-bold text-2xl">Edit Profile</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-white">Edit Profile</h1>
       </div>
 
+      {/* Cooldown Warning */}
       {isCooldownActive && (
-        <p style={{ color: "red" }}>
-          You can change your image again in {timeLeft} day(s).
-        </p>
+        <div className="w-full max-w-3xl bg-red-500/10 border border-red-500/30 rounded-xl px-5 py-3.5 flex items-center gap-3">
+          <div className="w-2 h-2 rounded-full bg-red-500 shrink-0" />
+          <p className="text-red-400 text-sm">
+            You can change your image again in <span className="font-semibold text-red-300">{timeLeft} day(s)</span>.
+          </p>
+        </div>
       )}
 
-      {/* Profile picture */}
-      <div className="w-full max-w-3xl bg-richblack-800 rounded-xl shadow flex items-center gap-6">
+      {/* Profile Picture */}
+      <div className="w-full max-w-3xl bg-richblack-800 border border-richblack-700 rounded-xl p-6 flex flex-col sm:flex-row items-center gap-6">
         <img
           src={
             selectedFile
@@ -94,22 +102,22 @@ const Settings = () => {
               : image || "/default-profile.png"
           }
           alt="profile"
-          className="w-20 h-20 rounded-full object-cover border-4 border-yellow-300"
+          className="w-20 h-20 rounded-full object-cover border-[3px] border-richblack-600 shadow-lg shrink-0"
         />
-        <div className="flex flex-col gap-3">
-          <p className="text-white text-lg text-red-400">Change Profile Picture</p>
+        <div className="flex flex-col gap-3 items-center sm:items-start">
+          <p className="text-white text-base font-medium">Change Profile Picture</p>
           <div className="flex gap-3">
             {selectedFile ? (
               <button
                 type="button"
-                className="bg-yellow-300 text-black rounded BUttons px-4 py-2"
+                className="bg-yellow-50 hover:bg-yellow-100 text-richblack-900 font-semibold rounded-lg px-5 py-2 text-sm transition-all duration-200 shadow-md shadow-yellow-50/10"
                 onClick={handleUpload}
                 disabled={isCooldownActive}
               >
                 Upload
               </button>
             ) : (
-              <label className="bg-yellow-300 text-black rounded px-4 py-2 cursor-pointer BUttons">
+              <label className={`bg-yellow-50 hover:bg-yellow-100 text-richblack-900 font-semibold rounded-lg px-5 py-2 text-sm transition-all duration-200 shadow-md shadow-yellow-50/10 cursor-pointer ${isCooldownActive ? "opacity-50 cursor-not-allowed" : ""}`}>
                 Select
                 <input
                   type="file"
@@ -125,11 +133,11 @@ const Settings = () => {
             )}
             <button
               type="button"
-              className={`bg-richblack-700 text-white BUttons rounded px-4 py-2 ${
-                !selectedFile && "cursor-not-allowed"
+              className={`bg-richblack-700 border border-richblack-600 text-richblack-100 hover:text-white hover:border-richblack-500 rounded-lg px-5 py-2 text-sm font-medium transition-all duration-200 ${
+                !selectedFile ? "opacity-40 cursor-not-allowed" : ""
               }`}
               onClick={() => setSelectedFile(null)}
-              disabled={isCooldownActive}
+              disabled={!selectedFile || isCooldownActive}
             >
               Remove
             </button>
@@ -138,26 +146,33 @@ const Settings = () => {
       </div>
 
       {/* Profile Information */}
-      <div className="w-full max-w-3xl bg-richblack-800 rounded-xl shadow flex flex-col gap-6 p-6">
-        <h2 className="text-white font-semibold text-lg text-yellow-200 Pa">Profile Information</h2>
+      <div className="w-full max-w-3xl bg-richblack-800 border border-richblack-700 rounded-xl p-6 flex flex-col gap-6">
+        <h2 className="text-lg font-semibold text-yellow-100">Profile Information</h2>
 
-        <div className="grid grid-cols-2 gap-6">
-          <div>
-            <label className="block text-richblack-100 mb-1">Display Name *</label>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {/* Display Name */}
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm text-richblack-100 font-medium">
+              Display Name <span className="text-red-500">*</span>
+            </label>
             <input
               {...register("displayName", { required: "Display Name is required" })}
-              className="form-style w-full"
+              className="w-full px-4 py-2.5 bg-richblack-700 border border-richblack-600 rounded-lg text-white text-sm placeholder:text-richblack-400 outline-none transition-all duration-200 focus:ring-2 focus:ring-yellow-200/50 focus:border-yellow-200/50"
               placeholder="Enter your name"
             />
             {errors.displayName && (
-              <p className="text-red-500 text-xs mt-1">{errors.displayName.message}</p>
+              <p className="text-red-400 text-xs">{errors.displayName.message}</p>
             )}
           </div>
-          <div>
-            <label className="block text-richblack-100 mb-1">Profession *</label>
+
+          {/* Profession */}
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm text-richblack-100 font-medium">
+              Profession <span className="text-red-500">*</span>
+            </label>
             <select
               {...register("profession", { required: "Profession is required" })}
-              className="form-style w-full bg-richblack-700"
+              className="w-full px-4 py-2.5 bg-richblack-700 border border-richblack-600 rounded-lg text-white text-sm outline-none transition-all duration-200 focus:ring-2 focus:ring-yellow-200/50 focus:border-yellow-200/50 cursor-pointer"
             >
               <option value="">Select your profession</option>
               {Profesion.professions.map((p, i) => (
@@ -165,93 +180,87 @@ const Settings = () => {
               ))}
             </select>
             {errors.profession && (
-              <p className="text-red-500 text-xs mt-1">{errors.profession.message}</p>
+              <p className="text-red-400 text-xs">{errors.profession.message}</p>
             )}
           </div>
         </div>
 
-        {/* dob + gender */}
-        <div className="grid grid-cols-2 gap-6">
-          <div>
-            <label className="block text-richblack-100 mb-1">Date of Birth *</label>
+        {/* DOB + Gender */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm text-richblack-100 font-medium">
+              Date of Birth <span className="text-red-500">*</span>
+            </label>
             <input
               type="date"
               {...register("dob", { required: "Date of Birth is required" })}
-              className="form-style w-full"
+              className="w-full px-4 py-2.5 bg-richblack-700 border border-richblack-600 rounded-lg text-white text-sm outline-none transition-all duration-200 focus:ring-2 focus:ring-yellow-200/50 focus:border-yellow-200/50"
             />
             {errors.dob && (
-              <p className="text-red-500 text-xs mt-1">{errors.dob.message}</p>
+              <p className="text-red-400 text-xs">{errors.dob.message}</p>
             )}
           </div>
-          <div>
-            <label className="block text-richblack-100 mb-1">Gender *</label>
-            <div className="flex gap-5 mt-2">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm text-richblack-100 font-medium">
+              Gender <span className="text-red-500">*</span>
+            </label>
+            <div className="flex gap-5 h-[42px] items-center">
               {["Male", "Female", "Other"].map((g) => (
-                <label key={g} className="flex items-center gap-2">
+                <label key={g} className="flex items-center gap-2 cursor-pointer group">
                   <input
                     type="radio"
                     value={g}
                     {...register("gender", { required: "Gender is required" })}
-                    className="accent-yellow-400"
+                    className="accent-yellow-200 w-4 h-4"
                   />
-                  <span className="text-richblack-200">{g}</span>
+                  <span className="text-sm text-richblack-200 group-hover:text-white transition-colors">{g}</span>
                 </label>
               ))}
             </div>
             {errors.gender && (
-              <p className="text-red-500 text-xs mt-1">{errors.gender.message}</p>
+              <p className="text-red-400 text-xs">{errors.gender.message}</p>
             )}
           </div>
         </div>
 
-        {/* phone + about */}
-          <div className="w-full PI">
-            <label className="block text-richblack-100 mb-1">Mobile Number *</label>
-            <div className="flex justify-around items-center gap-5">
-              <select
-                {...register("countryCode", { required: "Code is required" })}
-                className="form-style w-[200px] rounded-r-none bg-richblack-700"
-                defaultValue=""
-              >
-                <option value="" disabled>Select Country</option>
-                {CountryCodee.map((c, i) => (
-                  <option key={i} value={c.code}>{c.country}-{c.code}</option>
-                ))}
-              </select>
-              <input
-                type="tel"
-                maxLength={10}
-                {...register("mobileNumber", { required: "Number is required" })}
-                className="form-style flex-1 rounded-l-none [550px]"
-                placeholder="Enter number"
-              />
-            </div>
-            {errors.mobileNumber && (
-              <p className="text-red-500 text-xs mt-1">{errors.mobileNumber.message}</p>
-            )}
-          </div>
-          {/* <div>
-            <label className="block text-richblack-100 mb-1">About *</label>
+        {/* Mobile Number */}
+        <div className="flex flex-col gap-1.5">
+          <label className="text-sm text-richblack-100 font-medium">
+            Mobile Number <span className="text-red-500">*</span>
+          </label>
+          <div className="flex gap-3">
+            <select
+              {...register("countryCode", { required: "Code is required" })}
+              className="w-[160px] sm:w-[200px] px-3 py-2.5 bg-richblack-700 border border-richblack-600 rounded-lg text-white text-sm outline-none transition-all duration-200 focus:ring-2 focus:ring-yellow-200/50 focus:border-yellow-200/50 cursor-pointer shrink-0"
+              defaultValue=""
+            >
+              <option value="" disabled>Select Country</option>
+              {CountryCodee.map((c, i) => (
+                <option key={i} value={c.code}>{c.country}-{c.code}</option>
+              ))}
+            </select>
             <input
-              {...register("about", {
-                required: "About is required",
-                minLength: { value: 10, message: "About must be at least 10 characters" }
-              })}
-              className="form-style w-full"
-              placeholder="Enter bio"
+              type="tel"
+              maxLength={10}
+              {...register("mobileNumber", { required: "Number is required" })}
+              className="flex-1 px-4 py-2.5 bg-richblack-700 border border-richblack-600 rounded-lg text-white text-sm placeholder:text-richblack-400 outline-none transition-all duration-200 focus:ring-2 focus:ring-yellow-200/50 focus:border-yellow-200/50"
+              placeholder="Enter number"
             />
-            {errors.about && (
-              <p className="text-red-500 text-xs mt-1">{errors.about.message}</p>
-            )}
-          </div> */}
+          </div>
+          {(errors.countryCode || errors.mobileNumber) && (
+            <p className="text-red-400 text-xs">
+              {errors.countryCode?.message || errors.mobileNumber?.message}
+            </p>
+          )}
+        </div>
       </div>
 
-      {/* Password section */}
-      <div className="w-full max-w-3xl bg-richblack-800 rounded-xl shadow p-6">
-        <h2 className="text-white font-semibold text-lg mb-6 text-yellow-200 Pa">Password</h2>
-        <div className="grid grid-cols-2 gap-6">
-          <div>
-            <label className="block text-richblack-100 mb-1">Current Password</label>
+      {/* Password Section */}
+      <div className="w-full max-w-3xl bg-richblack-800 border border-richblack-700 rounded-xl p-6 flex flex-col gap-6">
+        <h2 className="text-lg font-semibold text-yellow-100">Password</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm text-richblack-100 font-medium">Current Password</label>
             <input
               type="password"
               {...register("currentPassword", {
@@ -259,14 +268,17 @@ const Settings = () => {
                  minLength: { value: 6, message: "Password must be at least 6 character" },
                 maxLength: { value: 10, message: "Password must be at most 10 characters" },
               })}
-              className="form-style w-full"
+              className="w-full px-4 py-2.5 bg-richblack-700 border border-richblack-600 rounded-lg text-white text-sm placeholder:text-richblack-400 outline-none transition-all duration-200 focus:ring-2 focus:ring-yellow-200/50 focus:border-yellow-200/50"
+              placeholder="Enter current password"
             />
-              {errors.currentPassword && (
-              <p className="text-red-500 text-xs mt-1">{errors.currentPassword.message}</p>
+            {errors.currentPassword && (
+              <p className="text-red-400 text-xs">{errors.currentPassword.message}</p>
             )}
           </div>
-          <div>
-            <label className="block text-richblack-100 mb-1">New Password *</label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm text-richblack-100 font-medium">
+              New Password <span className="text-red-500">*</span>
+            </label>
             <input
               type="password"
               {...register("newPassword", {
@@ -274,45 +286,47 @@ const Settings = () => {
                 minLength: { value: 6, message: "Password must be at least 6 character" },
                 maxLength: { value: 10, message: "Password must be at most 10 characters" },
               })}
-              className="form-style w-full"
+              className="w-full px-4 py-2.5 bg-richblack-700 border border-richblack-600 rounded-lg text-white text-sm placeholder:text-richblack-400 outline-none transition-all duration-200 focus:ring-2 focus:ring-yellow-200/50 focus:border-yellow-200/50"
+              placeholder="Enter new password"
             />
             {errors.newPassword && (
-              <p className="text-red-500 text-xs mt-1">{errors.newPassword.message}</p>
+              <p className="text-red-400 text-xs">{errors.newPassword.message}</p>
             )}
           </div>
         </div>
-
-     
       </div>
 
-      {/* Delete account */}
-      <div className="w-full max-w-3xl bg-[#522a35] rounded-xl shadow flex gap-4 p-6">
-        <div className="rounded-full p-3 text-white text-xl flex justify-center items-center">
-          <MdDelete className="text-4xl" />
+      {/* Delete Account */}
+      <div className="w-full max-w-3xl bg-pink-900/20 border border-pink-800/30 rounded-xl p-6 flex gap-5">
+        <div className="w-12 h-12 rounded-xl bg-pink-500/15 flex items-center justify-center shrink-0">
+          <MdDelete className="text-pink-400 text-2xl" />
         </div>
-        <div>
-          <h3 className="text-white text-lg font-semibold mb-2">Delete Account</h3>
-          <p className="text-richblack-200 mb-1">
-            Would you like to delete your account?
+        <div className="flex flex-col gap-2">
+          <h3 className="text-white text-base font-semibold">Delete Account</h3>
+          <p className="text-richblack-300 text-sm leading-relaxed">
+            Would you like to delete your account? This account contains paid courses. Deleting your account will remove all associated content permanently.
           </p>
-          <p className="text-richblack-200 mb-3">
-            This account contains paid courses. Deleting your account will remove all
-            associated content.
-          </p>
-          <Link to="/" className="text-pink-300 underline">
+          <Link
+            to="/"
+            className="text-pink-300 hover:text-pink-200 text-sm font-medium underline underline-offset-2 transition-colors w-fit mt-1"
+          >
             I want to delete my account.
           </Link>
         </div>
       </div>
 
-      {/* Buttons */}
-      <div className="w-full max-w-3xl flex justify-end gap-4 pt-4 pb-8">
-        <button type="button" className="bg-richblack-700 text-white BUttons rounded px-4 py-2">
+      {/* Action Buttons */}
+      <div className="w-full max-w-3xl flex justify-end gap-3 pt-2 pb-8">
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="bg-richblack-700 border border-richblack-600 text-richblack-100 hover:text-white hover:border-richblack-500 rounded-lg px-6 py-2.5 text-sm font-medium transition-all duration-200"
+        >
           Cancel
         </button>
         <button
           type="submit"
-          className="bg-yellow-400 text-black rounded px-4 py-2 BUttons"
+          className="bg-gradient-to-r from-yellow-200 to-yellow-50 text-richblack-900 font-bold rounded-lg px-6 py-2.5 text-sm transition-all duration-200 shadow-lg shadow-yellow-200/10 hover:shadow-yellow-200/20 hover:shadow-xl active:scale-[0.98]"
         >
           Save
         </button>

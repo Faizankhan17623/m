@@ -5,7 +5,7 @@ export const CreateTheatrere = {
 }
 
 export const Theatreinfo = {
-    TheatreInfo:BASE_URL+"/Theatre-info"
+    tt:BASE_URL+"/Theatre-info"
 }
 
 export const AllTheatres = {
@@ -35,7 +35,6 @@ export const TheatreDetails = {
 export const totalsale = {
     TotalSale:BASE_URL+"/CalculateTotalSale"
 }
-
 
 export const GetShowAllotedDetails = {
     getshowalloteddetails:BASE_URL+"/Show-Alloted-Details"

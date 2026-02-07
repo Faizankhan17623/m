@@ -14,7 +14,8 @@ export const Login ={
 export const AllDetails = {
     GetAllDetails: BASE_URL + "/Get-All-UserDetails",
     FindUserNames: BASE_URL + "/Find-UserNames",
-    FindEmail: BASE_URL + "/Find-Email",
+    FindloginEmail: BASE_URL + "/Find-Login-Email",
+    FinduserEmail: BASE_URL + "/Find-creation-Email",
     FindNumber: BASE_URL + "/Find-Number"
 }
 

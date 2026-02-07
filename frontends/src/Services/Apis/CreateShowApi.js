@@ -10,7 +10,7 @@ export const tags = {
 
 
 export const language = {
-    GetLanguage:BASE_URL+"/",
+    GetLanguage:BASE_URL+"/Get-AllLanguages",
     FindSingleLanguage:BASE_URL+"/Find-Singlelanguage"
 }
 
@@ -33,7 +33,19 @@ export const show = {
     DeleteAllShow:BASE_URL+"/delete-Allshow"
 }
 
-
 export const Uploading = {
     Upload:BASE_URL+"/Upload",
+}
+
+export const Genres = {
+    genre : BASE_URL+"/genre"
+}
+
+export const SUBGENRE = {
+    subgenre :BASE_URL+"/sub-genre"
+}
+
+
+export const Bothdate={
+    VerifiedDateBoth:BASE_URL+"/Both-Verified_data"
 }

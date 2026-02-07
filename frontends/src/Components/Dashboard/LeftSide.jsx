@@ -12,7 +12,7 @@ import { loadUserFromLocalStorage } from '../../Slices/ProfileSlice';
 import { FaCaretDown } from 'react-icons/fa';
 import { CiChat1 } from 'react-icons/ci';
 import { MdReviews } from 'react-icons/md';
-import { FaLock } from 'react-icons/fa';
+import { FaLock, FaHashtag, FaUserFriends, FaFilm, FaUpload, FaList } from 'react-icons/fa';
 import {UserDetails} from '../../Services/operations/Auth'
 import { useNavigate } from 'react-router-dom';
 
@@ -125,6 +125,7 @@ const LeftSide = ({direction}) => {
     { icon: IoSettings, label: 'Show Verification', path: '/Dashboard/VerifyShows', id: 5 },
     { icon: IoSettings, label: 'Theatres', path: '/Dashboard/VerifyTheatre', id: 6},
     { icon: IoSettings, label: 'All Users', path: '/Dashboard/users', id: 7},
+    { icon: CiChat1, label: 'Chat', path: '/Dashboard/Chats', id: 8 },
   ];
 
   const navMap = {
@@ -220,102 +221,21 @@ const LeftSide = ({direction}) => {
 
                 {show && !organizerLocked && (
                   <div className="ml-8 mt-2 subMenu flex flex-col gap-2">
-                    <div
-                      className={
-                        inside === 'Create Tags'
-                          ? 'hover:text-yellow-200 flex items-center gap-6 cursor-pointer text-yellow-200'
-                          : 'flex items-center gap-6'
-                      }
-                      onClick={() => setInside((prev) => (prev === 'Create Tags' ? '' : 'Create Tags'))}
-                    >
-                      Create Tags <FaCaretDown className={`${inside === 'Create Tags' ? 'rotate-180' : ''}`} />
-                    </div>
-                    {inside === 'Create Tags' && (
-                      <div className="ml-8 mt-2 flex flex-col gap-2 Tags1">
-                        <Link to="/Dashboard/Shows/Option1" className="hover:text-yellow-200">
-                          Create Tags
-                        </Link>
-                        <Link to="/Dashboard/Shows/Option2" className="hover:text-yellow-200">
-                          Update Tags
-                        </Link>
-                        <Link to="/Dashboard/Shows/Option3" className="hover:text-yellow-200">
-                          Delete Tags
-                        </Link>
-                        <Link to="/Dashboard/Shows/Option4" className="hover:text-yellow-200">
-                          See All Tags
-                        </Link>
-                      </div>
-                    )}
-
-                    <div
-                      className={
-                        inside === 'Create Cast'
-                          ? 'hover:text-yellow-200 flex items-center gap-6 cursor-pointer text-yellow-200'
-                          : 'flex items-center gap-6'
-                      }
-                      onClick={() => setInside((prev) => (prev === 'Create Cast' ? '' : 'Create Cast'))}
-                    >
-                      Create Cast <FaCaretDown className={`${inside === 'Create Cast' ? 'rotate-180' : ''}`} />
-                    </div>
-                    {inside === 'Create Cast' && (
-                      <div className="ml-8 mt-2 flex flex-col gap-2 Tags1">
-                        <Link to="/Dashboard/Shows/Option1" className="hover:text-yellow-200">
-                          Create Cast
-                        </Link>
-                        <Link to="/Dashboard/Shows/Option2" className="hover:text-yellow-200">
-                          Update Cast Name
-                        </Link>
-                        <Link to="/Dashboard/Shows/Option3" className="hover:text-yellow-200">
-                          Update Cast Image
-                        </Link>
-                        <Link to="/Dashboard/Shows/Option4" className="hover:text-yellow-200">
-                          Delete Cast
-                        </Link>
-                        <Link to="/Dashboard/Shows/Option5" className="hover:text-yellow-200">
-                          See All Cast
-                        </Link>
-                      </div>
-                    )}
-
-                    <div
-                      className={
-                        inside === 'Create Show'
-                          ? 'hover:text-yellow-200 flex items-center gap-4 cursor-pointer text-yellow-200'
-                          : 'flex items-center gap-4'
-                      }
-                      onClick={() => setInside((prev) => (prev === 'Create Show' ? '' : 'Create Show'))}
-                    >
-                      Create Show <FaCaretDown className={`${inside === 'Create Show' ? 'rotate-180' : ''}`} />
-                    </div>
-                    {inside === 'Create Show' && (
-                      <div className="ml-8 mt-2 flex flex-col gap-2 Tags1">
-                        <Link to="/Dashboard/Shows/Option1" className="hover:text-yellow-200">
-                          Create Show
-                        </Link>
-                        <Link to="/Dashboard/Shows/Option2" className="hover:text-yellow-200">
-                          Update Show Title
-                        </Link>
-                        <Link to="/Dashboard/Shows/Option3" className="hover:text-yellow-200">
-                          Update Tagline
-                        </Link>
-                        <Link to="/Dashboard/Shows/Option4" className="hover:text-yellow-200">
-                          Update Title Image
-                        </Link>
-                        <Link to="/Dashboard/Shows/Option5" className="hover:text-yellow-200">
-                          Update Trailer
-                        </Link>
-                        <Link to="/Dashboard/Shows/Option6" className="hover:text-yellow-200">
-                          Delete Show
-                        </Link>
-                      </div>
-                    )}
-
-                    <Link to="/Dashboard/Shows/Option7" className="hover:text-yellow-200">
-                      Upload Show
+                    <Link to="/Dashboard/Shows/Tags" className="hover:text-yellow-200 flex items-center gap-2">
+                      <FaHashtag className="text-xs" /> Manage Tags
                     </Link>
-                    <Link to="/Dashboard/Shows/Option8" className="hover:text-yellow-200">
-                      See All Shows
+                    <Link to="/Dashboard/Shows/Cast" className="hover:text-yellow-200 flex items-center gap-2">
+                      <FaUserFriends className="text-xs" /> Manage Cast
                     </Link>
+                    <Link to="/Dashboard/Shows/Create" className="hover:text-yellow-200 flex items-center gap-2">
+                      <FaFilm className="text-xs" /> Manage Shows
+                    </Link>
+                    <Link to="/Dashboard/Shows/Upload" className="hover:text-yellow-200 flex items-center gap-2">
+                      <FaUpload className="text-xs" /> Upload Show
+                    </Link>
+                    {/* <Link to="/Dashboard/Shows/All" className="hover:text-yellow-200 flex items-center gap-2">
+                      <FaList className="text-xs" /> See All Shows
+                    </Link> */}
                   </div>
                 )}
                 <div className="flex flex-col">

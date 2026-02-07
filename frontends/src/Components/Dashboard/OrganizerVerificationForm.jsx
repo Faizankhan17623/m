@@ -35,7 +35,7 @@ const OrganizerVerificationForm = () => {
   // console.log("This is the direction data",direction)
    const navigate = useNavigate()
     const dispatch = useDispatch()
-    const {token} = useSelector((state)=>state.auth)  
+    const {token} = useSelector((state)=>state.auth)    
     const {status,editUntil,attempts,rejectedData} = useSelector((state)=>state.orgainezer)
 
   const {

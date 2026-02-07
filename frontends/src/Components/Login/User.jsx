@@ -1,188 +1,180 @@
-import  {  useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { LiaEyeSolid, LiaEyeSlashSolid } from "react-icons/lia"
 import { useNavigate } from 'react-router-dom'
 import Loader from '../extra/Loading'
-import {UserLogin,findemail} from '../../Services/operations/Auth'
+import { UserLogin, findloginemail } from '../../Services/operations/Auth'
 import { useDispatch } from 'react-redux'
 import toast from 'react-hot-toast'
-// import { useSelector } from 'react-redux';
-
 
 const User = () => {
+  const [showPass, setShowPass] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [username, setusername] = useState("")
+  const [names, setNames] = useState("")
+  const [errorMessage, setErrorMessage] = useState('')
 
-   const [showPass, setShowPass] = useState(false)
-      const [Pass,setpass] = useState("")
-      const [loading,setLoading] = useState(false)
-      const [username,setusername] = useState("")
-        const [names, setNames] = useState(""); // "" | "available" | "taken"
-        const [errorMessage, setErrorMessage] = useState('');
-      
-      const navigate = useNavigate()
-      const dispatch = useDispatch()
-  
-      const {
-        register,
-        handleSubmit,
-        formState: { errors }
-      } = useForm()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-    useEffect(()=>{
-      if(!username) return 
-      const Handler = setTimeout(async()=>{
-              const toastId = toast.loading("Checking username...");
-        try{
-          const Response = await dispatch(findemail(username))
-            if (Response?.success) {
-              setNames("This Email is not Available");
-              toast.error("Please Check Your Email")
-          } else {
-          setNames("")
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm()
+
+  useEffect(() => {
+    if (!username) {
+      setNames("")
+      return
+    }
+    // console.log(username)
+    const handler = setTimeout(async () => {
+      const toastId = toast.loading("Checking email...")
+      try {
+        const response = await dispatch(findloginemail(username))
+        // console.log(response)
+        if (response?.exists) {
+          // Email found in DB — user exists, good for login
+          setNames("found")
+        } else {
+          // Email NOT found — no account with this email
+          setNames(false)
         }
-        }catch(error){
-            console.error("Error in username check:", error);
-        setNames("");
-        }finally {
-        toast.dismiss(toastId);
+      } catch (error) {
+        console.error("Error in email check:", error)
+        setNames("")
+      } finally {
+        toast.dismiss(toastId)
       }
-      },300)
-      return () => clearTimeout(Handler)
-    },[username])
-    //   const password = watch('Password')
-    
-      const onsubmit = async (data) => {
-        if(names === " Taken") {
-           let errorMsg = "Please fix the following issues: ";
-      setErrorMessage(errorMsg);
-      return;
-        }
-        setLoading(true)
-        try{
-          const Response = await dispatch(UserLogin(data.Email,data.Password,navigate))
-          // console.log(Response)
-          if(Response?.success){
-            toast.success("user is loged in ")
-            navigate("/Dashboard/my-profile")
+    }, 800)
+    return () => clearTimeout(handler)
+  }, [username])
+// console.log(names)
+// In your onsubmit, add more detailed error logging:
+const onsubmit = async (data) => {
+  if (names === false) {
+    setErrorMessage("No account found with this email.")
+    return
+  }
+  setLoading(true)
+  setErrorMessage('')
+  try {
+    const response = await dispatch(UserLogin(data.Email, data.Password, navigate))
+    // console.log("Login response:", response) // ADD THIS
+    if (response?.success) {
+      toast.success("Logged in successfully")
+      navigate("/Dashboard/my-profile")
+    } else {
+      // console.log("Login failed:", response) // ADD THIS
+      toast.error(response?.message || "Login failed")
+    }
+  } catch (error) {
+    console.error("Full error:", error) // ADD THIS
+    console.error("Error response:", error.response?.data) // ADD THIS
+    toast.error(error.response?.data?.message || error.message || "Login failed")
+  } finally {
+    setLoading(false)
+  }
+}
 
-          }
-        setLoading(false)
-        }catch(error){
-          toast.error(error.message)
-          console.log(error)
-          console.log(error.message)
-          // toast.error("the Password is not correct")
-        }
-      }
-    
+  if (loading) {
+    return (
+      <div className="w-full min-h-[300px] flex justify-center items-center">
+        <Loader />
+      </div>
+    )
+  }
 
-       if(loading){
-          return (
-            <div className='w-full h-full flex flex-col'>
-              <div className='flex-1 flex justify-center items-center text-white'>
-                <Loader/>
-              </div>
-            </div>
-          )
-        }
-  const nameAsteriskColor = names === "available" ? "text-caribgreen-500" : "text-red-500";
-
-     return (
-        <form
-          onSubmit={handleSubmit(onsubmit)}
-          className='w-full h-full mx-auto p-8 rounded-2xl  shadow-lg space-y-8 mt-8 '
-        >
-           {errorMessage && <span className="text-red-500">{errorMessage}</span>}
-
-           {names && (
-        <span className={`flex font-semibold  ${names === "Available" ? "text-red-500" : " text-caribgreen-500" }`}>
-          No user Exists With This Email id
-        </span>
+  return (
+    <form
+      onSubmit={handleSubmit(onsubmit)}
+      className="w-full rounded-2xl bg-richblack-800 border border-richblack-700 shadow-xl p-6 sm:p-8 space-y-5"
+    >
+      {/* Error Banner */}
+      {errorMessage && (
+        <div className="bg-red-500/10 border border-red-500/30 text-red-400 text-sm px-4 py-3 rounded-lg">
+          {errorMessage}
+        </div>
       )}
-    
-          {/* Email */}
-          <div>
-            <label className="block  mb-2 font-semibold" htmlFor="Email">
-               First Name <span className={nameAsteriskColor}>*</span>
-              {errors.Email && <span className="text-red-600 text-sm"> {errors.Email.message}</span>}
-            </label>
-            <input
-              type="email"
-              {...register("Email", { required: "Email is required" })}
-              onChange={(e)=>setusername(e.target.value)}
-              className={`w-full p-3  rounded-lg form-style outline-none focus:ring-2 focus:ring-blue-400 transition ${errors.Email && "border-red-500"}`}
-              placeholder="Enter Your Email Address"
-               autoComplete="email"
-            />
-           
-          </div>
-    
-          {/* Phone */}
-      
-    
-          {/* Passwords */}
-          <div className="flex gap-4 Pass">
-            {/* Password */}
-            <div className="flex-1 relative">
-              <label className="block  mb-2 font-semibold" htmlFor="Password">
-                Password <span className="text-red-500">*</span>  {errors.Password && (
-                <span className="text-red-600 text-sm">{errors.Password.message}</span>
-              )}
-              </label>
-              <input
-                type={showPass ? "text" : "password"}
-                {...register("Password", {
-                  required: "Password is required",
-                  minLength: {
-                    value: 2,
-                    message: "Password must be exactly 6 characters"
-                  },
-                  maxLength: {
-                    value: 10,
-                    message: "Password must be exactly 10 characters"
-                  }
-                })}
-                className={`w-full p-3 pr-10  rounded-lg outline-none form-style focus:ring-2 focus:ring-blue-400 transition ${errors.Password && "border-red-500"}`}
-                placeholder="Enter Your Password"
-                onChange={(e)=>setpass(e.target.value)}
-                  autoComplete="current-password"
-              />
-              <button
-                type="button"
-                className="absolute right-3 top-12 transform -translate-y-1/2 text-2xl "
-                tabIndex={-1}
-                onClick={() => setShowPass(s => !s)}
-              >
-                {showPass ? <LiaEyeSolid /> : <LiaEyeSlashSolid />}
-              </button>
-              
-            </div>
-            {/* Confirm Password */}
-            
-          </div>
-          <div className='w-full flex flex-end justify-end items-end Forgot'>
-            <p> <a href="/Forgot-Password" className='text-blue-200'>Forgot Password</a>  </p>
-          </div>
-    
-          {/* Submit button */}
-            {loading ? (
-            <button
-              type="button"
-              className="w-full bg-gray-200 text-gray-500 font-semibold py-3 rounded-lg mt-4 text-lg transition duration-200 shadow flex justify-center items-center"
-              disabled
-            >
-              <Loader />
-              <span className="ml-2">Processing...</span>
-            </button>
-          ) : (
-            <button
-              type="submit"
-              className="w-full bg-yellow-200 cursor-pointer Org_Btns hover:bg-blue-700 text-white font-semibold py-3 rounded-lg mt-4 text-lg transition duration-200 shadow"
-            >
-              Submit
-            </button>
-          )}
-        </form>
-      )
+
+      {/* Email not found badge */}
+      {names === false && (
+        <div className="inline-flex items-center gap-2 text-sm font-semibold px-3 py-1.5 rounded-full bg-red-500/10 text-red-500 border border-red-500/30">
+          <span className="w-2 h-2 rounded-full bg-red-500" />
+          No account found with this email
+        </div>
+      )}
+
+      {/* Email */}
+      <div>
+        <label className="block text-sm text-richblack-50 mb-1.5 font-medium">
+          Email Address <span className="text-red-500">*</span>
+          {errors.Email && <span className="text-red-400 text-xs ml-2">{errors.Email.message}</span>}
+        </label>
+        <input
+          type="email"
+          {...register("Email", { required: "Email is required" })}
+          onChange={(e) => setusername(e.target.value)}
+          className={`w-full px-4 py-2.5 bg-richblack-700 border rounded-lg text-white text-sm placeholder:text-richblack-300 outline-none transition-all duration-200 focus:ring-2 focus:ring-yellow-200/50 focus:border-yellow-200/50 ${errors.Email ? "border-red-500" : "border-richblack-600"}`}
+          placeholder="you@example.com"
+          autoComplete="email"
+        />
+      </div>
+
+      {/* Password */}
+      <div>
+        <label className="block text-sm text-richblack-50 mb-1.5 font-medium">
+          Password <span className="text-red-500">*</span>
+          {errors.Password && <span className="text-red-400 text-xs ml-2">{errors.Password.message}</span>}
+        </label>
+        <div className="relative">
+          <input
+            type={showPass ? "text" : "password"}
+            {...register("Password", {
+              required: "Password is required",
+              minLength: { value: 2, message: "At least 2 characters" },
+              maxLength: { value: 10, message: "At most 10 characters" }
+            })}
+            className={`w-full px-4 py-2.5 pr-11 bg-richblack-700 border rounded-lg text-white text-sm placeholder:text-richblack-300 outline-none transition-all duration-200 focus:ring-2 focus:ring-yellow-200/50 focus:border-yellow-200/50 ${errors.Password ? "border-red-500" : "border-richblack-600"}`}
+            placeholder="Enter your password"
+            autoComplete="current-password"
+          />
+          <button
+            type="button"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-xl text-richblack-300 hover:text-white transition-colors"
+            tabIndex={-1}
+            onClick={() => setShowPass(s => !s)}
+          >
+            {showPass ? <LiaEyeSolid /> : <LiaEyeSlashSolid />}
+          </button>
+        </div>
+      </div>
+
+      {/* Forgot Password */}
+      <div className="flex justify-end">
+        <a href="/Forgot-Password" className="text-sm text-blue-300 hover:text-yellow-200 transition-colors">
+          Forgot Password?
+        </a>
+      </div>
+
+      {/* Submit Button */}
+      <button
+        type="submit"
+        className="w-full py-3 rounded-lg text-base font-bold tracking-wide transition-all duration-200 shadow-lg flex justify-center items-center bg-gradient-to-r from-yellow-200 to-yellow-50 text-richblack-900 hover:shadow-yellow-200/20 hover:shadow-xl active:scale-[0.98]"
+      >
+        Login
+      </button>
+
+      {/* Sign up link */}
+      <p className="text-center text-sm text-richblack-300">
+        Don't have an account?{' '}
+        <span onClick={() => navigate('/SignUp')} className="text-yellow-100 font-semibold cursor-pointer hover:underline">
+          Sign Up
+        </span>
+      </p>
+    </form>
+  )
 }
 
 export default User

@@ -1,88 +1,72 @@
-import React, { useEffect, useRef, useState } from 'react';
-import CountUp from 'react-countup';
-import {FaHeart  } from "react-icons/fa";
+import { useEffect, useRef, useState } from 'react'
+import CountUp from 'react-countup'
+import { FaHeart, FaFilm, FaTheaterMasks, FaTicketAlt, FaUsers } from "react-icons/fa"
 
+const STATS = [
+  { end: 500, suffix: '+', label: 'Organizers', icon: FaFilm, color: 'text-yellow-400' },
+  { end: 200, suffix: '+', label: 'Theatres', icon: FaTheaterMasks, color: 'text-orange-400' },
+  { end: 300, suffix: '+', label: 'Shows Done', icon: FaTicketAlt, color: 'text-blue-400' },
+  { end: 10, suffix: 'k+', label: 'Happy Family', icon: FaUsers, color: 'text-pink-400', heart: true },
+]
 
 const Counter = () => {
- const counterRef = useRef(null);
-  const [startCounter, setStartCounter] = useState(false);
+  const counterRef = useRef(null)
+  const [startCounter, setStartCounter] = useState(false)
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setStartCounter(true);
+          setStartCounter(true)
         }
       },
-      {
-        threshold: 0.5, // Trigger when 50% of the component is visible
-      }
-    );
+      { threshold: 0.5 }
+    )
 
     if (counterRef.current) {
-      observer.observe(counterRef.current);
+      observer.observe(counterRef.current)
     }
 
     return () => {
       if (counterRef.current) {
-        observer.unobserve(counterRef.current);
+        observer.unobserve(counterRef.current)
       }
-    };
-  }, []);
+    }
+  }, [])
 
   return (
-    <div ref={counterRef} className='w-full flex justify-around items-center bg-richblack-700 h-[150px]'>
-        
-         <div className='flex flex-col justify-center items-center'>
-            <div>
-                <CountUp start={0} end={500} duration={2} redraw={true}>
-            {({ countUpRef, start }) => {
-                if (startCounter) start();
-                return <span ref={countUpRef} className='text-3xl font-bold'/>;
-            }}
-            </CountUp>
-            <span className='text-3xl gap-2'>+</span>
+    <div ref={counterRef} className='w-full bg-richblack-800 border-y border-richblack-700'>
+      <div className='max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8 py-12 lg:py-16 px-6'>
+        {STATS.map((stat, i) => (
+          <div key={i} className='flex flex-col items-center gap-3 text-center'>
+            <div className={`w-14 h-14 rounded-2xl bg-richblack-700 flex items-center justify-center ${stat.color}`}>
+              <stat.icon className='text-2xl' />
             </div>
-            <p className='text-white text-lg'>Orgainezers</p>
-        </div>
-
-         <div className='flex flex-col justify-center items-center'>
             <div>
-                <CountUp start={0} end={200} duration={2} redraw={true}>
-            {({ countUpRef, start }) => {
-                if (startCounter) start();
-                return <span ref={countUpRef} className='text-3xl font-bold'/>;
-            }}
-            </CountUp>
-            <span className='text-3xl gap-2'>+</span>
+              <div className='flex items-center justify-center'>
+                <CountUp start={0} end={stat.end} duration={2.5} redraw={true}>
+                  {({ countUpRef, start }) => {
+                    if (startCounter) start()
+                    return (
+                      <span
+                        ref={countUpRef}
+                        className='text-3xl lg:text-4xl font-extrabold bg-gradient-to-r from-white to-richblack-100 bg-clip-text text-transparent'
+                      />
+                    )
+                  }}
+                </CountUp>
+                <span className='text-3xl lg:text-4xl font-extrabold bg-gradient-to-r from-white to-richblack-100 bg-clip-text text-transparent'>
+                  {stat.suffix}
+                </span>
+              </div>
+              <p className='text-richblack-300 text-sm font-medium mt-1 flex items-center justify-center gap-2'>
+                {stat.label}
+                {stat.heart && <FaHeart className='text-red-500 text-sm' />}
+              </p>
             </div>
-            <p className='text-white text-lg'>No Of Theatre's</p>
-        </div>
-
-        <div className='flex flex-col justify-center items-center'>
-            <div>
-                <CountUp start={0} end={300} duration={2} redraw={true}>
-            {({ countUpRef, start }) => {
-                if (startCounter) start();
-                return <span ref={countUpRef} className='text-3xl font-bold'/>;
-            }}
-            </CountUp>
-            <span className='text-3xl gap-2'>+</span>
-            </div>
-            <p className='text-white text-lg'>Show's Done</p>
-        </div>
-
-        <div className='flex flex-col justify-center items-center'>
-            <div>
-                <CountUp start={0} end={10} duration={2} redraw={true}>
-            {({ countUpRef, start }) => {
-                if (startCounter) start();
-                return <span ref={countUpRef}  className='text-3xl font-bold'/>;
-            }}
-            </CountUp>
-            <span className='text-3xl font-bold'>k</span>
-            </div>
-            <p className='text-white text-lg flex justify-center items-center gap-3'>Happy Family<FaHeart className='text-xl fill-red-500'/></p>
-        </div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

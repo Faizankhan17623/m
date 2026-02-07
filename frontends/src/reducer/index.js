@@ -7,6 +7,8 @@ import showReducer from '../Slices/ShowSlice'
 import theatreReducer from '../Slices/TheatreSlice'
 import orgainezerReducer from '../Slices/orgainezerSlice'
 import paymentReducer from '../Slices/PaymentSlice'
+import tagsReducer from '../Slices/TagsSlice'
+import castReducer from '../Slices/CastSlice'
 
 const rootReduers = combineReducers({
     auth:authReducer,
@@ -15,7 +17,9 @@ const rootReduers = combineReducers({
     addtofavourite:addtofavouriteReducer,
     show:showReducer,
     theatre:theatreReducer,
-    orgainezer:orgainezerReducer
+    orgainezer:orgainezerReducer,
+    tags:tagsReducer,
+    cast:castReducer
     // payment:paymentReducer
 })
 

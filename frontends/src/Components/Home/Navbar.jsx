@@ -1,176 +1,189 @@
-import React, { useEffect, useState } from 'react'
-import { FaLongArrowAltDown , FaSearch  } from "react-icons/fa";
-import { FaMoon } from "react-icons/fa6";
-import { IoSunnyOutline } from "react-icons/io5";
-import { MdOutlineShoppingCart } from "react-icons/md";
-import { IoIosSearch ,IoMdMenu } from "react-icons/io";
-import '../../App.css'
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react'
+import { FaChevronDown } from "react-icons/fa"
+import { MdOutlineShoppingCart } from "react-icons/md"
+import { IoIosSearch, IoMdMenu, IoMdClose } from "react-icons/io"
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from "react-router-dom"
 import { UserLogout } from '../../Services/operations/Auth'
-import { toast } from 'react-hot-toast'; 
+import { toast } from 'react-hot-toast'
 
-const Navbar = ({setColors,darkmode}) => {
+const NAV_LINKS = [
+  { label: 'Home', to: '/' },
+]
+
+const MOVIE_TAGS = [
+  "Adventure", "Martial", "Superhero", "Disaster", "Spy Secret", "War", "Crime"
+]
+
+const THEATRE_TYPES = [
+  "Multiplex Theatre", "IMAX Theatre", "3D Theatre", "4DX Theatre",
+  "Drive-in Theatre", "Single Screen Theatre", "Open Air Theatre"
+]
+
+const Navbar = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const {isLoggedIn,image} = useSelector((state)=>state.auth)
+  const { isLoggedIn, image } = useSelector((state) => state.auth)
 
-  const [path, setpath] = useState(false)
-  const [Open,Setopen] = useState(false)
+  const [path, setPath] = useState('/')
+  const [menuOpen, setMenuOpen] = useState(false)
 
-  useEffect(()=>{
-    const currentUrl = window.location.pathname
-    setpath(currentUrl)
-  },[])
+  useEffect(() => {
+    setPath(window.location.pathname)
+  }, [])
 
-  const tagsnames = {
-    tag:[
-      "Adventure",
-      "Martial",
-      "Superhero",
-      "Disaster",
-      "Spy Secret",
-      "War",
-      "Crime"
-    ]
-  };
-
-  const theatreTypes = {
-    types: [
-      "Multiplex Theatre",
-      "IMAX Theatre",
-      "3D Theatre",
-      "4DX Theatre",
-      "Drive-in Theatre",
-      "Single Screen Theatre",
-      "Open Air Theatre"
-    ]
-  };
-
-  const noLoggeedin ={
-    data:[
-      "Sign Up",
-      "Login",
-      "Help Center"
-    ]
-  }
-
-  const color_change = ()=>{
-    setColors(!darkmode)
-  }
-
-  // Fixed Logout function
-  const Logout = async ()=>{
+  const handleLogout = async () => {
     try {
-      const response = await dispatch(UserLogout())
-      // console.log(response){
-        toast.success("User has been logged out")
-        Setopen(false) // Close the dropdown menu
-        navigate('/Login')
-        
+      await dispatch(UserLogout())
+      toast.success("Logged out successfully")
+      setMenuOpen(false)
+      navigate('/Login')
     } catch (error) {
-      console.error("Logout error:", error)
       toast.error("Error during logout")
     }
   }
 
-  // Handle logout click
-  const handleLogoutClick = () => {
-    // e.preventDefault()
-    Logout()
-  }
-
-  return (
-    <div className='w-full h-20 flex justify-between items-center border-b-1 text-white bg-richblack-800'>
-      <div className='py-4 pl-6'>
-        <Link to="/" className=''>
-          <img src={`https://res.cloudinary.com/dit2bnxnd/image/upload/v1767978923/cc41_abjbkq.png`} alt="Main logo" className='h-18 w-[250px] text-black' loading='lazy'/>
-        </Link>
-      </div>
-
-      <div className= 'w-[550px]  py-4 px-3'>
-        <ul className={`flex justify-between items-center h-full text-white`}>
-          <Link to="/" className={`hover:text-yellow-500 text-white ${path === '/' ? 'text-yellow-200' : ''}`} >Home</Link>
-          
-          <div className={`hover:text-yellow-500 text-white ${path === '/Movies' ? 'text-yellow-200' : ''} flex items-center gap-1 group relative z-10`}>
-            <Link  className="flex items-center gap-1" onClick={(e)=>e.preventDefault()}>
-              Movies <FaLongArrowAltDown className='text-blue-300 group-hover:rotate-180'/>
+  const DropdownMenu = ({ label, items, basePath, isActive }) => (
+    <div className='relative group'>
+      <button className={`flex items-center gap-1.5 py-2 px-1 text-sm font-medium transition-colors hover:text-yellow-400 ${isActive ? 'text-yellow-400' : 'text-richblack-25'}`}>
+        {label}
+        <FaChevronDown className='text-[10px] text-richblack-300 group-hover:text-yellow-400 group-hover:rotate-180 transition-transform duration-200' />
+      </button>
+      <div className='invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-200 absolute top-full left-0 pt-2 z-50'>
+        <div className='bg-richblack-800 border border-richblack-600 rounded-xl shadow-2xl shadow-black/40 py-2 min-w-[200px] overflow-hidden'>
+          {items.map((item, index) => (
+            <Link
+              to={`${basePath}/${item}`}
+              key={index}
+              className='block px-4 py-2.5 text-sm text-richblack-100 hover:bg-richblack-700 hover:text-yellow-400 transition-colors'
+            >
+              {item}
             </Link>
-            <div className="hidden group-hover:flex flex-col absolute top-7 left-0 bg-white shadow-lg rounded-md ">
-              {tagsnames.tag.map((tag, index) => (
-                <Link
-                  to={`/Movies/${tag}`}
-                  key={index}
-                  className={`py-2 px-4 hover:bg-gray-100 whitespace-nowrap cursor-pointer border-b-2 text-white bg-gray-800`}
-                >
-                  {tag}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className={`hover:text-yellow-500 text-white ${path === '/Theatres' ? 'text-yellow-200' : ''} flex items-center gap-1 group relative z-10`}>
-            <Link  className="flex items-center gap-1" onClick={(e)=>e.preventDefault()}>
-              Theatres <FaLongArrowAltDown className='text-blue-300 group-hover:rotate-180'/>
-            </Link>
-            <div className="hidden group-hover:flex flex-col absolute top-7 left-0 bg-white shadow-lg rounded-md ">
-              {theatreTypes.types.map((tag, index) => (
-                <Link
-                  to={`/Theatres/${tag}`}
-                  key={index}
-                  className={`py-2 px-4 hover:bg-gray-100 whitespace-nowrap cursor-pointer border-b-2 text-white bg-gray-800`}
-                >
-                  {tag}
-                </Link>
-              ))}
-            </div>
-          </div>
-          
-          <Link to="/About" className={`hover:text-yellow-500 text-white ${path === '/About' ? 'text-yellow-200' : ''}`}>About Us</Link>
-          <Link to="/Contact" className={`hover:text-yellow-500 text-white ${path === '/Contact' ? 'text-yellow-200' : ''}`}>Contact Us</Link>
-        </ul>
-      </div>
-
-      <div className=' text-white w-[300px]  h-16  flex justify-center gap-5 items-center'>
-        <div onClick={color_change}>
-          <span><FaMoon className='text-white text-3xl'/></span>
-        </div>
-        <div>
-          <span><MdOutlineShoppingCart className={`text-white text-3xl`} /></span>
-        </div>
-        <div>
-          <span><IoIosSearch className={`text-white text-3xl`} /></span>
-        </div> 
-        
-        <div className='w-[100px] h-11 flex justify-center gap-2 items-center  bg-puregreys-100 rounded-4xl' onClick={()=>Setopen(!Open)}>
-          <IoMdMenu className='text-4xl'/>
-          <img src={`${isLoggedIn && image ?`${image}`:"https://res.cloudinary.com/dit2bnxnd/image/upload/v1767979026/cc41_utqhtd.png"}`} alt="Logo" loading='lazy' className='w-8 rounded-4xl'/>
-          <span className={`${Open ? 'flex' : 'hidden'} flex-col absolute top-[78px]  triangle-up `}></span>
-          <div className={`${Open ? 'flex justify-center items-center border-t-4' : 'hidden'} flex-col gap-2  absolute top-[92px] bg-gray-800 p-2 rounded shadow-lg z-50 w-30 border-b-1 text-white font-bold`}>
-            <Link to={`${isLoggedIn?"/Dashboard/my-profile":"/SignUp"}`} className='border-b-1 gap-2 lines' >
-              {isLoggedIn?"Dashboard":noLoggeedin.data[0]} 
-            </Link>
-            
-            {/* Fixed logout/login link */}
-            {isLoggedIn ? (
-              <button 
-                onClick={handleLogoutClick}
-                className='border-b-1 gap-2 lines bg-transparent border-none text-white cursor-pointer'
-              >
-                Logout
-              </button>
-            ) : (
-              <Link to="/Login" className='border-b-1 gap-2 lines'>
-                {noLoggeedin.data[1]}
-              </Link>
-            )}
-            
-            <Link to="/" className=''>{noLoggeedin.data[2]}</Link>
-          </div>
+          ))}
         </div>
       </div>
     </div>
+  )
+
+  return (
+    <nav className='w-full h-[72px] flex justify-between items-center text-white bg-richblack-800 border-b border-richblack-700 px-6'>
+      {/* Logo */}
+      <Link to="/" className='flex-shrink-0'>
+        <img
+          src='https://res.cloudinary.com/dit2bnxnd/image/upload/v1767978923/cc41_abjbkq.png'
+          alt="Cine Circuit"
+          className='h-14 w-auto'
+          loading='lazy'
+        />
+      </Link>
+
+      {/* Nav Links */}
+      <div className='hidden lg:flex items-center gap-6'>
+        {NAV_LINKS.map((link) => (
+          <Link
+            key={link.to}
+            to={link.to}
+            className={`text-sm font-medium transition-colors hover:text-yellow-400 py-2 ${path === link.to ? 'text-yellow-400' : 'text-richblack-25'}`}
+          >
+            {link.label}
+          </Link>
+        ))}
+
+        <DropdownMenu
+          label="Movies"
+          items={MOVIE_TAGS}
+          basePath="/Movies"
+          isActive={path.startsWith('/Movies')}
+        />
+
+        <DropdownMenu
+          label="Theatres"
+          items={THEATRE_TYPES}
+          basePath="/Theatres"
+          isActive={path.startsWith('/Theatres')}
+        />
+
+        <Link
+          to="/About"
+          className={`text-sm font-medium transition-colors hover:text-yellow-400 py-2 ${path === '/About' ? 'text-yellow-400' : 'text-richblack-25'}`}
+        >
+          About Us
+        </Link>
+        <Link
+          to="/Contact"
+          className={`text-sm font-medium transition-colors hover:text-yellow-400 py-2 ${path === '/Contact' ? 'text-yellow-400' : 'text-richblack-25'}`}
+        >
+          Contact Us
+        </Link>
+      </div>
+
+      {/* Right Side Actions */}
+      <div className='flex items-center gap-3'>
+        <button className='w-9 h-9 flex items-center justify-center rounded-lg hover:bg-richblack-700 transition-colors'>
+          <IoIosSearch className='text-xl text-richblack-100' />
+        </button>
+        <button className='w-9 h-9 flex items-center justify-center rounded-lg hover:bg-richblack-700 transition-colors'>
+          <MdOutlineShoppingCart className='text-xl text-richblack-100' />
+        </button>
+
+        {/* User Menu */}
+        <div className='relative'>
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className='flex items-center gap-2 h-10 px-3 bg-richblack-700 border border-richblack-600 rounded-full hover:border-richblack-400 transition-colors'
+          >
+            <IoMdMenu className='text-lg text-richblack-100' />
+            <img
+              src={isLoggedIn && image ? image : "https://res.cloudinary.com/dit2bnxnd/image/upload/v1767979026/cc41_utqhtd.png"}
+              alt="User"
+              loading='lazy'
+              className='w-7 h-7 rounded-full object-cover'
+            />
+          </button>
+
+          {menuOpen && (
+            <>
+              <div className='fixed inset-0 z-40' onClick={() => setMenuOpen(false)} />
+              <div className='absolute right-0 top-full mt-2 z-50 bg-richblack-800 border border-richblack-600 rounded-xl shadow-2xl shadow-black/40 py-2 min-w-[180px] overflow-hidden'>
+                <Link
+                  to={isLoggedIn ? "/Dashboard/my-profile" : "/SignUp"}
+                  onClick={() => setMenuOpen(false)}
+                  className='block px-4 py-2.5 text-sm text-richblack-100 hover:bg-richblack-700 hover:text-yellow-400 transition-colors'
+                >
+                  {isLoggedIn ? "Dashboard" : "Sign Up"}
+                </Link>
+
+                {isLoggedIn ? (
+                  <button
+                    onClick={handleLogout}
+                    className='w-full text-left px-4 py-2.5 text-sm text-richblack-100 hover:bg-richblack-700 hover:text-yellow-400 transition-colors'
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <Link
+                    to="/Login"
+                    onClick={() => setMenuOpen(false)}
+                    className='block px-4 py-2.5 text-sm text-richblack-100 hover:bg-richblack-700 hover:text-yellow-400 transition-colors'
+                  >
+                    Login
+                  </Link>
+                )}
+
+                <Link
+                  to="/"
+                  onClick={() => setMenuOpen(false)}
+                  className='block px-4 py-2.5 text-sm text-richblack-100 hover:bg-richblack-700 hover:text-yellow-400 transition-colors'
+                >
+                  Help Center
+                </Link>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </nav>
   )
 }
 

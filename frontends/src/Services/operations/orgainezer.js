@@ -8,6 +8,9 @@ import Cookies from "js-cookie";
 
 const {createorgainezer,orgainezerlogin} = CreateOrgainezer
 const {OrgainezerData,DirectorFresher,DirectorExperience,ProducerFresher,ProducerExperience} = orgainezerdata
+const {CreateTicket} = Ticket
+const {Allotment} = AllotTheatre
+const {Getalltheatredetails} = GetAllTheatreDetails
 
 export function Creation(name,password,email,number,otp,code){
     return async (dispatch) => {
@@ -519,4 +522,201 @@ export function ProducerExpe (data,token){
       dispatch(setLoading(false));
   }
  } 
+}
+
+export function MakeTicket  (ShowId, totalticket,price)  {
+  return async (dispatch) => {
+    dispatch(setLoading(true));
+    
+    try {
+      // Get token from localStorage
+      const token = localStorage.getItem("token");
+      
+      // Validate token exists
+      if (!token) {
+        toast.error("Please login to create tickets");
+        return;
+      }
+
+      // Parse token if it's a JSON string
+      let tokenStr = token;
+      try {
+        if (typeof token === "string" && (token.startsWith('"') || token.startsWith("{"))) {
+          tokenStr = JSON.parse(token);
+        }
+      } catch (e) {
+        console.error("Token parse error:", e);
+      }
+
+      // Validate input data
+      if (!ShowId || !totalticket || !price) {
+        toast.error("All fields are required");
+        dispatch(setLoading(false));
+        return;
+      }
+
+      // API configuration
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenStr}`
+        },
+        withCredentials: true
+      };
+
+      // Make API call
+      const response = await apiConnector(
+        "PUT", 
+        `${CreateTicket}?ShowId=${ShowId}`, // Add query parameter
+        {
+          overallTicketCreated:totalticket,
+          priceoftheticket:price
+        },
+        config.headers
+      );
+
+      // Handle success
+      if (response?.data?.success) {
+        toast.success(response.data.message);
+        return response.data.data; // Return ticket data if needed
+      } else {
+        toast.error(response?.data?.message || "Failed to create ticket");
+      }
+
+    } catch (error) {
+      console.error("CreateTicket Error:", error);
+      
+      // Better error handling
+      const errorMessage = error?.response?.data?.message 
+        || error?.message 
+        || "Failed to create ticket";
+      
+      toast.error(errorMessage);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+};
+
+export function AllotTickets(showid, theatreid, totaltoallot) {
+  return async (dispatch) => {
+    dispatch(setLoading(true));
+    
+    try {
+      // Get token from localStorage
+      const token = localStorage.getItem("token");
+      
+      // Validate token exists
+      if (!token) {
+        toast.error("Please login to allot tickets");
+        return;
+      }
+
+      // Parse token if it's a JSON string
+      let tokenStr = token;
+      try {
+        if (typeof token === "string" && (token.startsWith('"') || token.startsWith("{"))) {
+          tokenStr = JSON.parse(token);
+        }
+      } catch (e) {
+        console.error("Token parse error:", e);
+      }
+
+      // Validate input data
+      if (!showid || !theatreid || !totaltoallot) {
+        toast.error("All fields are required");
+        dispatch(setLoading(false));
+        return;
+      }
+
+      // API configuration
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenStr}`
+        },
+        withCredentials: true
+      };
+
+      // Make API call
+      const response = await apiConnector(
+        "PUT", 
+        `${Allotment}?ShowId=${showid}&TheatreId=${theatreid}`, // Add query parameters
+        {
+          TotalTicketsToAllot: totaltoallot
+        },
+        config.headers
+      );
+
+      // Handle success
+      if (response?.data?.success) {
+        toast.success(response.data.message);
+        return response.data.data; // Return allotment data if needed
+      } else {
+        toast.error(response?.data?.message || "Failed to allot tickets");
+      }
+
+    } catch (error) {
+      console.error("AllotTickets Error:", error);
+      
+      // Better error handling
+      const errorMessage = error?.response?.data?.message 
+        || error?.message 
+        || "Failed to allot tickets";
+      
+      toast.error(errorMessage);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+}
+
+export function VerifiedTheatres (token,navigate){
+    return async (dispatch) => {
+    dispatch(setLoading(true));
+     const ToastId = toast.loading("Fetching Theatres details, please wait...");
+    try {
+      // Get token from localStorage
+     if(!token){
+                             navigate("/Login")
+                             toast.error("Token is Expired Please Create a new One")
+                         }
+
+      // Parse token if it's a JSON string
+    
+      // Validate input data
+
+      // API configuration
+
+
+      // Make API call
+      const response = await apiConnector(
+        "GET", 
+        Getalltheatredetails,null,{
+                Authorization: `Bearer ${token}`
+            });
+
+      // Handle success
+      if (response?.data?.success) {
+        toast.success(response.data.message);
+        return response.data.data; // Return allotment data if needed
+      } else {
+        toast.error(response?.data?.message || "Failed to Get theatres date");
+      }
+
+    } catch (error) {
+      console.error("Theatres error", error);
+      
+      // Better error handling
+      const errorMessage = error?.response?.data?.message 
+        || error?.message 
+        || "Theatres error";
+      
+      toast.error(errorMessage);
+    } finally {
+            toast.dismiss(ToastId);
+
+      dispatch(setLoading(false));
+    }
+  };
 }

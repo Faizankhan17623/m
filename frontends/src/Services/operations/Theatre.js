@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast'
 import {apiConnector} from '../apiConnector'
 
 const {CreateTheatre} = CreateTheatrere
-const {TheatreInfo} = Theatreinfo
+const {tt} = Theatreinfo
 const {Alltheatres} = AllTheatres
 const {theatrecreationrequest} = TheatreCreationRequest
 
@@ -16,7 +16,7 @@ const {TotalSale} = totalsale
 const {getshowalloteddetails} = GetShowAllotedDetails
 const {getallticketsdetails} = GetAllTicketsDetails
 const {getsingleshowdetails} = GetSingleShowDetails
-
+// const {TheatreInfo} = 
 
 export function CreateTheatree(name,email,pasword,number){
     return async(dispatch)=>{
@@ -358,5 +358,71 @@ export function GetSingleShowDetailss(showid){
         }
         toast.dismiss(toastId)
         dispatch(setLoading(false))
+    }
+}
+
+
+export function SendTheatreDetails (data){
+    return async (dispatch)=>{
+        dispatch(setLoading(true))
+
+                try{
+      
+    const fd = new FormData()
+
+   fd.append('email', data.email)
+            fd.append('Username', data.Username)
+            fd.append('theatrename', data.theatrename)
+            fd.append('password', data.password)
+            fd.append('countrycode', data.countrycode)
+            fd.append('mobilenumber', data.mobilenumber)
+            fd.append('locationname', data.locationname)
+            fd.append('locationurl', data.locationurl)
+            fd.append('TheatreOwner', data.TheatreOwner || data.Username)
+fd.append('typesofseats', JSON.stringify(data.typesofseats || []))
+fd.append('Screentypes', JSON.stringify(data.Screentypes || []))
+fd.append('languageAvailable', JSON.stringify(data.languageAvailable || []))
+fd.append('theatreformat', JSON.stringify(data.theatreformat || []))
+fd.append('parking', JSON.stringify(data.parking || []))
+
+
+//   console.log("📸 Adding outside images:", data.outsideImages?.length)
+    if (data.outsideImages && data.outsideImages.length > 0) {
+                data.outsideImages.forEach(file => {
+                    fd.append('TheareOutsideImages', file)
+                })
+            }
+            // console.log("📸 Adding inside images:", data.insideImages?.length)
+   if (data.insideImages && data.insideImages.length > 0) {
+                data.insideImages.forEach(file => {
+                    fd.append('TheatreInsideImages', file)
+                })
+            }
+
+
+  console.log("📦 FormData contents:")
+            // for (let pair of fd.entries()) {
+            //     console.log(pair[0], ':', pair[1])
+            // }
+
+// console.log("🚀 Sending request to:", TheatreInfo)
+                
+                        const Response = await apiConnector("POST","http://localhost:4000/api/v1/Theatre/Theatre-info",fd)
+            
+                   console.log("✅ Response received:", Response)
+            // console.log("Response data:", Response.data)
+            
+     
+            return Response && Response.data ? Response.data : Response
+                }catch(error){
+                    console.log("Error sending theatre details:", error)
+            console.log("Error message:", error.message)
+            
+            toast.error(error?.response?.data?.message || "Failed to create theatre")
+            
+            return { success: false, message: error.message }
+                }finally{
+dispatch(setLoading(false))
+                }
     }
 }

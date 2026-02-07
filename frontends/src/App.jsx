@@ -33,14 +33,24 @@ import Language from './Components/Dashboard/language'
 import Users from './Components/Dashboard/Users'
 import Error from './Components/extra/Extra'
 import OrganizerVerificationForm from './Components/Dashboard/OrganizerVerificationForm'
+import Tags from './Components/Dashboard/Tags'
+import Cast from './Components/Dashboard/Cast'
+import ShowsManager from './Components/Dashboard/ShowsManager'
+import UploadShow from './Components/Dashboard/UploadShow'
+import AllShows from './Components/Dashboard/AllShows'
+import  VerifyShow from './Components/Dashboard/VerifyShows'
 import CookieConsent, { Cookies } from "react-cookie-consent";
+import  VerifyTheatrer from './Components/Dashboard/VerifyTheatrer'
+import CreateTicket from './Components/Dashboard/Tickets/CreateTicketes'
+import TicketAllotment from './Components/Dashboard/Tickets/TicketAllotment'
+import AllTickets from './Components/Dashboard/Tickets/GetAllTicket'
 
 const Homelayout = ({Notify}) =>{
   return(
     <div className={`bg-richblack-900 min-h-screen`}>
-    <div className="max-w-[1440px] mx-auto px-4 overflow-hidden">
+    <div className="max-w-[1440px] mx-auto px-2 overflow-hidden">
       <Navbar setColors={Notify}  />
-      <div className="mt-6">
+      <div className="">
         <Slider />
       </div>
       <Finder />
@@ -131,10 +141,17 @@ const dispatch = useDispatch()
   {/* Organizer specific */}
   {user?.usertype === ACCOUNT_TYPE.ORGANIZER && (
     <>
-      <Route path="/Dashboard/Manage-Events" element={<div className='text-white'>Organizer Events Page</div>} />
-      <Route path="/Dashboard/Shows" element={<div className='text-white'>Organizer Venues Page</div>} />
+      <Route path="/Dashboard/Manage-Events" element={<AllShows />} />
+      <Route path="/Dashboard/Shows" element={<ShowsManager />} />
+      <Route path="/Dashboard/Shows/Tags" element={<Tags />} />
+      <Route path="/Dashboard/Shows/Cast" element={<Cast />} />
+      <Route path="/Dashboard/Shows/Create" element={<ShowsManager />} />
+      <Route path="/Dashboard/Shows/Upload" element={<UploadShow />} />
       <Route path="/Dashboard/My-Venues" element={<div className='text-white'>Organizer Venues Page</div>} />
       <Route path="/Dashboard/Organizer-Verification" element={<OrganizerVerificationForm />} />
+      <Route path="/Dashboard/Tickets/Create" element={<CreateTicket/>} />
+      <Route path="/Dashboard/Tickets/Update" element={<TicketAllotment/>} />
+      <Route path="/Dashboard/Tickets/All" element={<AllTickets/>} />
     </>
   )}
 
@@ -144,8 +161,8 @@ const dispatch = useDispatch()
       <Route path="/Dashboard/Verifications" element={<UserManage />} />
       <Route path="/Dashboard/Genre" element={<Genre />} />
       <Route path="/Dashboard/CreateLanguage" element={<Language/>} />
-      <Route path="/Dashboard/VerifyShows" element={<div>This ist he Verify shows route</div>} />
-      <Route path="/Dashboard/VerifyTheatre" element={<div>This ist he Verify theatre route</div>} />
+      <Route path="/Dashboard/VerifyShows" element={<VerifyShow/>} />
+      <Route path="/Dashboard/VerifyTheatre" element={<VerifyTheatrer/>} />
       <Route path="/Dashboard/users" element={<Users/>} />
     </>
   )}

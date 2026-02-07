@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { FaSearch, FaCheckCircle, FaTimesCircle } from 'react-icons/fa'
+import { FaSearch, FaCheckCircle, FaTimesCircle, FaUsers, FaUserCheck, FaUserTimes, FaTheaterMasks, FaFilm } from 'react-icons/fa'
 import Loader from '../extra/Loading'
 import toast from 'react-hot-toast'
 import {
@@ -14,9 +14,9 @@ import {
 } from '../../Services/operations/Admin'
 
 const TABS = [
-  { key: 'users', label: 'Users' },
-  { key: 'organizers', label: 'Organizers' },
-  { key: 'theatres', label: 'Theatres' },
+  { key: 'users', label: 'Users', icon: FaUsers },
+  { key: 'organizers', label: 'Organizers', icon: FaFilm },
+  { key: 'theatres', label: 'Theatres', icon: FaTheaterMasks },
 ]
 
 const Users = () => {
@@ -25,7 +25,7 @@ const Users = () => {
   const { token } = useSelector((state) => state.auth)
 
   const [activeTab, setActiveTab] = useState('users')
-  const [filter, setFilter] = useState('all') // all | verified | unverified
+  const [filter, setFilter] = useState('all')
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -34,7 +34,7 @@ const Users = () => {
   const [theatres, setTheatres] = useState([])
 
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 2
+  const itemsPerPage = 10
 
   useEffect(() => {
     if (!token) return
@@ -52,13 +52,6 @@ const Users = () => {
 
         const markVerified = (arr, v) => (arr || []).map((u) => ({ ...u, _verified: v }))
 
-        const allUsers = [
-          ...markVerified(vUsers?.data, true),
-          ...markVerified(uUsers?.data, true).filter(
-            (u) => !vUsers?.data?.some((v) => v._id === u._id)
-          ),
-        ]
-        // deduplicate: unverified endpoint returns all, verified returns only verified
         const uUserIds = new Set((vUsers?.data || []).map((u) => u._id))
         const mergedUsers = [
           ...markVerified(vUsers?.data, true),
@@ -138,64 +131,124 @@ const Users = () => {
   }
 
   return (
-    <div className="w-full h-full p-4 md:p-6 text-white overflow-y-auto">
+    <div className="w-full h-full p-4 md:p-6 lg:p-8 text-white overflow-y-auto">
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold">All Users Overview</h1>
-        <p className="text-gray-400 mt-1 text-sm">
-          View all users, organizers, and theatres with their verification status and last login
-        </p>
+      <div className="mb-8">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
+            <FaUsers className="text-white text-lg" />
+          </div>
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              All Users Overview
+            </h1>
+            <p className="text-gray-500 text-sm">
+              View all users, organizers, and theatres with their verification status
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-6">
-        {TABS.map((tab) => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
-            className={`px-5 py-2.5 rounded-lg text-sm font-medium transition ${
-              activeTab === tab.key
-                ? 'bg-purple-600 text-white'
-                : 'bg-[#1a1a2e] border border-gray-700 text-gray-400 hover:border-purple-500'
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
+      <div className="flex gap-2 mb-8 bg-[#12122a] p-1.5 rounded-xl border border-gray-700/30 w-fit">
+        {TABS.map((tab) => {
+          const Icon = tab.icon
+          return (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition ${
+                activeTab === tab.key
+                  ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/20'
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <Icon className="text-xs" />
+              {tab.label}
+              <span className={`text-xs px-1.5 py-0.5 rounded-md ${
+                activeTab === tab.key ? 'bg-white/20' : 'bg-gray-700/50'
+              }`}>
+                {tab.key === 'users' ? users.length : tab.key === 'organizers' ? organizers.length : theatres.length}
+              </span>
+            </button>
+          )
+        })}
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="bg-[#1a1a2e] rounded-xl p-4 border border-gray-700/50">
-          <p className="text-gray-400 text-xs uppercase tracking-wide">Total</p>
-          <p className="text-2xl font-bold mt-1">{stats.total}</p>
+      <div className="grid grid-cols-3 gap-4 mb-8">
+        <div className="bg-gradient-to-br from-[#1a1a2e] to-[#16162a] rounded-xl p-5 border border-gray-700/50 hover:border-gray-600/50 transition group">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-gray-400 text-xs uppercase tracking-wider font-medium">Total</p>
+            <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center group-hover:bg-purple-500/20 transition">
+              <FaUsers className="text-purple-400 text-sm" />
+            </div>
+          </div>
+          <p className="text-3xl font-bold">{stats.total}</p>
+          <p className="text-gray-600 text-xs mt-1">All {activeTab}</p>
         </div>
-        <div className="bg-[#1a1a2e] rounded-xl p-4 border border-green-500/20">
-          <p className="text-green-400 text-xs uppercase tracking-wide">Verified</p>
-          <p className="text-2xl font-bold mt-1 text-green-400">{stats.verified}</p>
+        <div className="bg-gradient-to-br from-[#1a1a2e] to-[#16162a] rounded-xl p-5 border border-green-500/20 hover:border-green-500/30 transition group">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-green-400 text-xs uppercase tracking-wider font-medium">Verified</p>
+            <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center group-hover:bg-green-500/20 transition">
+              <FaUserCheck className="text-green-400 text-sm" />
+            </div>
+          </div>
+          <p className="text-3xl font-bold text-green-400">{stats.verified}</p>
+          <div className="flex items-center gap-1 mt-1">
+            <div className="flex-1 h-1.5 bg-gray-700/50 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-green-500/60 rounded-full transition-all duration-500"
+                style={{ width: stats.total > 0 ? `${(stats.verified / stats.total) * 100}%` : '0%' }}
+              />
+            </div>
+            <span className="text-gray-500 text-xs">{stats.total > 0 ? Math.round((stats.verified / stats.total) * 100) : 0}%</span>
+          </div>
         </div>
-        <div className="bg-[#1a1a2e] rounded-xl p-4 border border-red-500/20">
-          <p className="text-red-400 text-xs uppercase tracking-wide">Unverified</p>
-          <p className="text-2xl font-bold mt-1 text-red-400">{stats.unverified}</p>
+        <div className="bg-gradient-to-br from-[#1a1a2e] to-[#16162a] rounded-xl p-5 border border-red-500/20 hover:border-red-500/30 transition group">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-red-400 text-xs uppercase tracking-wider font-medium">Unverified</p>
+            <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center group-hover:bg-red-500/20 transition">
+              <FaUserTimes className="text-red-400 text-sm" />
+            </div>
+          </div>
+          <p className="text-3xl font-bold text-red-400">{stats.unverified}</p>
+          <div className="flex items-center gap-1 mt-1">
+            <div className="flex-1 h-1.5 bg-gray-700/50 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-red-500/60 rounded-full transition-all duration-500"
+                style={{ width: stats.total > 0 ? `${(stats.unverified / stats.total) * 100}%` : '0%' }}
+              />
+            </div>
+            <span className="text-gray-500 text-xs">{stats.total > 0 ? Math.round((stats.unverified / stats.total) * 100) : 0}%</span>
+          </div>
         </div>
       </div>
 
       {/* Search & Filter */}
-      <div className="flex flex-col md:flex-row gap-3 mb-4">
+      <div className="flex flex-col md:flex-row gap-3 mb-6">
         <div className="relative flex-1">
-          <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+          <FaSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500" />
           <input
             type="text"
             placeholder="Search by name or email..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-[#1a1a2e] border border-gray-700 rounded-lg pl-10 pr-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition"
+            className="w-full bg-[#1a1a2e] border border-gray-700/50 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20 transition"
           />
+          {search && (
+            <button
+              onClick={() => setSearch('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition text-sm"
+            >
+              &times;
+            </button>
+          )}
         </div>
         <select
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className="bg-[#1a1a2e] border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500 transition cursor-pointer"
+          className="bg-[#1a1a2e] border border-gray-700/50 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-purple-500/50 transition cursor-pointer"
         >
           <option value="all">All</option>
           <option value="verified">Verified</option>
@@ -203,69 +256,83 @@ const Users = () => {
         </select>
       </div>
 
+      {/* Results count */}
+      <div className="flex items-center justify-between mb-3 px-1">
+        <p className="text-gray-500 text-xs">
+          {filtered.length} result{filtered.length !== 1 ? 's' : ''} found
+        </p>
+      </div>
+
       {/* Table */}
-      <div className="bg-[#1a1a2e] rounded-xl border border-gray-700/50 overflow-hidden">
+      <div className="bg-gradient-to-b from-[#1a1a2e] to-[#161628] rounded-xl border border-gray-700/40 overflow-hidden shadow-xl shadow-black/20">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-700/50 text-gray-400 text-left">
-                <th className="p-4 font-medium">#</th>
-                <th className="p-4 font-medium">Image</th>
-                <th className="p-4 font-medium">Name</th>
-                <th className="p-4 font-medium">Email</th>
-                <th className="p-4 font-medium">Phone</th>
-                <th className="p-4 font-medium">Verified</th>
-                <th className="p-4 font-medium">Created At</th>
-                <th className="p-4 font-medium">Last Login</th>
+              <tr className="border-b border-gray-700/50 bg-[#12122a]/60">
+                <th className="p-4 text-left text-gray-400 font-semibold text-xs uppercase tracking-wider w-12">#</th>
+                <th className="p-4 text-left text-gray-400 font-semibold text-xs uppercase tracking-wider">User</th>
+                <th className="p-4 text-left text-gray-400 font-semibold text-xs uppercase tracking-wider">Email</th>
+                <th className="p-4 text-left text-gray-400 font-semibold text-xs uppercase tracking-wider">Phone</th>
+                <th className="p-4 text-left text-gray-400 font-semibold text-xs uppercase tracking-wider">Status</th>
+                <th className="p-4 text-left text-gray-400 font-semibold text-xs uppercase tracking-wider">Created</th>
+                <th className="p-4 text-left text-gray-400 font-semibold text-xs uppercase tracking-wider">Last Login</th>
               </tr>
             </thead>
             <tbody>
               {paginated.length === 0 ? (
                 <tr>
-                  <td colSpan="8" className="text-center text-gray-500 py-10">
-                    No {activeTab} found.
+                  <td colSpan="7" className="text-center py-16">
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-16 h-16 rounded-full bg-gray-800/50 flex items-center justify-center">
+                        <FaUsers className="text-gray-600 text-2xl" />
+                      </div>
+                      <p className="text-gray-500 font-medium">No {activeTab} found</p>
+                      <p className="text-gray-600 text-xs">Try adjusting your search or filter criteria</p>
+                    </div>
                   </td>
                 </tr>
               ) : (
                 paginated.map((user, idx) => (
                   <tr
                     key={user._id}
-                    className="border-b border-gray-700/30 hover:bg-white/5 transition"
+                    className="border-b border-gray-700/20 hover:bg-white/[0.03] transition"
                   >
-                    <td className="p-4 text-gray-500">
+                    <td className="p-4 text-gray-600 text-xs font-medium">
                       {(currentPage - 1) * itemsPerPage + idx + 1}
                     </td>
                     <td className="p-4">
-                      {user.image ? (
-                        <img
-                          src={user.image}
-                          alt={user.userName}
-                          className="w-9 h-9 rounded-full object-cover border border-gray-600"
-                        />
-                      ) : (
-                        <div className="w-9 h-9 rounded-full bg-gray-700 flex items-center justify-center text-xs text-gray-400">
-                          {user.userName?.charAt(0)?.toUpperCase() || '?'}
-                        </div>
-                      )}
+                      <div className="flex items-center gap-3">
+                        {user.image ? (
+                          <img
+                            src={user.image}
+                            alt={user.userName}
+                            className="w-9 h-9 rounded-full object-cover border border-gray-600/50"
+                          />
+                        ) : (
+                          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center text-xs font-bold text-white shadow-sm">
+                            {user.userName?.charAt(0)?.toUpperCase() || '?'}
+                          </div>
+                        )}
+                        <span className="font-medium text-white">{user.userName}</span>
+                      </div>
                     </td>
-                    <td className="p-4 font-medium">{user.userName}</td>
                     <td className="p-4 text-gray-400">{user.email}</td>
                     <td className="p-4 text-gray-400">
                       {user.countrycode} {user.number}
                     </td>
                     <td className="p-4">
                       {user.verified ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-green-500/20 text-green-400 border border-green-500/30">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-500/15 text-green-400 border border-green-500/25">
                           <FaCheckCircle className="text-[10px]" /> Verified
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-red-500/20 text-red-400 border border-red-500/30">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-500/15 text-red-400 border border-red-500/25">
                           <FaTimesCircle className="text-[10px]" /> Unverified
                         </span>
                       )}
                     </td>
-                    <td className="p-4 text-gray-400 text-xs">{user.createdAt || 'N/A'}</td>
-                    <td className="p-4 text-gray-400 text-xs">{getLastLogin(user.lastlogin)}</td>
+                    <td className="p-4 text-gray-500 text-xs">{user.createdAt || 'N/A'}</td>
+                    <td className="p-4 text-gray-500 text-xs">{getLastLogin(user.lastlogin)}</td>
                   </tr>
                 ))
               )}
@@ -276,18 +343,17 @@ const Users = () => {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between mt-4 px-2">
-          <span className="text-sm text-gray-400">
-            Showing {(currentPage - 1) * itemsPerPage + 1}-
-            {Math.min(currentPage * itemsPerPage, filtered.length)} of {filtered.length}
+        <div className="flex items-center justify-between mt-6 px-1">
+          <span className="text-sm text-gray-500">
+            Showing <span className="text-gray-300 font-medium">{(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filtered.length)}</span> of <span className="text-gray-300 font-medium">{filtered.length}</span>
           </span>
-          <div className="flex gap-2">
+          <div className="flex gap-1.5">
             <button
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="px-3 py-1.5 bg-[#1a1a2e] border border-gray-700 rounded-lg text-sm disabled:opacity-50 hover:border-purple-500 transition"
+              className="px-3.5 py-2 bg-[#1a1a2e] border border-gray-700/50 rounded-lg text-sm disabled:opacity-30 hover:border-purple-500/50 transition font-medium"
             >
-              Previous
+              Prev
             </button>
             {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
               let page
@@ -304,10 +370,10 @@ const Users = () => {
                 <button
                   key={page}
                   onClick={() => setCurrentPage(page)}
-                  className={`px-3 py-1.5 rounded-lg text-sm border transition ${
+                  className={`w-9 h-9 rounded-lg text-sm border transition font-medium ${
                     currentPage === page
-                      ? 'bg-purple-600 border-purple-500 text-white'
-                      : 'bg-[#1a1a2e] border-gray-700 hover:border-purple-500'
+                      ? 'bg-purple-600 border-purple-500 text-white shadow-lg shadow-purple-500/20'
+                      : 'bg-[#1a1a2e] border-gray-700/50 hover:border-purple-500/50 text-gray-400'
                   }`}
                 >
                   {page}
@@ -317,7 +383,7 @@ const Users = () => {
             <button
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              className="px-3 py-1.5 bg-[#1a1a2e] border border-gray-700 rounded-lg text-sm disabled:opacity-50 hover:border-purple-500 transition"
+              className="px-3.5 py-2 bg-[#1a1a2e] border border-gray-700/50 rounded-lg text-sm disabled:opacity-30 hover:border-purple-500/50 transition font-medium"
             >
               Next
             </button>

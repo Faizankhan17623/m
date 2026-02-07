@@ -20,7 +20,7 @@ const {Comments,GetAllComment} = Comment
 const {SendMessages,UpdateMessage,GetAllMessages} = SendMessage
 const {TicketPurchase,TicketPurchasedFullDetail} = TicketData
 const {CreateRating,GetAverageRating,GetAllRatingReview} = Ratings
-const {GetAllDetails,FindUserNames,FindEmail,FindNumber} = AllDetails
+const {GetAllDetails,FindUserNames,FindloginEmail,FinduserEmail,FindNumber} = AllDetails
 
 export function UserDetails (token){
     return async (dispatch) => {
@@ -92,28 +92,44 @@ export function FindUserName(First, Last) {
     }
 }
 
-export function findemail(email) {
+export function findloginemail(email) {
     return async (dispatch) => {
-        // const toastId = toast.loading("Loading...")
         dispatch(setLoading(true))
         try {
-            const response = await apiConnector("POST", FindEmail, {
+            const response = await apiConnector("POST", FindloginEmail, {
                 email: email
             })
-            // console.log("Api response...", response)
             if (!response.data.success) {
-                   console.log("Api response...", response)
-            return { success: false, message: response.data.message };
+                return { success: false, exists: false, message: response.data.message };
             }
-            // dispatch(setUser(response.data.user))
-              return { success: true, data: response.data.message };
+            return { success: true, exists: response.data.exists, data: response.data.message };
         } catch (error) {
-           console.error("Error checking email:", error);
-      return { success: false, message: "Error checking email availability" };
-        }finally {
+            console.error("Error checking email:", error);
+            return { success: false, exists: false, message: "Error checking email availability" };
+        } finally {
             dispatch(setLoading(false))
         }
-        // toast.dismiss(toastId)
+    }
+}
+
+
+export function finduseremail(email) {
+    return async (dispatch) => {
+        dispatch(setLoading(true))
+        try {
+            const response = await apiConnector("POST", FinduserEmail, {
+                email: email
+            })
+            if (!response.data.success) {
+                return { success: false, exists: false, message: response.data.message };
+            }
+            return { success: true, exists: response.data.exists, data: response.data.message };
+        } catch (error) {
+            console.error("Error checking email:", error);
+            return { success: false, exists: false, message: "Error checking email availability" };
+        } finally {
+            dispatch(setLoading(false))
+        }
     }
 }
 
@@ -180,7 +196,7 @@ export function UserCreation(name,password,email,number,otp,countrycode){
                 password:password,
                 email:email,
                 number:number,
-                otp:otp,
+                otp:String(otp),
                 countrycode
             })
 
@@ -240,9 +256,8 @@ export function UserLogin(email,pass,navigate){
             localStorage.setItem('Verified', JSON.stringify(response.data.user.verified))
             navigate('/Dashboard/My-Profile')
 
-
-     if(!response.data.success){
-                toast.error(response.response.data.message)   
+      if (!response.data.success) {
+                throw new Error(response.data.message)
             }
 
             
@@ -312,8 +327,6 @@ export function GetPasswordResettoken(email,emailsend){
     }
 }
 
-// 9175182438
-// 9028648188
 export function Restpassword(password,ConfirmPassword,token,navigate){
     return async(dispatch)=>{
         const toastId = toast.loading("..loading")
@@ -781,7 +794,7 @@ export function getAllRatingReview(){
         dispatch(setloading(true))
         try {
             const response = await apiConnector("GET",GetAllRatingReview)
-            console.log("This is the responsee data",response)
+            // console.log("This is the responsee data",response)
 
             if (!response.data.success) {
                 throw new Error(response.data.message)
