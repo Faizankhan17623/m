@@ -200,7 +200,7 @@ export function UserCreation(name,password,email,number,otp,countrycode){
                 countrycode
             })
 
-             console.log("This is the responsee data",response)
+            //  console.log("This is the responsee data",response)
 
             if (!response.data.success) {
                 throw new Error(response.data.message)

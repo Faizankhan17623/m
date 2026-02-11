@@ -70,15 +70,13 @@ const Slider = () => {
     }
   ];
   return (
-    <div className='w-full h-[500px]  flex justify-evenly items-center flex-col'>
-        {/* <mark>Hello sir jee</mark>
-        <marquee behavior="" direction="right">Hello sir jee</marquee> */}
-        
-        <p className='text-3xl'>Reviews from Other User   's</p>
-        <div className='listing_one w-[92%]  h-[350px]  flex flex-col'>
-        
+    <div className='w-full py-16 flex justify-center items-center flex-col'>
 
-        <div className=' rounded-sm h-[200px] w-[87%] border text-white slideers'>
+        <p className='text-3xl font-bold mb-10'>Reviews from Other Users</p>
+        <div className='w-full max-w-6xl mx-auto px-6'>
+
+
+        <div className='rounded-xl h-[200px] w-full text-white slideers'>
           <Swiper 
         slidesPerView="5"
         spaceBetween="5"

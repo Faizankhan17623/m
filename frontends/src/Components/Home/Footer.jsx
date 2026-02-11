@@ -69,7 +69,7 @@ const Footer = () => {
               <div className='flex flex-col gap-2.5'>
                 <a href="tel:+0000000000" className='text-richblack-300 text-sm hover:text-yellow-400 transition-colors'>+91 000 000 0</a>
                 <a href="mailto:Faizankhan901152@gmail.com" className='text-richblack-300 text-sm hover:text-yellow-400 transition-colors'>Faizankhan901152@gmail.com</a>
-                <p className='text-richblack-400 text-sm'>Made by Faizan Khan</p>
+                <p className='text-richblack-400 text-sm'>Made by Cine Circuit</p>
               </div>
 
               {/* Social Icons */}

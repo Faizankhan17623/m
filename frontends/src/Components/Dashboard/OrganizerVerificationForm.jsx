@@ -1096,83 +1096,99 @@ if(loading){
         </p>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-white" autoComplete="off">
             {/* Personal Information */}
-            <div className="w-full Form bg-richblack-800 rounded-md">
-              <p className="text-xl font-bold text-yellow-400 mb-6 text-center flex justify-start items-start Verificationss">Personal Information</p>
-              <div className="w-full h-full flex justify-evenly items-center">
-                <label htmlFor="First" className={` flex flex-col gap-2 ${ status === "rejected" && rejectedData && Name?"cursor-not-allowed":"cursor-pointer"}`}>
-                  <span className={` flex flex-row items-center gap-2 ${status === "rejected" && rejectedData&& Name?"cursor-not-allowed":"cursor-pointer"}`}>*<span>First Name</span></span>
-                  <input
-                    type="text"
-                    placeholder="Enter Your First name"
-                    value={watch("First") || ''}
-                    disabled
-                    className={` w-[490px] p-3 rounded-lg form-style outline-none focus:ring-2 focus:ring-blue-400 transition  ${Name?"cursor-not-allowed":"cursor-pointer"}`}
-                    {...register("First", { required: "First Name is required" })}
-                  />
-                  {errors.First && <span className="text-red-500">{errors.First.message}</span>}
-                </label>
-                
-
-                <label htmlFor="Last" className={` flex flex-col gap-2 w-1/2 ${Name?"cursor-not-allowed":"cursor-pointer"}`} >
-                  <span className="flex flex-row items-center gap-2">*<span>Last Name</span></span>
-                  <input
-                    type="text"
-                    placeholder="Enter Your Last name"
-                    value={watch("Last") || ''}
-                    disabled
-                    className=
-                    {` p-3 rounded-lg form-style outline-none focus:ring-2 focus:ring-blue-400 transition ${Name?"cursor-not-allowed":"cursor-pointer"}`}
-                    {...register("Last", { required: "Last Name is required" })}
-                  />
-                  {errors.Last && <span className="text-red-500">{errors.Last.message}</span>}
-                </label>
+            <div className="w-full Form bg-richblack-800 rounded-xl border border-richblack-700 shadow-lg overflow-hidden">
+              <div className="bg-gradient-to-r from-yellow-400/10 to-transparent border-b border-richblack-700 px-8 py-5">
+                <p className="text-2xl font-bold text-yellow-400 Verificationss">Personal Information</p>
+                <p className="text-sm text-gray-400 mt-1">Basic details for your organizer profile</p>
               </div>
-              <div className="w-full flex flex-row flex-wrap gap-4 items-start Emails mt-6">
-                <label htmlFor="Email" className={`flex flex-col gap-2 flex-1 min-w-[200px] ${data ? "cursor-not-allowed" : "cursor-pointer"}`}>
-                  <span className="flex flex-row items-center gap-2">*<span>Email Address</span></span>
-                  <input
-                    type="email"
-                    name="Email"
-                    value={watch("Email") || ''}
-                    id="Email"
-                    disabled
-                    placeholder="Enter Your Email id"
-                    className={`w-full p-3 rounded-lg form-style outline-none focus:ring-2 focus:ring-blue-400 transition mt-0 ${data ? "cursor-not-allowed":"cursor-pointer"} `}
-                    {...register("Email", { required: "Email is required" })}
-                  />
-                  {errors.Email && <span className="text-red-500">{errors.Email.message}</span>}
-                </label>
-                <div className="flex gap-2 min-h-[100px]">
-                  <div className={` w-32 flex flex-col gap-2  ${data?"cursor-not-allowed":"cursor-pointer"}`}>
-                    <label className={` flex flex-col gap-2 font-semibold ${data ?"cursor-not-allowed":"cursor-pointer"}`} htmlFor="CountryCode">
-                      <span className="flex flex-row items-center gap-2">*<span>Country Code</span></span>
+
+              <div className="p-8 space-y-8">
+                {/* Row 1: First Name & Last Name */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <label htmlFor="First" className={`flex flex-col gap-2 ${status === "rejected" && rejectedData && Name ? "cursor-not-allowed" : "cursor-pointer"}`}>
+                    <span className={`text-sm font-semibold text-gray-300 flex items-center gap-1 ${status === "rejected" && rejectedData && Name ? "cursor-not-allowed" : "cursor-pointer"}`}>
+                      <span className="text-red-500">*</span><span>First Name</span>
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Enter Your First name"
+                      value={watch("First") || ''}
+                      disabled
+                      className={`w-full p-3 rounded-lg form-style bg-richblack-700 border border-richblack-600 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500 ${Name ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
+                      {...register("First", { required: "First Name is required" })}
+                    />
+                    {errors.First && <span className="text-red-500 text-xs mt-1">{errors.First.message}</span>}
+                  </label>
+
+                  <label htmlFor="Last" className={`flex flex-col gap-2 ${Name ? "cursor-not-allowed" : "cursor-pointer"}`}>
+                    <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                      <span className="text-red-500">*</span><span>Last Name</span>
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Enter Your Last name"
+                      value={watch("Last") || ''}
+                      disabled
+                      className={`w-full p-3 rounded-lg form-style bg-richblack-700 border border-richblack-600 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500 ${Name ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
+                      {...register("Last", { required: "Last Name is required" })}
+                    />
+                    {errors.Last && <span className="text-red-500 text-xs mt-1">{errors.Last.message}</span>}
+                  </label>
+                </div>
+
+                {/* Row 2: Email, Country Code & Mobile */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 Emails">
+                  <label htmlFor="Email" className={`flex flex-col gap-2 lg:col-span-5 ${data ? "cursor-not-allowed" : "cursor-pointer"}`}>
+                    <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                      <span className="text-red-500">*</span><span>Email Address</span>
+                    </span>
+                    <input
+                      type="email"
+                      name="Email"
+                      value={watch("Email") || ''}
+                      id="Email"
+                      disabled
+                      placeholder="Enter Your Email id"
+                      className={`w-full p-3 rounded-lg form-style bg-richblack-700 border border-richblack-600 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500 ${data ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
+                      {...register("Email", { required: "Email is required" })}
+                    />
+                    {errors.Email && <span className="text-red-500 text-xs mt-1">{errors.Email.message}</span>}
+                  </label>
+
+                  <div className={`flex flex-col gap-2 lg:col-span-3 ${data ? "cursor-not-allowed" : "cursor-pointer"}`}>
+                    <label className={`flex flex-col gap-2 font-semibold ${data ? "cursor-not-allowed" : "cursor-pointer"}`} htmlFor="CountryCode">
+                      <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                        <span className="text-red-500">*</span><span>Country Code</span>
+                      </span>
                     </label>
                     <select
                       {...register("CountryCode", { required: "Country code is required" })}
-                      className={`p-3 w-full bg-richblack-600 h-11 form-style rounded-lg outline-none focus:ring-2 focus:ring-blue-400 transition ${errors.CountryCode ? "border-red-500" : ""} ${data?"cursor-not-allowed":"cursor-pointer"} `}
-                      // defaultValue=""
+                      className={`w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white ${errors.CountryCode ? "border-red-500" : ""} ${data ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
                       value={data?.countrycode || ''}
                     >
-                      <option value="" disabled>Select Your Country Code</option>
+                      <option value="" disabled>Select Code</option>
                       {Countries.map((data, i) => (
-                        <option key={i} value={data.code} className={data?"cursor-not-allowed":"cursor-pointer"}  disabled>
+                        <option key={i} value={data.code} className={data ? "cursor-not-allowed" : "cursor-pointer"} disabled>
                           {data.code}-{data.country}
                         </option>
                       ))}
                     </select>
-                    {errors.CountryCode && <span className="text-red-500">{errors.CountryCode.message}</span>}
+                    {errors.CountryCode && <span className="text-red-500 text-xs mt-1">{errors.CountryCode.message}</span>}
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="MobileNumber" className={`flex flex-col gap-2 ${data?"cursor-not-allowed":"cursor-pointer"}`}>
-                      <span className="flex flex-row items-center gap-2">*<span>Mobile Number</span></span>
+
+                  <div className="flex flex-col gap-2 lg:col-span-4">
+                    <label htmlFor="MobileNumber" className={`flex flex-col gap-2 ${data ? "cursor-not-allowed" : "cursor-pointer"}`}>
+                      <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                        <span className="text-red-500">*</span><span>Mobile Number</span>
+                      </span>
                       <input
                         type="tel"
                         name="MobileNumber"
                         id="MobileNumber"
                         placeholder="Enter Your Mobile Number"
-                        className={` p-3 w-[373px] bg-richblack-600 h-11 form-style rounded-lg outline-none focus:ring-2 focus:ring-blue-400 transition ${data?"cursor-not-allowed":"cursor-pointer"}`}
+                        className={`w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500 ${data ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
                         defaultValue={mobileNumber}
-                         disabled
+                        disabled
                         maxLength={10}
                         {...register("MobileNumber", {
                           required: "*Mobile Number is required",
@@ -1190,54 +1206,54 @@ if(loading){
                           }
                         })}
                         onChange={(e) => {
-                           setMobileNumber(e.target.value);
-    setValue("MobileNumber", e.target.value);
+                          setMobileNumber(e.target.value);
+                          setValue("MobileNumber", e.target.value);
                           if (open) {
-      setWhatsAppNumber(e.target.value); // ✅ sync if checked
-      setValue("WhatsAppNumber", e.target.value);
-    }
+                            setWhatsAppNumber(e.target.value);
+                            setValue("WhatsAppNumber", e.target.value);
+                          }
                         }}
                       />
-                      {errors.MobileNumber && <span className="text-red-500">{errors.MobileNumber.message}</span>}
+                      {errors.MobileNumber && <span className="text-red-500 text-xs mt-1">{errors.MobileNumber.message}</span>}
                     </label>
                   </div>
                 </div>
-              </div>
-              <div className="flex w-full gap-5 Location flex-row">
-                <div className='w-[70%] flex flex-row justify-start gap-60'>
-                  <div className="w-32 flex flex-col gap-3">
-                    <label className="block mb-2 font-semibold" htmlFor="CountryName">
-                      <span className='flex justify-center items-center gap-3'>*<span>Country Name</span></span> 
+
+                {/* Row 3: Country, State, City */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 Location">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-semibold text-gray-300" htmlFor="CountryName">
+                      <span className="flex items-center gap-1"><span className="text-red-500">*</span><span>Country Name</span></span>
                     </label>
                     <select
                       {...register("CountryName", { required: "Country Name is required" })}
                       name="CountryName"
-                      className={`p-3 w-[250px] bg-richblack-600 h-11 form-style rounded-lg outline-none focus:ring-2 focus:ring-blue-400 transition ${errors.CountryName ? "border-red-500" : ""}`}
-                      // value={countryName || OrgData.Country}
-                      value={countryName }
+                      className={`w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white ${errors.CountryName ? "border-red-500" : ""}`}
+                      value={countryName}
                       onChange={(e) => {
                         setCountryName(e.target.value);
                         setStateName("");
                         setValue('CountryName', e.target.value);
                       }}
                     >
-                      <option value="" disabled>Select Your Country Name</option>
+                      <option value="" disabled>Select Your Country</option>
                       {AllCountries.data.map((data, i) => (
                         <option key={i} value={data.name}>
                           {data.name}
                         </option>
                       ))}
                     </select>
-                    {errors.CountryName && <span className="text-red-500">{errors.CountryName.message}</span>}
+                    {errors.CountryName && <span className="text-red-500 text-xs mt-1">{errors.CountryName.message}</span>}
                   </div>
-                  <div className="w-32 flex flex-col gap-3">
-                    <label className="block mb-2 font-semibold" htmlFor="StateName">
-                      <span className='flex justify-center items-center gap-2'>*<span>State Name</span></span>
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-semibold text-gray-300" htmlFor="StateName">
+                      <span className="flex items-center gap-1"><span className="text-red-500">*</span><span>State Name</span></span>
                     </label>
                     <select
                       {...register("StateName", { required: "State Name is required" })}
                       name="StateName"
-                      className={`p-3 w-[300px] bg-richblack-600 h-11 form-style rounded-lg outline-none focus:ring-2 focus:ring-blue-400 transition ${errors.StateName ? "border-red-500" : ""}`}
+                      className={`w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white ${errors.StateName ? "border-red-500" : ""} ${!countryName ? "opacity-50 cursor-not-allowed" : ""}`}
                       value={stateName}
                       onChange={(e) => {
                         setStateName(e.target.value);
@@ -1245,7 +1261,7 @@ if(loading){
                       }}
                       disabled={!countryName}
                     >
-                      <option value="" disabled>Select Your State Name</option>
+                      <option value="" disabled>Select Your State</option>
                       {AllCountries.data
                         .filter((country) => country.name === countryName)
                         .map((country) =>
@@ -1256,249 +1272,300 @@ if(loading){
                           ))
                         )}
                     </select>
-                    {errors.StateName && <span className="text-red-500">{errors.StateName.message}</span>}
+                    {errors.StateName && <span className="text-red-500 text-xs mt-1">{errors.StateName.message}</span>}
                   </div>
-                </div>
-                <div className="w-32 flex flex-col gap-3">
-                  <label className="flex flex-col gap-3 mb-2 font-semibold" htmlFor="CityName">
-                    <span className='flex justify-center items-center gap-2'>*<span>City Name</span></span>
-                    <input 
-                      type="text" 
-                      name='CityName' 
-                      placeholder='Enter The City Name' 
-                      className='p-3 w-[280px] bg-richblack-600 h-11 form-style rounded-lg outline-none focus:ring-2 focus:ring-blue-400 transition' 
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-semibold text-gray-300" htmlFor="CityName">
+                      <span className="flex items-center gap-1"><span className="text-red-500">*</span><span>City Name</span></span>
+                    </label>
+                    <input
+                      type="text"
+                      name='CityName'
+                      placeholder='Enter The City Name'
+                      className='w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500'
                       value={cityName}
-                      {...register("CityName", { required: "City Name is required" })} 
+                      {...register("CityName", { required: "City Name is required" })}
                       onChange={(e) => {
                         setCityName(e.target.value);
                         setValue('CityName', e.target.value);
                       }}
                     />
-                    {errors.CityName && <span className="text-red-500">{errors.CityName.message}</span>}
-                  </label>
-                </div>
-              </div>
-              <div>
-                <input
-                  type="checkbox"
-                  name="SameAddress"
-                  id="SameAddress"
-                  {...register("SameAddress")}
-                  className="Addres"
-                  checked={add}
-                  onChange={(e) => {
-                    setAdd(e.target.checked);
-                    setValue('SameAddress', e.target.checked);
-                  }}
-                />
-                <label htmlFor="SameAddress">Same Address for local and permanent</label>
-                <label htmlFor="LocalAddress" className="flex flex-col gap-2">
-                  <span className='flex items-center gap-1'>*<span>Local Address</span> {errors.LocalAddress && <span className="text-red-500">{errors.LocalAddress.message}</span>}</span>
-                  <input
-                    type="text"
-                    placeholder="Enter Your local Address"
-                    className="p-3 w-full bg-richblack-600 h-11 form-style rounded-lg outline-none focus:ring-2 focus:ring-blue-400 transition"
-                    value={localAddress}
-                    {...register("LocalAddress", { required: "Local Address is Required" })}
-                    onChange={(e) => {
-                      setLocalAddress(e.target.value);
-                       setValue('LocalAddress', e.target.value)
-                      if (add) {
-                        setPermanentAddress(e.target.value);
-                        setValue('PermanentAddress', e.target.value);
-                      }
-                    }}
-                  />
-                </label>
-                <label htmlFor="PermanentAddress" className="flex flex-col gap-2 Perm">
-                  <span className='flex items-center gap-1'>*<span>Permanent Address</span>{errors.PermanentAddress && <span className="text-red-500">{errors.PermanentAddress.message}</span>}</span>
-                  <input
-                    type="text"
-                    placeholder="Enter Your permanent Address"
-                    className="p-3 w-full bg-richblack-600 h-11 form-style rounded-lg outline-none focus:ring-2 focus:ring-blue-400 transition"
-                    value={permanentAddress}
-                    {...register("PermanentAddress", { required: "Permanent Address is required" })}
-                    onChange={(e) => {
-                      setPermanentAddress(e.target.value);
-                       setValue('PermanentAddress', e.target.value)
-                      if (add) {
-                        setLocalAddress(e.target.value);
-                        setValue('LocalAddress', e.target.value);
-                      }
-                    }}
-                    disabled={add}
-                  />
-                </label>
-              </div>
-              <div className='w-full flex justify-evenly items-center gap-5 Genderrres'>
-                <label htmlFor="Gender" className="flex flex-col gap-2">
-                  <span className='flex justify-center items-center gap-2'>*<span>Choose Your Gender</span></span>
-                  <div className='flex justify-around items-center gap-5 '>
-                    <div>
-                      <input
-                        type="radio"
-                        name="Gender"
-                        id="Male"
-                        value="Male"
-                        {...register("Gender", { required: "*Gender is required" })}
-                        className="mr-2"
-                      />
-                      <label htmlFor="Male">Male</label>
-                    </div>
-                    <div>
-                      <input
-                        type="radio"
-                        name="Gender"
-                        id="Female"
-                        value="Female"
-                        {...register("Gender", { required: "Gender is required" })}
-                        className="mr-2"
-                      />
-                      <label htmlFor="Female">Female</label>
-                    </div>
-                    <div>
-                      <input
-                        type="radio"
-                        name="Gender"
-                        id="Other"
-                        value="Other"
-                        {...register("Gender", { required: "Gender is required" })}
-                        className="mr-2"
-                      />
-                      <label htmlFor="Other">Rather Not To Disclose</label>
-                    </div>
-                    {errors.Gender && <span className="text-red-500">{errors.Gender.message}</span>}
+                    {errors.CityName && <span className="text-red-500 text-xs mt-1">{errors.CityName.message}</span>}
                   </div>
-                </label>
-                <div>
-                  <label htmlFor="posterImage" className="flex flex-col gap-2">
-                    <span className='flex items-center gap-2'>*<span>Upload Image</span></span>
-                    
-                    {/* Custom File Input with URL Display */}
-                    <div className="relative">
-                      {/* Hidden actual file input */}
+                </div>
+
+                {/* Row 4: Address Section */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3 bg-richblack-700/50 rounded-lg px-4 py-3 border border-richblack-600">
+                    <input
+                      type="checkbox"
+                      name="SameAddress"
+                      id="SameAddress"
+                      {...register("SameAddress")}
+                      className="Addres w-4 h-4 accent-yellow-400 rounded cursor-pointer"
+                      checked={add}
+                      onChange={(e) => {
+                        setAdd(e.target.checked);
+                        setValue('SameAddress', e.target.checked);
+                      }}
+                    />
+                    <label htmlFor="SameAddress" className="text-sm text-gray-300 cursor-pointer select-none">Same Address for local and permanent</label>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <label htmlFor="LocalAddress" className="flex flex-col gap-2">
+                      <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                        <span className="text-red-500">*</span><span>Local Address</span>
+                        {errors.LocalAddress && <span className="text-red-500 text-xs ml-2">{errors.LocalAddress.message}</span>}
+                      </span>
                       <input
-                        type="file"
-                        id="posterImage"
-                        accept="image/*"
-                        {...register("posterImage", {
-                          required: "Image is required",
-                         validate: {
-        fileType: (files) => {
-          const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif"];
-          return (
-            (files && files[0] && allowedTypes.includes(files[0].type))
-          );
-        },
-       fileSize: (files) => {
-    if (files && files[0]) {
-      if (files[0].size <= 5 * 1024 * 1024) {
-        return true; 
-      } else {
-        setSelectedFile("");
-        setUpload(false);
-        return "File size must be less than 5MB";
-      }
-    }
-  },
-          },
-                        })}
-                        className="hidden"
-                        ref={fileInputRef}
+                        type="text"
+                        placeholder="Enter Your local Address"
+                        className="w-full p-3 bg-richblack-700 border border-richblack-600 form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500"
+                        value={localAddress}
+                        {...register("LocalAddress", { required: "Local Address is Required" })}
                         onChange={(e) => {
-                          const file = e.target.files[0];
-                          setSelectedFile(file);
-                          setUpload(!!file);
-                          setValue("posterImage", file || null, { shouldValidate: true });
-                          
-                          // Show new image preview when user selects a file
-                          if (file) {
-                            const reader = new FileReader();
-                            reader.onloadend = () => {
-                              setImagePreview(reader.result);
-                            };
-                            reader.readAsDataURL(file);
+                          setLocalAddress(e.target.value);
+                          setValue('LocalAddress', e.target.value)
+                          if (add) {
+                            setPermanentAddress(e.target.value);
+                            setValue('PermanentAddress', e.target.value);
                           }
                         }}
                       />
-                      
-                      {/* Custom styled file input display */}
+                    </label>
+
+                    <label htmlFor="PermanentAddress" className="flex flex-col gap-2 Perm">
+                      <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                        <span className="text-red-500">*</span><span>Permanent Address</span>
+                        {errors.PermanentAddress && <span className="text-red-500 text-xs ml-2">{errors.PermanentAddress.message}</span>}
+                      </span>
+                      <input
+                        type="text"
+                        placeholder="Enter Your permanent Address"
+                        className={`w-full p-3 bg-richblack-700 border border-richblack-600 form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500 ${add ? "opacity-50 cursor-not-allowed" : ""}`}
+                        value={permanentAddress}
+                        {...register("PermanentAddress", { required: "Permanent Address is required" })}
+                        onChange={(e) => {
+                          setPermanentAddress(e.target.value);
+                          setValue('PermanentAddress', e.target.value)
+                          if (add) {
+                            setLocalAddress(e.target.value);
+                            setValue('LocalAddress', e.target.value);
+                          }
+                        }}
+                        disabled={add}
+                      />
+                    </label>
+                  </div>
+                </div>
+
+                {/* Row 5: Gender & Image Upload */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 Genderrres">
+                  {/* Gender Selection */}
+                  <div className="flex flex-col gap-3">
+                    <label htmlFor="Gender">
+                      <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                        <span className="text-red-500">*</span><span>Choose Your Gender</span>
+                      </span>
+                    </label>
+                    <div className="flex flex-wrap gap-3 mt-1">
+                      <label htmlFor="Male" className={`flex items-center gap-2 px-5 py-3 rounded-lg border cursor-pointer transition-all ${watch("Gender") === "Male" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
+                        <input
+                          type="radio"
+                          name="Gender"
+                          id="Male"
+                          value="Male"
+                          {...register("Gender", { required: "*Gender is required" })}
+                          className="accent-yellow-400 w-4 h-4"
+                        />
+                        <span className="text-sm font-medium">Male</span>
+                      </label>
+                      <label htmlFor="Female" className={`flex items-center gap-2 px-5 py-3 rounded-lg border cursor-pointer transition-all ${watch("Gender") === "Female" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
+                        <input
+                          type="radio"
+                          name="Gender"
+                          id="Female"
+                          value="Female"
+                          {...register("Gender", { required: "Gender is required" })}
+                          className="accent-yellow-400 w-4 h-4"
+                        />
+                        <span className="text-sm font-medium">Female</span>
+                      </label>
+                      <label htmlFor="Other" className={`flex items-center gap-2 px-5 py-3 rounded-lg border cursor-pointer transition-all ${watch("Gender") === "Other" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
+                        <input
+                          type="radio"
+                          name="Gender"
+                          id="Other"
+                          value="Other"
+                          {...register("Gender", { required: "Gender is required" })}
+                          className="accent-yellow-400 w-4 h-4"
+                        />
+                        <span className="text-sm font-medium">Rather Not To Disclose</span>
+                      </label>
+                    </div>
+                    {errors.Gender && <span className="text-red-500 text-xs mt-1">{errors.Gender.message}</span>}
+                  </div>
+
+                  {/* Image Upload */}
+                  <div className="flex flex-col gap-3">
+                    <label htmlFor="posterImage">
+                      <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                        <span className="text-red-500">*</span><span>Upload Image</span>
+                      </span>
+                    </label>
+
+                    <div className="flex items-start gap-4">
+                      {/* Image Preview */}
                       <div
                         onClick={() => fileInputRef.current?.click()}
-                        className="p-3 bg-richblack-600 rounded border border-gray-600 form-style cursor-pointer hover:bg-richblack-500 transition max-w-[400px] overflow-hidden"
+                        className="w-24 h-24 rounded-xl border-2 border-dashed border-richblack-600 bg-richblack-700 flex items-center justify-center overflow-hidden cursor-pointer hover:border-yellow-400 transition-colors flex-shrink-0"
                       >
-                        <p className="text-gray-400 text-base truncate">
-                          {selectedFile
-                            ? selectedFile.name
-                            : imagePreview
-                            ? "Image uploaded"
-                            : "Choose file No file chosen"}
-                        </p>
+                        {imagePreview ? (
+                          <img src={imagePreview} alt="Preview" className="w-full h-full object-cover rounded-lg" />
+                        ) : (
+                          <div className="flex flex-col items-center gap-1 text-gray-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                            <span className="text-[10px]">Photo</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex flex-col gap-2 flex-1">
+                        {/* Hidden actual file input */}
+                        <input
+                          type="file"
+                          id="posterImage"
+                          accept="image/*"
+                          {...register("posterImage", {
+                            required: "Image is required",
+                            validate: {
+                              fileType: (files) => {
+                                const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif"];
+                                return (
+                                  (files && files[0] && allowedTypes.includes(files[0].type))
+                                );
+                              },
+                              fileSize: (files) => {
+                                if (files && files[0]) {
+                                  if (files[0].size <= 5 * 1024 * 1024) {
+                                    return true;
+                                  } else {
+                                    setSelectedFile("");
+                                    setUpload(false);
+                                    return "File size must be less than 5MB";
+                                  }
+                                }
+                              },
+                            },
+                          })}
+                          className="hidden"
+                          ref={fileInputRef}
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            setSelectedFile(file);
+                            setUpload(!!file);
+                            setValue("posterImage", file || null, { shouldValidate: true });
+
+                            // Show new image preview when user selects a file
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onloadend = () => {
+                                setImagePreview(reader.result);
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                        />
+
+                        {/* Custom styled file input display */}
+                        <div
+                          onClick={() => fileInputRef.current?.click()}
+                          className="p-3 bg-richblack-700 rounded-lg border border-richblack-600 form-style cursor-pointer hover:border-yellow-400/50 transition overflow-hidden"
+                        >
+                          <p className="text-gray-400 text-sm truncate">
+                            {selectedFile
+                              ? selectedFile.name
+                              : imagePreview
+                              ? "Image uploaded"
+                              : "Choose file No file chosen"}
+                          </p>
+                        </div>
+
+                        <input
+                          type="file"
+                          id="posterImage2"
+                          accept="image/*"
+                          className="hidden"
+                        />
+                        {errors.posterImage && (
+                          <span className="text-red-500 text-xs">{errors.posterImage.message}</span>
+                        )}
+
+                        <div className="flex gap-2 Uploadeser">
+                          <button
+                            type="button"
+                            className="px-4 py-2 bg-yellow-400 text-black text-sm font-semibold rounded-lg hover:bg-yellow-300 transition-colors Buttonss"
+                            onClick={() => fileInputRef.current.click()}
+                          >
+                            Select Image
+                          </button>
+                          <button
+                            type="button"
+                            className="px-4 py-2 bg-richblack-600 text-gray-300 text-sm font-medium rounded-lg border border-richblack-500 hover:bg-richblack-500 transition-colors Buttonss"
+                            onClick={() => {
+                              setSelectedFile(null);
+                              setUpload(false);
+                              setValue("posterImage", null);
+                              if (fileInputRef.current) {
+                                fileInputRef.current.value = "";
+                              }
+                              setValue("posterImage", null, { shouldValidate: true });
+                              if (fileInputRef.current) {
+                                fileInputRef.current.value = null;
+                              }
+                            }}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                        <p className="text-[11px] text-gray-500">PNG, JPG, GIF up to 5MB</p>
                       </div>
                     </div>
-                    
-                    <input
-                      type="file"
-                      id="posterImage2"
-                      accept="image/*"
-                      className="hidden"
-                    />
-                    {errors.posterImage && (
-                      <span className="text-red-500 text-sm">{errors.posterImage.message}</span>
-                    )}
-                  </label>
-                  <div className="flex gap-2 Uploadeser">
-                    <button
-                      type="button"
-                      className="px-4 py-2 bg-yellow-400 text-black rounded Buttonss"
-                      onClick={() => fileInputRef.current.click()}
-                    >
-                      Select Image
-                    </button>
-                    <button
-                      type="button"
-                      className="px-4 py-2 bg-gray-700 text-white rounded Buttonss"
-                      onClick={() => {
-                        setSelectedFile(null);
-                        setUpload(false);
-                        setValue("posterImage", null);
-                        if (fileInputRef.current) {
-                          fileInputRef.current.value = "";
-                        }
-                        setValue("posterImage", null, { shouldValidate: true });
-                        if (fileInputRef.current) {
-                          fileInputRef.current.value = null;
-                        }
-                      }}
-                    >
-                      Cancel
-                    </button>
                   </div>
                 </div>
               </div>
             </div>
             {/* Professional Background */}
-            <div className='w-full Backgroundss bg-richblack-800 rounded-md'>
-              <p className="text-xl font-bold text-yellow-400 mb-6 text-center flex justify-start items-start Verificationss">Professional Background</p>
-              <div className='w-full h-full'>
-                <div className='w-full flex justify-evenly items-center gap-2'>
-                  <label htmlFor="Portfolio" className='flex flex-col gap-3'>
-                    <span className='flex items-center gap-2'><span>Website / Portfolio Link</span> {errors.Portfolio && <span className="text-red-500">{errors.Portfolio.message}</span>}</span>
-                    <input type="url" name="Portfolio" id="Portfolio" placeholder='Enter Your Link Here' className='form-style w-[390px]' {...register("Portfolio", {
+            <div className="w-full Backgroundss bg-richblack-800 rounded-xl border border-richblack-700 shadow-lg overflow-hidden">
+              <div className="bg-gradient-to-r from-yellow-400/10 to-transparent border-b border-richblack-700 px-8 py-5">
+                <p className="text-2xl font-bold text-yellow-400 Verificationss">Professional Background</p>
+                <p className="text-sm text-gray-400 mt-1">Your professional details and portfolio information</p>
+              </div>
+              <div className='p-8 space-y-8'>
+                <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+                  <label htmlFor="Portfolio" className='flex flex-col gap-2'>
+                    <span className='text-sm font-semibold text-gray-300 flex items-center gap-1'>
+                      <span>Website / Portfolio Link</span>
+                    </span>
+                    <input type="url" name="Portfolio" id="Portfolio" placeholder='Enter Your Link Here' className='w-full p-3 rounded-lg form-style bg-richblack-700 border border-richblack-600 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500' {...register("Portfolio", {
                       pattern: {
                         value: /^https?:\/\/.+/,
                         message: "Enter a valid URL",
                       },
                     })} />
+                    {errors.Portfolio && <span className="text-red-500 text-xs mt-1">{errors.Portfolio.message}</span>}
                   </label>
-                  <div className="w-48 flex flex-col gap-3">
-                    <label className="flex flex-col mb-2 font-semibold" htmlFor="TotalProjects">
-                      {errors.TotalProjects && <span className="text-red-500">{errors.TotalProjects.message}</span>}
-                      <span>*<span>Total Completed Projects</span></span>
-                    </label>
+                  <label className="flex flex-col gap-2" htmlFor="TotalProjects">
+                    <span className='text-sm font-semibold text-gray-300 flex items-center gap-1'>
+                      <span className="text-red-500">*</span><span>Total Completed Projects</span>
+                    </span>
                     <select
                       {...register("TotalProjects", { required: "Projects are required" })}
-                      className={`p-3 w-[240px] bg-richblack-600 h-11 form-style rounded-lg outline-none focus:ring-2 focus:ring-blue-400 transition ${errors.TotalProjects ? "border-red-500" : ""}`}
+                      className={`w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white ${errors.TotalProjects ? "border-red-500" : ""}`}
                       defaultValue=""
                     >
                       <option value="" disabled>Number of Projects</option>
@@ -1508,15 +1575,15 @@ if(loading){
                         </option>
                       ))}
                     </select>
-                  </div>
-                  <div className="w-48 flex flex-col gap-3">
-                    <label className="flex flex-col mb-2 font-semibold" htmlFor="YearExperience">
-                      {errors.YearExperience && <span className="text-red-500">{errors.YearExperience.message}</span>}
-                      <span>*<span>Years of Experience</span></span>
-                    </label>
+                    {errors.TotalProjects && <span className="text-red-500 text-xs mt-1">{errors.TotalProjects.message}</span>}
+                  </label>
+                  <label className="flex flex-col gap-2" htmlFor="YearExperience">
+                    <span className='text-sm font-semibold text-gray-300 flex items-center gap-1'>
+                      <span className="text-red-500">*</span><span>Years of Experience</span>
+                    </span>
                     <select
                       {...register("YearExperience", { required: "Experience is required" })}
-                      className={`p-3 w-[240px] bg-richblack-600 h-11 form-style rounded-lg outline-none focus:ring-2 focus:ring-blue-400 transition ${errors.YearExperience ? "border-red-500" : ""}`}
+                      className={`w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white ${errors.YearExperience ? "border-red-500" : ""}`}
                       defaultValue=""
                     >
                       <option value="" disabled>Experience</option>
@@ -1526,13 +1593,14 @@ if(loading){
                         </option>
                       ))}
                     </select>
-                  </div>
+                    {errors.YearExperience && <span className="text-red-500 text-xs mt-1">{errors.YearExperience.message}</span>}
+                  </label>
                 </div>
                 <div className='BIO'>
-                  <div>
-                    <label htmlFor="bio" className="font-semibold OIB">
-                      <span className='flex items-center gap-2'>*<span>Short Bio About Yourself</span> {errors.bio && <span className="text-red-500">{errors.bio.message}</span>}</span>
-                    </label>
+                  <label htmlFor="bio" className="flex flex-col gap-2 OIB">
+                    <span className='text-sm font-semibold text-gray-300 flex items-center gap-1'>
+                      <span className="text-red-500">*</span><span>Short Bio About Yourself</span>
+                    </span>
                     <textarea
                       id="bio"
                       name="bio"
@@ -1540,28 +1608,32 @@ if(loading){
                       maxLength={250}
                       rows={4}
                       value={fields.bio}
-                      className="w-full p-3 bg-richblack-600 text-white rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 resize-none"
+                      className="w-full p-3 rounded-lg form-style bg-richblack-700 border border-richblack-600 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500 resize-none"
                       {...register("bio", { required: "Bio is Required" })}
                       onChange={handleChange}
                     />
-                     <p className="text-sm text-gray-400 mt-1 flex justify-end">
-        {countWords(fields.bio)} / Max 250 words
-      </p>
-                  </div>
+                    <div className="flex justify-between items-center">
+                      {errors.bio && <span className="text-red-500 text-xs">{errors.bio.message}</span>}
+                      <p className="text-sm text-gray-400 ml-auto">
+                        {countWords(fields.bio)} / Max 250 words
+                      </p>
+                    </div>
+                  </label>
                 </div>
-                <div className='Working flex justify-around items-start w-full'>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                   {/* Work Section */}
-                  <div className='w-1/2 flex flex-col gap-3 justify-center items-center'>
-                    <span className="flex items-center gap-2">
-                      * <p className='Work font-bold'>Have you Worked on any Notable Projects</p>
+                  <div className='flex flex-col gap-3 bg-richblack-700 rounded-xl p-5 border border-richblack-600'>
+                    <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                      <span className="text-red-500">*</span> <span className='Work'>Have you Worked on any Notable Projects</span>
                     </span>
-                    <div className='flex gap-3'>
-                      <label>
+                    <div className='flex gap-4'>
+                      <label className="flex items-center gap-2 cursor-pointer text-gray-300 hover:text-white transition">
                         <input
                           type="radio"
                           name="Work "
                           value="Yes"
                           checked={work === "Yes"}
+                          className="accent-yellow-400 w-4 h-4"
                           onChange={() => {
                             setWork("Yes");
                             setValue("Work", "Yes");
@@ -1569,12 +1641,13 @@ if(loading){
                         />
                         Yes
                       </label>
-                      <label>
+                      <label className="flex items-center gap-2 cursor-pointer text-gray-300 hover:text-white transition">
                         <input
                           type="radio"
                           name="Work"
                           value="No"
                           checked={work === "No"}
+                          className="accent-yellow-400 w-4 h-4"
                           onChange={() => {
                             setWork("No");
                             setValue("Work","No");
@@ -1586,17 +1659,18 @@ if(loading){
                     <input type="hidden" {...register("Work")} value={work} />
                   </div>
                   {/* Media Section */}
-                  <div className='w-1/2 flex flex-col gap-3 justify-center items-center'>
-                    <span className="flex items-center gap-2">
-                      * <p className='Work font-bold'>Would You Like to Share Your Social Media</p>
+                  <div className='flex flex-col gap-3 bg-richblack-700 rounded-xl p-5 border border-richblack-600'>
+                    <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                      <span className="text-red-500">*</span> <span className='Work'>Would You Like to Share Your Social Media</span>
                     </span>
-                    <div className='flex gap-3'>
-                      <label>
+                    <div className='flex gap-4'>
+                      <label className="flex items-center gap-2 cursor-pointer text-gray-300 hover:text-white transition">
                         <input
                           type="radio"
                           name="mediaChoice"
                           value="Yes"
                           checked={media === "Yes"}
+                          className="accent-yellow-400 w-4 h-4"
                           onChange={() => {
                             setMedia("Yes");
                             setValue("mediaChoice", "Yes");
@@ -1604,12 +1678,13 @@ if(loading){
                         />
                         Yes
                       </label>
-                      <label>
+                      <label className="flex items-center gap-2 cursor-pointer text-gray-300 hover:text-white transition">
                         <input
                           type="radio"
                           name="mediaChoice"
                           value="No"
                           checked={media === "No"}
+                          className="accent-yellow-400 w-4 h-4"
                           onChange={() => {
                             setMedia("No");
                             setValue("mediaChoice", "No");
@@ -1623,33 +1698,33 @@ if(loading){
                 </div>
 
                {work === "Yes" && projects && (
-  <div className='flex Show gap-1 Projectsss'>
+  <div className='flex items-center gap-2 Projectsss cursor-pointer text-yellow-400 hover:text-yellow-300 transition'>
     <FaCaretDown
-      className="text-2xl cursor-pointer fill-red-600"
+      className="text-xl cursor-pointer -rotate-90 transition-transform"
       onClick={() => setProjects(false)}
     />
-    <span>Show Projects</span>
+    <span className="text-sm font-semibold">Show Projects</span>
   </div>
 )}
 
 {work === "Yes" && (
-  <div className={`${projects ? "hidden" : "w-full Projectsss flex flex-col justify-around gap-2"}`}>
-    <div className="flex flex-row">
-      <FaCaretDown className="text-2xl cursor-pointer" onClick={() => setProjects(true)} />
-      <span>Hide Projects</span>
+  <div className={`${projects ? "hidden" : "w-full Projectsss flex flex-col gap-4 bg-richblack-700/50 rounded-xl p-6 border border-richblack-600"}`}>
+    <div className="flex items-center gap-2 cursor-pointer text-yellow-400 hover:text-yellow-300 transition">
+      <FaCaretDown className="text-xl cursor-pointer transition-transform" onClick={() => setProjects(true)} />
+      <span className="text-sm font-semibold">Hide Projects</span>
     </div>
 
     {Notable.map((field, index) => (
-      <div className='flex justify-evenly items-center gap-3' key={field.id}>
-        <span>{index + 1}</span>
+      <div className='grid grid-cols-1 md:grid-cols-[auto_1fr_1fr_1fr_1fr_auto] items-end gap-4 bg-richblack-800 rounded-lg p-4 border border-richblack-600' key={field.id}>
+        <span className="text-yellow-400 font-bold text-lg flex items-center justify-center w-8 h-8 rounded-full bg-richblack-700 border border-richblack-600">{index + 1}</span>
        <label className="flex flex-col gap-2">
   {duplicateNameIndices.has(index) && (
-    <span className="text-red-500 text-sm">Duplicate project name detected!</span>
+    <span className="text-red-500 text-xs">Duplicate project name detected!</span>
   )}
-  <span className="flex gap-2">
-    *<span>Project Name</span>
+  <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+    <span className="text-red-500">*</span><span>Project Name</span>
     {errors.Notable?.[index]?.name && (
-      <span className="text-red-500 text-sm">
+      <span className="text-red-500 text-xs">
         {errors.Notable[index].name.message}
       </span>
     )}
@@ -1658,7 +1733,7 @@ if(loading){
     type="text"
     placeholder="Enter the name of the Project"
     autoComplete="off"
-    className={`form-style h-9 w-[290px] bg-richblack-600 rounded-2xl ${
+    className={`w-full p-3 rounded-lg form-style bg-richblack-700 border border-richblack-600 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500 ${
       duplicateNameIndices.has(index) ? "border-2 border-red-500" : ""
     }`}
     {...register(`Notable.${index}.name`, {
@@ -1706,12 +1781,9 @@ if(loading){
 
 
         <label className='flex flex-col gap-2'>
-          <span>Total Budget</span>
-          {errors.Notable?.[index]?.budget && (
-            <span className="text-red-500 text-sm">{errors.Notable[index].budget.message}</span>
-          )}
+          <span className="text-sm font-semibold text-gray-300">Total Budget</span>
           <select
-            className='p-3 bg-richblack-600 h-11 form-style rounded-lg'
+            className='w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white'
             {...register(`Notable.${index}.budget`)}
           >
             <option value="" disabled>Select Budget Range</option>
@@ -1719,17 +1791,17 @@ if(loading){
               <option key={i} value={money}>{money}</option>
             ))}
           </select>
+          {errors.Notable?.[index]?.budget && (
+            <span className="text-red-500 text-xs mt-1">{errors.Notable[index].budget.message}</span>
+          )}
         </label>
 
         <label className='flex flex-col gap-2'>
-          <span className='flex gap-2'>
-            *<span>Your Role</span>
-            {errors.Notable?.[index]?.role && (
-              <span className="text-red-500 text-sm">{errors.Notable[index].role.message}</span>
-            )}
+          <span className='text-sm font-semibold text-gray-300 flex items-center gap-1'>
+            <span className="text-red-500">*</span><span>Your Role</span>
           </span>
           <select
-            className='p-3 bg-richblack-600 h-11 form-style rounded-lg'
+            className='w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white'
             {...register(`Notable.${index}.role`, { required: "Role is required" })}
           >
             <option value="" disabled>Role</option>
@@ -1737,16 +1809,19 @@ if(loading){
               <option key={i} value={role}>{role}</option>
             ))}
           </select>
+          {errors.Notable?.[index]?.role && (
+            <span className="text-red-500 text-xs mt-1">{errors.Notable[index].role.message}</span>
+          )}
         </label>
 
       <label className="flex flex-col gap-2">
   {duplicateUrlIndices.has(index) && (
-    <span className="text-red-500 text-sm">Duplicate URL detected!</span>
+    <span className="text-red-500 text-xs">Duplicate URL detected!</span>
   )}
-  <span>
-    *<span>Url</span>
+  <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+    <span className="text-red-500">*</span><span>Url</span>
     {errors.Notable?.[index]?.url && (
-      <span className="text-red-500 text-sm">
+      <span className="text-red-500 text-xs">
         {errors.Notable[index].url.message}
       </span>
     )}
@@ -1754,7 +1829,7 @@ if(loading){
   <input
     type="url"
     placeholder="Enter Your Url"
-    className={`form-style h-9 w-[290px] bg-richblack-600 rounded-2xl ${
+    className={`w-full p-3 rounded-lg form-style bg-richblack-700 border border-richblack-600 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500 ${
       duplicateUrlIndices.has(index) ? "border-2 border-red-500" : ""
     }`}
     {...register(`Notable.${index}.url`, {
@@ -1831,7 +1906,7 @@ if(loading){
 
 
         <div
-          className="flex justify-center items-center rounded-full hover:bg-red-600 cursor-pointer"
+          className="flex justify-center items-center w-8 h-8 rounded-full bg-richblack-700 border border-richblack-600 hover:bg-red-600 hover:border-red-500 cursor-pointer transition"
           onClick={() => {
             if (Notable.length === 1) {
               setFilmError("You need to keep at least one field");
@@ -1841,20 +1916,20 @@ if(loading){
             }
           }}
         >
-          <RxCross1 className='text-richblack-100' />
+          <RxCross1 className='text-richblack-100 text-sm' />
         </div>
       </div>
     ))}
 
     {filmError && (
-      <span className="text-red-500 text-sm flex justify-center items-center">
+      <span className="text-red-500 text-xs flex justify-center items-center">
         {filmError}
       </span>
     )}
 
     <button
       type="button"
-      className="mt-2 px-4 py-1 bg-blue-600 text-white rounded Adding"
+      className="mt-2 px-5 py-2 bg-yellow-400 text-richblack-900 font-semibold rounded-lg hover:bg-yellow-300 transition Adding"
       onClick={() => {
         if (Notable.length >= 4) {
           setFilmError("You can create 4 fields only");
@@ -1869,21 +1944,21 @@ if(loading){
   </div>
 )}
                 {media === "Yes" && social && (
-                  <div className='flex gap-1 Socialss'>
+                  <div className='flex items-center gap-2 Socialss cursor-pointer text-yellow-400 hover:text-yellow-300 transition'>
                     <FaCaretDown
-                      className="text-2xl cursor-pointer fill-red-600"
+                      className="text-xl cursor-pointer -rotate-90 transition-transform"
                       onClick={() => setSocial(false)}
                     />
-                    <span>Show Media</span>                    
+                    <span className="text-sm font-semibold">Show Media</span>
                   </div>
                 )}
 
                 {media === "Yes" && (
-                  <div className={`${social ? "hidden" : "w-full Socialss flex flex-col justify-around gap-2"}`}>
+                  <div className={`${social ? "hidden" : "w-full Socialss flex flex-col gap-4 bg-richblack-700/50 rounded-xl p-6 border border-richblack-600"}`}>
 
-                    <div className="flex flex-row">
-                      <FaCaretDown className="text-2xl cursor-pointer" onClick={() => setSocial(true)} />
-                      <span>Hide Media</span>
+                    <div className="flex items-center gap-2 cursor-pointer text-yellow-400 hover:text-yellow-300 transition">
+                      <FaCaretDown className="text-xl cursor-pointer transition-transform" onClick={() => setSocial(true)} />
+                      <span className="text-sm font-semibold">Hide Media</span>
                     </div>
 
                  {socials.map((field, index) => {
@@ -1896,23 +1971,20 @@ if(loading){
   const IconComponent = iconMap[socialItem.icon];
 
   return (
-    <div className="flex flex-col gap-1 mb-3" key={field.id}>
+    <div className="flex flex-col gap-1 mb-3 bg-richblack-800 rounded-lg p-4 border border-richblack-600" key={field.id}>
       {/* Top row: Icon + Platform + Followers + URL + Remove — all on one line */}
-      <div className="flex items-end justify-evenly w-full" style={{ flexWrap: 'nowrap' }}>
+      <div className="flex items-end justify-evenly w-full gap-3" style={{ flexWrap: 'nowrap' }}>
 
         {/* Icon */}
-        <div className="w-10 h-10 flex justify-center items-center rounded-full bg-richblack-700 flex-shrink-0 mb-1">
-          {IconComponent && <IconComponent className="text-2xl text-blue-400" />}
+        <div className="w-10 h-10 flex justify-center items-center rounded-full bg-richblack-700 border border-richblack-600 flex-shrink-0 mb-1">
+          {IconComponent && <IconComponent className="text-2xl text-yellow-400" />}
         </div>
-{/* Would You Like to Share Your Social Media */}
 
-{/* mediaName: Soc[0].name, follwers: '', urls: '' */}
         {/* Platform */}
         <label className="flex flex-col gap-1">
-          <span className="text-sm">* Social Media</span>
+          <span className="text-sm font-semibold text-gray-300 flex items-center gap-1"><span className="text-red-500">*</span> Social Media</span>
           <select
-            className="form-style h-10 w-[150px] bg-richblack-600 rounded-2xl px-2"
-            style={{ height: 'calc(2.5rem + 5px)' }}
+            className="w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white"
             {...register(`socials.${index}.mediaName`, {
               required: media === "Yes" ? "Required" : false,
             })}
@@ -1924,17 +1996,17 @@ if(loading){
             ))}
           </select>
           {errors.socials?.[index]?.mediaName && (
-            <span className="text-red-500 text-xs">{errors.socials[index].mediaName.message}</span>
+            <span className="text-red-500 text-xs mt-1">{errors.socials[index].mediaName.message}</span>
           )}
         </label>
 
         {/* Followers */}
         <label className="flex flex-col gap-1">
-          <span className="text-sm">* Followers</span>
+          <span className="text-sm font-semibold text-gray-300 flex items-center gap-1"><span className="text-red-500">*</span> Followers</span>
           <input
             type="tel"
             placeholder="Enter followers"
-            className="form-style h-10 w-[140px] bg-richblack-600 rounded-2xl px-2"
+            className="w-full p-3 rounded-lg form-style bg-richblack-700 border border-richblack-600 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500"
             {...register(`socials.${index}.follwers`, { required: "Required" })}
             onChange={(e) => {
               let val = e.target.value.replace(/\D/g, "");
@@ -1955,20 +2027,20 @@ if(loading){
 
         {/* URL */}
         <label className="flex flex-col gap-1 flex-[0.6] min-w-0">
-          <p className='text-red-700 text-xs'>Please Copy Paste the Link</p>
-          <span className="text-sm flex items-center gap-1">
-            * URL
+          <p className='text-red-400 text-xs'>Please Copy Paste the Link</p>
+          <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+            <span className="text-red-500">*</span> URL
             {urlDuplications && (
-              <span className="text-red-500 text-xs">Wrong link</span>
+              <span className="text-red-500 text-xs ml-1">Wrong link</span>
             )}
             {duplicateSocialUrlIndices.has(index) && (
-              <span className="text-red-500 text-xs">Duplicate</span>
+              <span className="text-red-500 text-xs ml-1">Duplicate</span>
             )}
           </span>
           <input
             type="url"
             placeholder="Enter profile URL"
-            className={`form-style h-10 w-full bg-richblack-600 rounded-2xl px-2 ${
+            className={`w-full p-3 rounded-lg form-style bg-richblack-700 border border-richblack-600 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500 ${
               duplicateSocialUrlIndices.has(index) || urlDuplications
                 ? "border-2 border-red-500"
                 : ""
@@ -2027,7 +2099,7 @@ if(loading){
 
         {/* Remove */}
         <div
-          className="flex justify-center items-center w-8 h-8 rounded-full hover:bg-red-600 cursor-pointer flex-shrink-0 mb-1"
+          className="flex justify-center items-center w-8 h-8 rounded-full bg-richblack-700 border border-richblack-600 hover:bg-red-600 hover:border-red-500 cursor-pointer flex-shrink-0 mb-1 transition"
           onClick={() => {
             if (socials.length === 1) {
               setSocialError("You need to keep at least one field");
@@ -2036,7 +2108,7 @@ if(loading){
             }
           }}
         >
-          <RxCross1 className="text-richblack-100" />
+          <RxCross1 className="text-richblack-100 text-sm" />
         </div>
       </div>
     </div>
@@ -2045,13 +2117,13 @@ if(loading){
 
 
                     {socialError && (
-                      <span className="text-red-500 text-sm flex justify-center items-center">
+                      <span className="text-red-500 text-xs flex justify-center items-center">
                         {socialError}
                       </span>
                     )}
                     <button
                       type="button"
-                      className="mt-2 px-4 py-1 bg-blue-600 text-white rounded Adding"
+                      className="mt-2 px-5 py-2 bg-yellow-400 text-richblack-900 font-semibold rounded-lg hover:bg-yellow-300 transition Adding"
                       onClick={() => {
                         if (socials.length >= 5) {
                           setSocialError("You can create 5 fields only");
@@ -2069,17 +2141,20 @@ if(loading){
               </div>
             </div>
             {/* Projects */}
-            <div className='w-full Project md:flex-row gap-4 p-4 mb-4 rounded-md bg-richblack-800 shadow '>
-              <p className="text-xl font-bold text-yellow-400 mb-6 text-center flex justify-start items-start Verificationss">Projects</p>
-              <div className='w-full h-full'>
+            <div className="w-full Project bg-richblack-800 rounded-xl border border-richblack-700 shadow-lg overflow-hidden">
+              <div className="bg-gradient-to-r from-yellow-400/10 to-transparent border-b border-richblack-700 px-8 py-5">
+                <p className="text-2xl font-bold text-yellow-400 Verificationss">Projects</p>
+                <p className="text-sm text-gray-400 mt-1">Ongoing and planned projects information</p>
+              </div>
+              <div className='p-8 space-y-8'>
                 {/* Radio buttons row */}
-                <div className='w-full grid grid-cols-1 md:grid-cols-2 gap-6 mb-6'>
-                  <div className='flex flex-col gap-2 bg-richblack-700 rounded-xl p-4'>
-                    <span className='flex items-center gap-2 font-bold text-sm text-richblack-5'>
-                      * <span className='Work'>Any Ongoing Project</span>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                  <div className='flex flex-col gap-3 bg-richblack-700 rounded-xl p-5 border border-richblack-600'>
+                    <span className='text-sm font-semibold text-gray-300 flex items-center gap-1'>
+                      <span className="text-red-500">*</span> <span className='Work'>Any Ongoing Project</span>
                     </span>
-                    <div className='flex items-center gap-4 mt-1'>
-                      <label className="flex items-center gap-1.5 cursor-pointer">
+                    <div className='flex items-center gap-4'>
+                      <label className="flex items-center gap-2 cursor-pointer text-gray-300 hover:text-white transition">
                         <input
                           type="radio"
                           name="Ongoing"
@@ -2089,11 +2164,11 @@ if(loading){
                             setOngoing("Yes");
                             setValue("Ongoing", "Yes");
                           }}
-                          className="accent-yellow-400"
+                          className="accent-yellow-400 w-4 h-4"
                         />
                         <span className="text-sm">Yes</span>
                       </label>
-                      <label className="flex items-center gap-1.5 cursor-pointer">
+                      <label className="flex items-center gap-2 cursor-pointer text-gray-300 hover:text-white transition">
                         <input
                           type="radio"
                           name="Ongoing"
@@ -2103,19 +2178,19 @@ if(loading){
                             setOngoing("No");
                             setValue("Ongoing", "No");
                           }}
-                          className="accent-yellow-400"
+                          className="accent-yellow-400 w-4 h-4"
                         />
                         <span className="text-sm">No</span>
                       </label>
                     </div>
                     <input type="hidden" {...register("Ongoing")} value={ongoing} />
                   </div>
-                  <div className='flex flex-col gap-2 bg-richblack-700 rounded-xl p-4'>
-                    <span className='flex items-center gap-2 font-bold text-sm text-richblack-5'>
-                      * <span className='Work'>Any Projects Planned For This Year</span>
+                  <div className='flex flex-col gap-3 bg-richblack-700 rounded-xl p-5 border border-richblack-600'>
+                    <span className='text-sm font-semibold text-gray-300 flex items-center gap-1'>
+                      <span className="text-red-500">*</span> <span className='Work'>Any Projects Planned For This Year</span>
                     </span>
-                    <div className='flex items-center gap-4 mt-1'>
-                      <label className="flex items-center gap-1.5 cursor-pointer">
+                    <div className='flex items-center gap-4'>
+                      <label className="flex items-center gap-2 cursor-pointer text-gray-300 hover:text-white transition">
                         <input
                           type="radio"
                           name="Planned"
@@ -2125,11 +2200,11 @@ if(loading){
                             setPlanned("Yes");
                             setValue("Planned", "Yes");
                           }}
-                          className="accent-yellow-400"
+                          className="accent-yellow-400 w-4 h-4"
                         />
                         <span className="text-sm">Yes</span>
                       </label>
-                      <label className="flex items-center gap-1.5 cursor-pointer">
+                      <label className="flex items-center gap-2 cursor-pointer text-gray-300 hover:text-white transition">
                         <input
                           type="radio"
                           name="Planned"
@@ -2139,7 +2214,7 @@ if(loading){
                             setPlanned("No");
                             setValue("Planned", "No");
                           }}
-                          className="accent-yellow-400"
+                          className="accent-yellow-400 w-4 h-4"
                         />
                         <span className="text-sm">No</span>
                       </label>
@@ -2150,29 +2225,29 @@ if(loading){
 
                 {/* Ongoing Projects Section */}
                 {ongoing === "Yes" && on && (
-                  <div className='flex Show gap-1 Projectsss'>
+                  <div className='flex items-center gap-2 Projectsss cursor-pointer text-yellow-400 hover:text-yellow-300 transition'>
                     <FaCaretDown
-                      className="text-2xl cursor-pointer fill-red-600"
+                      className="text-xl cursor-pointer -rotate-90 transition-transform"
                       onClick={() => setOn(false)}
                     />
-                    <span>Show Ongoing Projects</span>
+                    <span className="text-sm font-semibold">Show Ongoing Projects</span>
                   </div>
                 )}
 
                 {ongoing === "Yes" && (
-                  <div className={`${on ? "hidden" : "w-full Projectsss flex flex-col justify-around gap-2"}`}>
-                    <div className="flex flex-row">
-                      <FaCaretDown className="text-2xl cursor-pointer" onClick={() => setOn(true)} />
-                      <span>Hide Ongoing Projects</span>
+                  <div className={`${on ? "hidden" : "w-full Projectsss flex flex-col gap-4 bg-richblack-700/50 rounded-xl p-6 border border-richblack-600"}`}>
+                    <div className="flex items-center gap-2 cursor-pointer text-yellow-400 hover:text-yellow-300 transition">
+                      <FaCaretDown className="text-xl cursor-pointer transition-transform" onClick={() => setOn(true)} />
+                      <span className="text-sm font-semibold">Hide Ongoing Projects</span>
                     </div>
 
                     {ongoingProjects.map((field, index) => (
-                      <div className='flex items-end gap-2 w-full flex-nowrap' key={field.id} style={{ flexWrap: 'nowrap' }}>
-                        <span className="text-white font-semibold min-w-[20px] pb-2">{index + 1}.</span>
+                      <div className='flex items-end gap-3 w-full flex-nowrap bg-richblack-800 rounded-lg p-4 border border-richblack-600' key={field.id} style={{ flexWrap: 'nowrap' }}>
+                        <span className="text-yellow-400 font-bold text-lg flex items-center justify-center w-8 h-8 rounded-full bg-richblack-700 border border-richblack-600 flex-shrink-0 mb-1">{index + 1}</span>
 
                         {/* Project Name */}
                         <label className="flex flex-col gap-1 min-w-0" style={{ flex: '1.5' }}>
-                          <span className="flex items-center gap-1 text-sm whitespace-nowrap">
+                          <span className="text-sm font-semibold text-gray-300 flex items-center gap-1 whitespace-nowrap">
                             <span className="text-red-500">*</span><span>Name</span>
                             {duplicateongoingproject.has(index) && (
                               <span className="text-red-500 text-xs">Duplicate!</span>
@@ -2185,7 +2260,7 @@ if(loading){
                             type="text"
                             placeholder="Project Name"
                             autoComplete="off"
-                            className={`form-style h-9 w-full bg-richblack-600 rounded-lg px-2 ${
+                            className={`w-full p-3 rounded-lg form-style bg-richblack-700 border border-richblack-600 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500 ${
                               duplicateongoingproject.has(index) ? "border-2 border-red-500" : ""
                             }`}
                             {...register(`ongoingProjects.${index}.ProName`, {
@@ -2222,7 +2297,7 @@ if(loading){
 
                         {/* Script / File Upload */}
                         <label className='flex flex-col gap-1' style={{ flex: '1.5', minWidth: 0 }}>
-                          <span className="flex items-center gap-1 text-sm whitespace-nowrap">
+                          <span className="text-sm font-semibold text-gray-300 flex items-center gap-1 whitespace-nowrap">
                             <span className="text-red-500">*</span><span>Script</span>
                             {errors?.ongoingProjects?.[index]?.ProFile && (
                               <span className="text-red-500 text-xs">{errors.ongoingProjects[index].ProFile.message}</span>
@@ -2231,7 +2306,7 @@ if(loading){
                           <input
                             type="file"
                             id={`ProFile-${index}`}
-                            className={`form-style h-11 w-full bg-richblack-600 rounded-lg text-sm file:mr-2 file:py-2 file:px-2 file:rounded file:border-0 file:text-sm file:bg-richblack-500 file:text-white ${
+                            className={`w-full p-2 rounded-lg form-style bg-richblack-700 border border-richblack-600 outline-none focus:ring-2 focus:ring-yellow-400 transition text-white text-sm file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-sm file:bg-yellow-400 file:text-richblack-900 file:font-semibold file:cursor-pointer ${
                               errors?.ongoingProjects?.[index]?.ProFile ? "border border-red-500" : ""
                             }`}
                             accept="application/pdf"
@@ -2259,7 +2334,7 @@ if(loading){
 
                         {/* Start Date */}
                         <label className='flex flex-col gap-1' style={{ width: '142px', maxWidth: '142px', flexShrink: 0 }}>
-                          <span className="flex items-center gap-1 text-sm whitespace-nowrap">
+                          <span className="text-sm font-semibold text-gray-300 flex items-center gap-1 whitespace-nowrap">
                             <span className="text-red-500">*</span><span>Start Date</span>
                             {errors.ongoingProjects?.[index]?.Start_Date && (
                               <span className="text-red-500 text-xs">{errors.ongoingProjects[index].Start_Date.message}</span>
@@ -2268,7 +2343,7 @@ if(loading){
                           <input
                             type="month"
                             style={{ width: '100%' }}
-                            className="form-style h-9 bg-richblack-600 rounded-lg px-1"
+                            className="w-full p-3 rounded-lg form-style bg-richblack-700 border border-richblack-600 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white"
                             {...register(`ongoingProjects.${index}.Start_Date`, {
                               required: "Required",
                             })}
@@ -2277,7 +2352,7 @@ if(loading){
 
                         {/* End Date */}
                         <label className='flex flex-col gap-1' style={{ width: '142px', maxWidth: '142px', flexShrink: 0 }}>
-                          <span className="flex items-center gap-1 text-sm whitespace-nowrap">
+                          <span className="text-sm font-semibold text-gray-300 flex items-center gap-1 whitespace-nowrap">
                             <span className="text-red-500">*</span><span>End Date</span>
                             {errors.ongoingProjects?.[index]?.Start_End && (
                               <span className="text-red-500 text-xs">{errors.ongoingProjects[index].Start_End.message}</span>
@@ -2286,7 +2361,7 @@ if(loading){
                           <input
                             type="month"
                             style={{ width: '100%' }}
-                            className="form-style h-9 bg-richblack-600 rounded-lg px-1"
+                            className="w-full p-3 rounded-lg form-style bg-richblack-700 border border-richblack-600 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white"
                             {...register(`ongoingProjects.${index}.Start_End`, {
                               required: "Required",
                             })}
@@ -2295,14 +2370,14 @@ if(loading){
 
                         {/* Release Dropdown */}
                         <label className='flex flex-col gap-1' style={{ minWidth: '120px' }}>
-                          <span className="flex items-center gap-1 text-sm whitespace-nowrap">
+                          <span className="text-sm font-semibold text-gray-300 flex items-center gap-1 whitespace-nowrap">
                             <span className="text-red-500">*</span><span>Release</span>
                             {errors.ongoingProjects?.[index]?.Release && (
                               <span className="text-red-500 text-xs">{errors.ongoingProjects[index].Release.message}</span>
                             )}
                           </span>
                           <select
-                            className='bg-richblack-600 h-11 form-style rounded-lg px-2'
+                            className='w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white'
                             {...register(`ongoingProjects.${index}.Release`, {
                               required: "Required",
                             })}
@@ -2316,7 +2391,7 @@ if(loading){
 
                         {/* Remove Button */}
                         <div
-                          className="flex justify-center items-center rounded-full hover:bg-red-600 cursor-pointer p-1 mb-1"
+                          className="flex justify-center items-center w-8 h-8 rounded-full bg-richblack-700 border border-richblack-600 hover:bg-red-600 hover:border-red-500 cursor-pointer flex-shrink-0 mb-1 transition"
                           onClick={() => {
                             if (ongoingProjects.length === 1) {
                               setOngoingError("You need to keep at least one field");
@@ -2326,20 +2401,20 @@ if(loading){
                             }
                           }}
                         >
-                          <RxCross1 className='text-richblack-100' />
+                          <RxCross1 className='text-richblack-100 text-sm' />
                         </div>
                       </div>
                     ))}
 
                     {ongoingError && (
-                      <span className="text-red-500 text-sm flex justify-center items-center">
+                      <span className="text-red-500 text-xs flex justify-center items-center">
                         {ongoingError}
                       </span>
                     )}
 
                     <button
                       type="button"
-                      className="mt-2 px-4 py-1 bg-blue-600 text-white rounded Adding"
+                      className="mt-2 px-5 py-2 bg-yellow-400 text-richblack-900 font-semibold rounded-lg hover:bg-yellow-300 transition Adding"
                       onClick={() => {
                         if (ongoingProjects.length >= 4) {
                           setOngoingError("You can create 4 fields only");
@@ -2356,29 +2431,29 @@ if(loading){
 
                 {/* Planned Projects Section */}
                 {planned === "Yes" && pp && (
-                  <div className='flex Show gap-1 Projectsss'>
+                  <div className='flex items-center gap-2 Projectsss cursor-pointer text-yellow-400 hover:text-yellow-300 transition'>
                     <FaCaretDown
-                      className="text-2xl cursor-pointer fill-red-600"
+                      className="text-xl cursor-pointer -rotate-90 transition-transform"
                       onClick={() => setPp(false)}
                     />
-                    <span>Show Planned Projects</span>
+                    <span className="text-sm font-semibold">Show Planned Projects</span>
                   </div>
                 )}
 
                 {planned === "Yes" && (
-                  <div className={`${pp ? "hidden" : "w-full Projectsss flex flex-col justify-around gap-2"}`}>
-                    <div className="flex flex-row">
-                      <FaCaretDown className="text-2xl cursor-pointer" onClick={() => setPp(true)} />
-                      <span>Hide Planned Projects</span>
+                  <div className={`${pp ? "hidden" : "w-full Projectsss flex flex-col gap-4 bg-richblack-700/50 rounded-xl p-6 border border-richblack-600"}`}>
+                    <div className="flex items-center gap-2 cursor-pointer text-yellow-400 hover:text-yellow-300 transition">
+                      <FaCaretDown className="text-xl cursor-pointer transition-transform" onClick={() => setPp(true)} />
+                      <span className="text-sm font-semibold">Hide Planned Projects</span>
                     </div>
 
                     {plannedProjects.map((field, index) => (
-                      <div className='flex items-end gap-2 w-full flex-nowrap' key={field.id} style={{ flexWrap: 'nowrap' }}>
-                        <span className="text-white font-semibold min-w-[20px] pb-2">{index + 1}.</span>
+                      <div className='flex items-end gap-3 w-full flex-nowrap bg-richblack-800 rounded-lg p-4 border border-richblack-600' key={field.id} style={{ flexWrap: 'nowrap' }}>
+                        <span className="text-yellow-400 font-bold text-lg flex items-center justify-center w-8 h-8 rounded-full bg-richblack-700 border border-richblack-600 flex-shrink-0 mb-1">{index + 1}</span>
 
                         {/* Project Name */}
                         <label className="flex flex-col gap-1 min-w-0" style={{ flex: '1' }}>
-                          <span className="flex items-center gap-1 text-sm whitespace-nowrap">
+                          <span className="text-sm font-semibold text-gray-300 flex items-center gap-1 whitespace-nowrap">
                             <span className="text-red-500">*</span><span>Name</span>
                             {duplicateProjectsplanned.has(index) && (
                               <span className="text-red-500 text-xs">Duplicate!</span>
@@ -2394,7 +2469,7 @@ if(loading){
                             type="text"
                             placeholder="Project Name"
                             autoComplete="off"
-                            className={`form-style h-9 w-full bg-richblack-600 rounded-lg px-2 ${
+                            className={`w-full p-3 rounded-lg form-style bg-richblack-700 border border-richblack-600 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500 ${
                               duplicateProjectsplanned.has(index) ? "border-2 border-red-500" : ""
                             }`}
                             {...register(`plannedProjects.${index}.Proname`, {
@@ -2760,398 +2835,338 @@ if(loading){
               </div>
             </div>
             {/* Distribution */}
-            <div className='w-full Distrubations bg-richblack-800 rounded-md'>
-              <p className="text-xl font-bold text-yellow-400 mb-6 text-center flex justify-start items-start Verificationss">Distribution</p>
-              <div className='w-full h-full'>
-                <div className='flex justify-around items-center gap-2 w-full '>
-                <div className="flex flex-col justify-around items-center gap-2 w-full relative">
-  <label htmlFor="Formats">
-    <span className="flex items-center gap-1 font-inter text-md">
-      *<span>Preferred Screening Formats</span>
-    </span>
-  </label>
+            <div className="w-full Distrubations bg-richblack-800 rounded-xl border border-richblack-700 shadow-lg overflow-hidden">
+              <div className="bg-gradient-to-r from-yellow-400/10 to-transparent border-b border-richblack-700 px-8 py-5">
+                <p className="text-2xl font-bold text-yellow-400 Verificationss">Distribution</p>
+                <p className="text-sm text-gray-400 mt-1">Screening preferences, audience targeting & distribution details</p>
+              </div>
 
-  {/* Button to open dropdown */}
-  <input
-    type="button"
-    id="Formats"
-    className={`p-3 w-full bg-richblack-600 h-11 form-style rounded-lg outline-none transition 
-      ${errors.screenFormats ? "ring-2 ring-red-500" : "focus:ring-2 focus:ring-blue-400"}`}
-    value={screen ? "Screen Formats" : "Select Screen Formats"}
-    onClick={() => setScreen((prev) => !prev)}
-  />
-
-  {/* ✅ Hidden input for react-hook-form */}
-  <input
-    type="hidden"
-    {...register("screenFormats", {
-      required: "Please select at least one Screen Format",
-      validate: (value) =>
-        value.length > 0 || "Please select at least one Screen Format",
-    })}
-    value={screenTypes.join(",")}
-  />
-
-  {screen && (
-    <div className="w-full absolute -top-60 h-[200px] flex justify-center items-center">
-      <div className="bg-richblack-600 grid flex-col grid-cols-3 w-full h-full p-3 rounded-lg shadow-lg">
-        {Projects.Screens.map((data, index) => {
-          const isSelected = screenTypes.includes(data);
-          return (
-            <div
-              key={index}
-              className={`flex justify-center items-center gap-1 text-md font-edu-sa w-fit Datass rounded-lg outline-none transition px-4 py-2 cursor-pointer font-semibold
-                ${isSelected ? "bg-yellow-400 text-black" : "hover:bg-yellow-400 hover:text-black"}`}
-              onClick={() => {
-                if (!isSelected) {
-                  if (screenTypes.length >= 5) {
-                    setScreenError("You cannot select more than 5 formats");
-                    return;
-                  }
-                  const updated = [...screenTypes, data];
-                  setScreenTypes(updated);
-                  setValue("screenFormats", updated.join(","));
-                  setScreenError("");
-                }
-              }}
-            >
-              {data}
-              {isSelected && (
-                <span
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    const updated = screenTypes.filter((sg) => sg !== data);
-                    setScreenTypes(updated);
-                    setValue("screenFormats", updated.join(","));
-
-                    if (updated.length < 2) {
-                      setScreenError(
-                        "You need to select at least 2 Screen formats"
-                      );
-                    } else {
-                      setScreenError("");
-                    }
-                  }}
-                  className="ml-2 cursor-pointer hover:text-red-600"
-                >
-                  <RxCross1 />
-                </span>
-              )}
-            </div>
-          );
-        })}
-
-        {/* Error messages */}
-        <div className="w-full flex justify-center items-center mt-2 col-span-3">
-          {screenError && (
-            <div className="text-red-500 font-bold">{screenError}</div>
-          )}
-          {errors.screenFormats && (
-            <span className="text-red-500 text-sm">
-              {errors.screenFormats.message}
-            </span>
-          )}
-        </div>
-      </div>
-    </div>
-  )}
-</div>
-
-                <div className="flex flex-col justify-around items-center gap-2 w-full relative">
-  <label htmlFor="audienceTypes">
-    <span className="flex items-center gap-1 font-inter text-md">
-      *<span>Target Audience Types</span>
-    </span>
-  </label>
-
-  {/* Button to open dropdown */}
-  <input
-    type="button"
-    id="audienceTypes"
-    className={`p-3 w-full bg-richblack-600 h-11 form-style rounded-lg outline-none transition 
-      ${errors.audienceTypes ? "ring-2 ring-red-500" : "focus:ring-2 focus:ring-blue-400"}`}
-    value={audience ? "Audience Types" : "Select Audience Types"}
-    onClick={() => setAudience((prev) => !prev)}
-  />
-
-  {/* ✅ Hidden input for react-hook-form */}
-  <input
-    type="hidden"
-    {...register("audienceTypes", {
-      required: "Please select at least one audience type",
-      validate: (value) =>
-        value.length > 0 || "Please select at least one audience type",
-    })}
-    value={audienceTypes.join(",")}
-  />
-
-  {audience && (
-    <div className="w-full absolute -top-60 h-[200px] flex justify-center items-center">
-      <div className="bg-richblack-600 grid flex-col grid-cols-3 w-full h-full p-3 rounded-lg shadow-lg">
-        {Projects.targetAudience.map((data, index) => {
-          const isSelected = audienceTypes.includes(data.label);
-          return (
-            <div
-              key={index}
-              className={`flex justify-center items-center gap-1 text-md font-edu-sa w-fit Datass rounded-lg outline-none transition px-4 py-2 cursor-pointer font-semibold
-                ${isSelected ? "bg-yellow-400 text-black" : "hover:bg-yellow-400 hover:text-black"}`}
-              onClick={() => {
-                if (!isSelected) {
-                  if (audienceTypes.length >= 5) {
-                    setAudienceError("You cannot select more than 5 audience types");
-                    return;
-                  }
-                  const updated = [...audienceTypes, data.label];
-                  setAudienceTypes(updated);
-                  setValue("audienceTypes", updated.join(","));
-                  setAudienceError("");
-                }
-              }}
-            >
-              {data.label}
-              {isSelected && (
-                <span
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    const updated = audienceTypes.filter((sg) => sg !== data.label);
-                    setAudienceTypes(updated);
-                    setValue("audienceTypes", updated.join(","));
-
-                    if (updated.length < 2) {
-                      setAudienceError("You need to select at least 2 audience types");
-                    } else {
-                      setAudienceError("");
-                    }
-                  }}
-                  className="ml-2 cursor-pointer hover:text-red-600"
-                >
-                  <RxCross1 />
-                </span>
-              )}
-            </div>
-          );
-        })}
-
-        {/* Error messages */}
-        <div className="w-full flex justify-center items-center mt-2 col-span-3">
-          {audienceError && (
-            <div className="text-red-500 font-bold">{audienceError}</div>
-          )}
-          {errors.audienceTypes && (
-            <span className="text-red-500 text-sm">
-              {errors.audienceTypes.message}
-            </span>
-          )}
-        </div>
-      </div>
-    </div>
-  )}
-</div>
-                </div>
-                <div className='w-full flex justify-around items-center dpp'>
-                  <div className='dGsss flex flex-col gap-2'>
-                    <div className='flex justify-around items-center flex-col'>
-                      <span className='flex gap-2'>
-                        * <p className='Distrubationss'>Are There Any Projects Ready For Distribution</p>
+              <div className="p-8 space-y-8">
+                {/* Screening Formats & Audience Types */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Preferred Screening Formats */}
+                  <div className="flex flex-col gap-2 relative">
+                    <label htmlFor="Formats">
+                      <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                        <span className="text-red-500">*</span><span>Preferred Screening Formats</span>
                       </span>
-                      <div className='flex gap-2'>
-                        <label>
-                          <input
-                            type="radio"
-                            name="distributions"
-                            value="Yes"
-                            checked={distribution === "Yes"}
-                            onChange={() => {
-                              setDistribution("Yes");
-                              setValue("distributions", "Yes");
-                            }}
-                          />
-                          Yes
-                        </label>
-                        <label>
-                          <input
-                            type="radio"
-                            name="distributions"
-                            value="No"
-                            checked={distribution === "No"}
-                            onChange={() => {
-                              setDistribution("No");
-                              setValue("distributions", "No");
-                            }}
-                          />
-                          No
-                        </label>
+                    </label>
+
+                    <input
+                      type="button"
+                      id="Formats"
+                      className={`w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none cursor-pointer transition text-white text-left
+                        ${errors.screenFormats ? "ring-2 ring-red-500 border-red-500" : "hover:border-yellow-400/50 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"}`}
+                      value={screen ? "Screen Formats" : "Select Screen Formats"}
+                      onClick={() => setScreen((prev) => !prev)}
+                    />
+
+                    {/* Hidden input for react-hook-form */}
+                    <input
+                      type="hidden"
+                      {...register("screenFormats", {
+                        required: "Please select at least one Screen Format",
+                        validate: (value) =>
+                          value.length > 0 || "Please select at least one Screen Format",
+                      })}
+                      value={screenTypes.join(",")}
+                    />
+
+                    {/* Selected tags */}
+                    {screenTypes.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-1">
+                        {screenTypes.map((item, i) => (
+                          <span key={i} className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 text-xs font-medium">
+                            {item}
+                            <span
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const updated = screenTypes.filter((sg) => sg !== item);
+                                setScreenTypes(updated);
+                                setValue("screenFormats", updated.join(","));
+                                if (updated.length < 2) {
+                                  setScreenError("You need to select at least 2 Screen formats");
+                                } else {
+                                  setScreenError("");
+                                }
+                              }}
+                              className="cursor-pointer hover:text-red-400 transition"
+                            >
+                              <RxCross1 size={10} />
+                            </span>
+                          </span>
+                        ))}
                       </div>
+                    )}
+
+                    {screen && (
+                      <div className="w-full absolute top-[76px] z-20">
+                        <div className="bg-richblack-700 border border-richblack-600 grid grid-cols-2 sm:grid-cols-3 w-full p-4 rounded-lg shadow-xl gap-2 max-h-[220px] overflow-y-auto">
+                          {Projects.Screens.map((data, index) => {
+                            const isSelected = screenTypes.includes(data);
+                            return (
+                              <div
+                                key={index}
+                                className={`flex justify-center items-center gap-1 text-sm font-medium Datass rounded-lg outline-none transition px-3 py-2 cursor-pointer
+                                  ${isSelected ? "bg-yellow-400 text-black shadow-md" : "bg-richblack-600 text-gray-300 hover:bg-yellow-400/20 hover:text-yellow-400 border border-richblack-500"}`}
+                                onClick={() => {
+                                  if (!isSelected) {
+                                    if (screenTypes.length >= 5) {
+                                      setScreenError("You cannot select more than 5 formats");
+                                      return;
+                                    }
+                                    const updated = [...screenTypes, data];
+                                    setScreenTypes(updated);
+                                    setValue("screenFormats", updated.join(","));
+                                    setScreenError("");
+                                  }
+                                }}
+                              >
+                                {data}
+                                {isSelected && (
+                                  <span
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      const updated = screenTypes.filter((sg) => sg !== data);
+                                      setScreenTypes(updated);
+                                      setValue("screenFormats", updated.join(","));
+                                      if (updated.length < 2) {
+                                        setScreenError("You need to select at least 2 Screen formats");
+                                      } else {
+                                        setScreenError("");
+                                      }
+                                    }}
+                                    className="ml-1 cursor-pointer hover:text-red-600"
+                                  >
+                                    <RxCross1 size={12} />
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {screenError && <span className="text-red-500 text-xs mt-1">{screenError}</span>}
+                    {errors.screenFormats && <span className="text-red-500 text-xs mt-1">{errors.screenFormats.message}</span>}
+                  </div>
+
+                  {/* Target Audience Types */}
+                  <div className="flex flex-col gap-2 relative">
+                    <label htmlFor="audienceTypes">
+                      <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                        <span className="text-red-500">*</span><span>Target Audience Types</span>
+                      </span>
+                    </label>
+
+                    <input
+                      type="button"
+                      id="audienceTypes"
+                      className={`w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none cursor-pointer transition text-white text-left
+                        ${errors.audienceTypes ? "ring-2 ring-red-500 border-red-500" : "hover:border-yellow-400/50 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"}`}
+                      value={audience ? "Audience Types" : "Select Audience Types"}
+                      onClick={() => setAudience((prev) => !prev)}
+                    />
+
+                    {/* Hidden input for react-hook-form */}
+                    <input
+                      type="hidden"
+                      {...register("audienceTypes", {
+                        required: "Please select at least one audience type",
+                        validate: (value) =>
+                          value.length > 0 || "Please select at least one audience type",
+                      })}
+                      value={audienceTypes.join(",")}
+                    />
+
+                    {/* Selected tags */}
+                    {audienceTypes.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-1">
+                        {audienceTypes.map((item, i) => (
+                          <span key={i} className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 text-xs font-medium">
+                            {item}
+                            <span
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const updated = audienceTypes.filter((sg) => sg !== item);
+                                setAudienceTypes(updated);
+                                setValue("audienceTypes", updated.join(","));
+                                if (updated.length < 2) {
+                                  setAudienceError("You need to select at least 2 audience types");
+                                } else {
+                                  setAudienceError("");
+                                }
+                              }}
+                              className="cursor-pointer hover:text-red-400 transition"
+                            >
+                              <RxCross1 size={10} />
+                            </span>
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {audience && (
+                      <div className="w-full absolute top-[76px] z-20">
+                        <div className="bg-richblack-700 border border-richblack-600 grid grid-cols-2 sm:grid-cols-3 w-full p-4 rounded-lg shadow-xl gap-2 max-h-[220px] overflow-y-auto">
+                          {Projects.targetAudience.map((data, index) => {
+                            const isSelected = audienceTypes.includes(data.label);
+                            return (
+                              <div
+                                key={index}
+                                className={`flex justify-center items-center gap-1 text-sm font-medium Datass rounded-lg outline-none transition px-3 py-2 cursor-pointer
+                                  ${isSelected ? "bg-yellow-400 text-black shadow-md" : "bg-richblack-600 text-gray-300 hover:bg-yellow-400/20 hover:text-yellow-400 border border-richblack-500"}`}
+                                onClick={() => {
+                                  if (!isSelected) {
+                                    if (audienceTypes.length >= 5) {
+                                      setAudienceError("You cannot select more than 5 audience types");
+                                      return;
+                                    }
+                                    const updated = [...audienceTypes, data.label];
+                                    setAudienceTypes(updated);
+                                    setValue("audienceTypes", updated.join(","));
+                                    setAudienceError("");
+                                  }
+                                }}
+                              >
+                                {data.label}
+                                {isSelected && (
+                                  <span
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      const updated = audienceTypes.filter((sg) => sg !== data.label);
+                                      setAudienceTypes(updated);
+                                      setValue("audienceTypes", updated.join(","));
+                                      if (updated.length < 2) {
+                                        setAudienceError("You need to select at least 2 audience types");
+                                      } else {
+                                        setAudienceError("");
+                                      }
+                                    }}
+                                    className="ml-1 cursor-pointer hover:text-red-600"
+                                  >
+                                    <RxCross1 size={12} />
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {audienceError && <span className="text-red-500 text-xs mt-1">{audienceError}</span>}
+                    {errors.audienceTypes && <span className="text-red-500 text-xs mt-1">{errors.audienceTypes.message}</span>}
+                  </div>
+                </div>
+
+                {/* Distribution & Promotions Radio Questions */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 dpp">
+                  {/* Distribution Question */}
+                  <div className="dGsss flex flex-col gap-3 bg-richblack-700/50 rounded-lg px-5 py-4 border border-richblack-600">
+                    <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                      <span className="text-red-500">*</span>
+                      <span className="Distrubationss">Are There Any Projects Ready For Distribution</span>
+                    </span>
+                    <div className="flex gap-3 mt-1">
+                      <label className={`flex items-center gap-2 px-5 py-2.5 rounded-lg border cursor-pointer transition-all ${distribution === "Yes" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
+                        <input
+                          type="radio"
+                          name="distributions"
+                          value="Yes"
+                          checked={distribution === "Yes"}
+                          onChange={() => {
+                            setDistribution("Yes");
+                            setValue("distributions", "Yes");
+                          }}
+                          className="accent-yellow-400 w-4 h-4"
+                        />
+                        <span className="text-sm font-medium">Yes</span>
+                      </label>
+                      <label className={`flex items-center gap-2 px-5 py-2.5 rounded-lg border cursor-pointer transition-all ${distribution === "No" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
+                        <input
+                          type="radio"
+                          name="distributions"
+                          value="No"
+                          checked={distribution === "No"}
+                          onChange={() => {
+                            setDistribution("No");
+                            setValue("distributions", "No");
+                          }}
+                          className="accent-yellow-400 w-4 h-4"
+                        />
+                        <span className="text-sm font-medium">No</span>
+                      </label>
                     </div>
                     <input type="hidden" {...register("distributions")} value={distribution} />
                   </div>
-                  <div className='dGsss flex flex-col gap-2'>
-                    <div className='flex justify-around items-center flex-col'>
-                      <p className='Promotiones'>Would You like Us To Handle Your Promotions</p>
-                      <div className='flex gap-2'>
-                        <label>
-                          <input
-                            type="radio"
-                            name="promotions"
-                            value="Yes"
-                            checked={promotions === "Yes"}
-                            onChange={() => {
-                              setPromotions("Yes");
-                              setValue("promotions", "Yes");
-                            }}
-                          />
-                          Yes
-                        </label>
-                        <label>
-                          <input
-                            type="radio"
-                            name="promotions"
-                            value="No"
-                            checked={promotions === "No"}
-                            onChange={() => {
-                              setPromotions("No");
-                              setValue("promotions", "No");
-                            }}
-                          />
-                          No
-                        </label>
-                      </div>
+
+                  {/* Promotions Question */}
+                  <div className="dGsss flex flex-col gap-3 bg-richblack-700/50 rounded-lg px-5 py-4 border border-richblack-600">
+                    <span className="text-sm font-semibold text-gray-300">
+                      <span className="Promotiones">Would You like Us To Handle Your Promotions</span>
+                    </span>
+                    <div className="flex gap-3 mt-1">
+                      <label className={`flex items-center gap-2 px-5 py-2.5 rounded-lg border cursor-pointer transition-all ${promotions === "Yes" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
+                        <input
+                          type="radio"
+                          name="promotions"
+                          value="Yes"
+                          checked={promotions === "Yes"}
+                          onChange={() => {
+                            setPromotions("Yes");
+                            setValue("promotions", "Yes");
+                          }}
+                          className="accent-yellow-400 w-4 h-4"
+                        />
+                        <span className="text-sm font-medium">Yes</span>
+                      </label>
+                      <label className={`flex items-center gap-2 px-5 py-2.5 rounded-lg border cursor-pointer transition-all ${promotions === "No" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
+                        <input
+                          type="radio"
+                          name="promotions"
+                          value="No"
+                          checked={promotions === "No"}
+                          onChange={() => {
+                            setPromotions("No");
+                            setValue("promotions", "No");
+                          }}
+                          className="accent-yellow-400 w-4 h-4"
+                        />
+                        <span className="text-sm font-medium">No</span>
+                      </label>
                     </div>
                     <input type="hidden" {...register("promotions")} value={promotions} />
                   </div>
                 </div>
+
+                {/* Show/Hide Toggle */}
                 {distribution === "Yes" && notable && (
-                  <div className='flex Show gap-1 Distribute'>
-                    <FaCaretDown
-                      className="text-2xl cursor-pointer fill-red-600"
-                      onClick={() => setNotable(false)}
-                    />
-                    <span>Show Projects</span>
+                  <div className="flex items-center gap-2 cursor-pointer text-yellow-400 hover:text-yellow-300 transition Distribute" onClick={() => setNotable(false)}>
+                    <FaCaretDown className="text-xl transform -rotate-90 transition-transform" />
+                    <span className="text-sm font-semibold">Show Distribution Projects</span>
                   </div>
                 )}
+
+                {/* Distribution Entries */}
                 {distribution === "Yes" && (
-                  <div className={`${notable ? "hidden" : "w-full Projectsss flex flex-col justify-around gap-2"}`}>
-                    <div className="flex flex-row">
-                      <FaCaretDown
-                        className="text-2xl cursor-pointer"
-                        onClick={() => setNotable(true)}
-                      />
-                      <span>Hide Projects</span>
+                  <div className={`${notable ? "hidden" : "w-full Projectsss flex flex-col gap-4"}`}>
+                    <div className="flex items-center gap-2 cursor-pointer text-yellow-400 hover:text-yellow-300 transition" onClick={() => setNotable(true)}>
+                      <FaCaretDown className="text-xl transition-transform" />
+                      <span className="text-sm font-semibold">Hide Distribution Projects</span>
                     </div>
+
                     {distributionsEntries.map((field, index) => (
-                      <div className='flex justify-evenly items-center gap-3' key={field.id}>
-                        <span>{index + 1}</span>
+                      <div className="relative bg-richblack-700/40 border border-richblack-600 rounded-xl p-5" key={field.id}>
+                        {/* Entry number badge */}
+                        <div className="absolute -top-3 left-4 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full">
+                          Project {index + 1}
+                        </div>
 
-                        <label className='flex flex-col gap-2'>
-                            {duplicatedistributations.has(index) && (
-      <span className="text-red-500 text-sm">
-        Duplicate project name detected!
-      </span>
-    )}
-           {errors?.distributionsEntries?.[index]?.projectname && <span className='text-red-500 text-sm'>{errors.distributionsEntries[index].projectname.message}</span>}
-                          <span className='flex gap-2'>*<span>Project Name</span></span>
-                          <input
-                            type="text"
-                            placeholder="Enter the name of the Project"
-                          className={`form-style h-9 w-[290px] bg-richblack-600 rounded-2xl  ${
-      duplicatedistributations.has(index) ? "border-2 border-red-500" : ""
-    }`}
-                            {...register(`distributionsEntries.${index}.projectname`, {
-                              required: distribution === "Yes" ? "Project name is required" : false,
-                              validate: (val) => {
-        const allNames = getValues("distributionsEntries").map((entry, i) =>
-          (i === index ? val : entry?.projectname || "")
-            .toLowerCase()
-            .replace(/\s+/g, "")
-            .trim()
-        );
-
-        const normalized = val.toLowerCase().replace(/\s+/g, "").trim();
-
-        return allNames.filter((name) => name && name === normalized).length > 1
-          ? ""
-          : true;
-      },
-                            })}
-
-                            onChange={(e) => {
-      const value = e.target.value;
-
-      setValue(`distributionsEntries.${index}.projectname`, value, {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
-
-      const allNames = getValues("distributionsEntries").map((entry, i) =>
-        (i === index ? value : entry?.projectname || "")
-          .toLowerCase()
-          .replace(/\s+/g, "")
-          .trim()
-      );
-
-      const counts = {};
-      allNames.forEach((n) => {
-        if (!n) return;
-        counts[n] = (counts[n] || 0) + 1;
-      });
-
-      const newDuplicates = new Set();
-      allNames.forEach((n, i) => {
-        if (n && counts[n] > 1) newDuplicates.add(i);
-      });
-
-      setduplicatedistributations(newDuplicates);
-      // duplicateProjectsplanned, setduplicateProjectsplanned
-    // duplicatedistributations, setduplicatedistributations
-    }}
-                          />
-                        </label>
-                        <label className='flex flex-col gap-2'>
-           {/* {errors?.distributionsEntries?.[index]?.Budget && <span className='text-red-500 text-sm'>{errors.distributionsEntries[index].Budget.message}</span>} */}
-                          <span>Total Budget</span>
-                          <select
-                            className='p-3 bg-richblack-600 h-11 form-style rounded-lg'
-                            {...register(`distributionsEntries.${index}.Budget`)}
-                          >
-                            <option value="" disabled>Select Budget Range</option>
-                            {Projects.Money.map((money, i) => (
-                              <option key={i} value={money}>
-                                {money}
-                              </option>
-                            ))}
-                          </select>
-                        </label>
-                        <label className='flex flex-col gap-2'>
-           {errors?.distributionsEntries?.[index]?.Role && <span className='text-red-500 text-sm'>{errors.distributionsEntries[index].Role.message}</span>}
-
-                          <span className='flex gap-2'>*<span>Your Role</span></span>
-                          <select
-                            className='p-3 bg-richblack-600 h-11 form-style rounded-lg'
-                            {...register(`distributionsEntries.${index}.Role`, {
-                              required: "Role is required",
-                            })}
-                          >
-                            <option value="" disabled>Your Role</option>
-                            {Projects.roles.map((role, i) => (
-                              <option key={i} value={role}>
-                                {role}
-                              </option>
-                            ))}
-                          </select>
-                        </label>
-                        <label className="flex flex-col gap-2">
-           {errors?.distributionsEntries?.[index]?.ReleaseDate && <span className='text-red-500 text-sm'>{errors.distributionsEntries[index].ReleaseDate.message}</span>}
-                          <span className="flex items-center gap-3">*<span>Release Date</span></span>
-                          <input
-                            type="month"
-                            className="form-style h-9 w-[140px] bg-richblack-600 rounded-2xl px-2"
-                            {...register(`distributionsEntries.${index}.ReleaseDate`, {
-                              required: "Date is required",
-                            })}
-                          />
-                        </label>
+                        {/* Remove button */}
                         <div
-                          className="flex justify-center items-center rounded-full hover:bg-red-600 cursor-pointer"
+                          className="absolute top-3 right-3 w-7 h-7 flex justify-center items-center rounded-full bg-richblack-600 hover:bg-red-600 cursor-pointer transition-colors"
                           onClick={() => {
                             if (distributionsEntries.length === 1) {
                               setNotableError("You need to keep at least one field");
@@ -3161,18 +3176,133 @@ if(loading){
                             }
                           }}
                         >
-                          <RxCross1 className='text-richblack-100' />
+                          <RxCross1 className="text-richblack-100 text-xs" />
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mt-3">
+                          {/* Project Name */}
+                          <label className="flex flex-col gap-2">
+                            <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span><span>Project Name</span>
+                            </span>
+                            {duplicatedistributations.has(index) && (
+                              <span className="text-red-500 text-xs">Duplicate project name detected!</span>
+                            )}
+                            {errors?.distributionsEntries?.[index]?.projectname && <span className="text-red-500 text-xs">{errors.distributionsEntries[index].projectname.message}</span>}
+                            <input
+                              type="text"
+                              placeholder="Enter the name of the Project"
+                              className={`w-full p-3 bg-richblack-700 border form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500 ${
+                                duplicatedistributations.has(index) ? "border-2 border-red-500" : "border-richblack-600"
+                              }`}
+                              {...register(`distributionsEntries.${index}.projectname`, {
+                                required: distribution === "Yes" ? "Project name is required" : false,
+                                validate: (val) => {
+                                  const allNames = getValues("distributionsEntries").map((entry, i) =>
+                                    (i === index ? val : entry?.projectname || "")
+                                      .toLowerCase()
+                                      .replace(/\s+/g, "")
+                                      .trim()
+                                  );
+                                  const normalized = val.toLowerCase().replace(/\s+/g, "").trim();
+                                  return allNames.filter((name) => name && name === normalized).length > 1
+                                    ? ""
+                                    : true;
+                                },
+                              })}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                setValue(`distributionsEntries.${index}.projectname`, value, {
+                                  shouldValidate: true,
+                                  shouldDirty: true,
+                                });
+                                const allNames = getValues("distributionsEntries").map((entry, i) =>
+                                  (i === index ? value : entry?.projectname || "")
+                                    .toLowerCase()
+                                    .replace(/\s+/g, "")
+                                    .trim()
+                                );
+                                const counts = {};
+                                allNames.forEach((n) => {
+                                  if (!n) return;
+                                  counts[n] = (counts[n] || 0) + 1;
+                                });
+                                const newDuplicates = new Set();
+                                allNames.forEach((n, i) => {
+                                  if (n && counts[n] > 1) newDuplicates.add(i);
+                                });
+                                setduplicatedistributations(newDuplicates);
+                                // duplicateProjectsplanned, setduplicateProjectsplanned
+                                // duplicatedistributations, setduplicatedistributations
+                              }}
+                            />
+                          </label>
+
+                          {/* Total Budget */}
+                          <label className="flex flex-col gap-2">
+                            {/* {errors?.distributionsEntries?.[index]?.Budget && <span className='text-red-500 text-sm'>{errors.distributionsEntries[index].Budget.message}</span>} */}
+                            <span className="text-sm font-semibold text-gray-300">Total Budget</span>
+                            <select
+                              className="w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white"
+                              {...register(`distributionsEntries.${index}.Budget`)}
+                            >
+                              <option value="" disabled>Select Budget Range</option>
+                              {Projects.Money.map((money, i) => (
+                                <option key={i} value={money}>
+                                  {money}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+
+                          {/* Your Role */}
+                          <label className="flex flex-col gap-2">
+                            <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span><span>Your Role</span>
+                            </span>
+                            {errors?.distributionsEntries?.[index]?.Role && <span className="text-red-500 text-xs">{errors.distributionsEntries[index].Role.message}</span>}
+                            <select
+                              className="w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white"
+                              {...register(`distributionsEntries.${index}.Role`, {
+                                required: "Role is required",
+                              })}
+                            >
+                              <option value="" disabled>Your Role</option>
+                              {Projects.roles.map((role, i) => (
+                                <option key={i} value={role}>
+                                  {role}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+
+                          {/* Release Date */}
+                          <label className="flex flex-col gap-2">
+                            <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span><span>Release Date</span>
+                            </span>
+                            {errors?.distributionsEntries?.[index]?.ReleaseDate && <span className="text-red-500 text-xs">{errors.distributionsEntries[index].ReleaseDate.message}</span>}
+                            <input
+                              type="month"
+                              className="w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white"
+                              {...register(`distributionsEntries.${index}.ReleaseDate`, {
+                                required: "Date is required",
+                              })}
+                            />
+                          </label>
                         </div>
                       </div>
                     ))}
+
                     {notableError && (
-                      <span className="text-red-500 text-sm flex justify-center items-center">
+                      <span className="text-red-500 text-xs flex justify-center items-center">
                         {notableError}
                       </span>
                     )}
+
                     <button
                       type="button"
-                      className="mt-2 px-4 py-1 bg-blue-600 text-white rounded"
+                      className="mt-2 self-start px-6 py-2.5 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold rounded-lg hover:from-yellow-500 hover:to-yellow-600 transition-all shadow-md hover:shadow-lg text-sm"
                       onClick={() => {
                         if (distributionsEntries.length >= 4) {
                           setNotableError("You can create 4 fields only");
@@ -3182,61 +3312,66 @@ if(loading){
                         }
                       }}
                     >
-                      Add more
+                      + Add More Projects
                     </button>
                   </div>
                 )}
               </div>
             </div>
             {/* Support & Motivation */}
-            <div className='w-full Supports bg-richblack-800 rounded-md'>
-              <p className="text-xl font-bold text-yellow-400 mb-6 text-center flex justify-start items-start Verificationss">Support & Motivation</p>
-              <div className='w-full h-full flex flex-col gap-2'>
-                <label className="w-full">
-                  <div className="dGsss flex flex-col gap-2">
-                    <div className="flex justify-around items-center flex-col">
-                      <p className="AssistanceRequired">
-                        Would You Require Any Type of Support Or Assistance
-                      </p>
-                      <div className="flex gap-2">
-                        <label>
-                          <input
-                            type="radio"
-                            name="AssistanceRequired"
-                            value="Yes"
-                            checked={support === "Yes"}
-                            onChange={(e) => {
-                              setSupport(e.target.value);
-                              setValue("AssistanceRequired", "Yes");
-                            }}
-                          />
-                          Yes
-                        </label>
-                        <label>
-                          <input
-                            type="radio"
-                            name="AssistanceRequired"
-                            value="No"
-                            checked={support === "No"}
-                            onChange={(e) => {
-                              setSupport(e.target.value);
-                              setValue("AssistanceRequired", "No");
-                            }}
-                          />
-                          No
-                        </label>
-                      </div>
-                    </div>
-                    <input type="hidden" {...register("AssistanceRequired")} value={support} />
+            <div className="w-full Supports bg-richblack-800 rounded-xl border border-richblack-700 shadow-lg overflow-hidden">
+              <div className="bg-gradient-to-r from-yellow-400/10 to-transparent border-b border-richblack-700 px-8 py-5">
+                <p className="text-2xl font-bold text-yellow-400 Verificationss">Support & Motivation</p>
+                <p className="text-sm text-gray-400 mt-1">Your support needs, certifications & collaboration preferences</p>
+              </div>
+
+              <div className="p-8 space-y-8">
+                {/* Assistance Required */}
+                <div className="dGsss flex flex-col gap-4 bg-richblack-700/50 rounded-lg px-5 py-4 border border-richblack-600">
+                  <span className="text-sm font-semibold text-gray-300 AssistanceRequired">
+                    Would You Require Any Type of Support Or Assistance
+                  </span>
+                  <div className="flex gap-3">
+                    <label className={`flex items-center gap-2 px-5 py-2.5 rounded-lg border cursor-pointer transition-all ${support === "Yes" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
+                      <input
+                        type="radio"
+                        name="AssistanceRequired"
+                        value="Yes"
+                        checked={support === "Yes"}
+                        onChange={(e) => {
+                          setSupport(e.target.value);
+                          setValue("AssistanceRequired", "Yes");
+                        }}
+                        className="accent-yellow-400 w-4 h-4"
+                      />
+                      <span className="text-sm font-medium">Yes</span>
+                    </label>
+                    <label className={`flex items-center gap-2 px-5 py-2.5 rounded-lg border cursor-pointer transition-all ${support === "No" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
+                      <input
+                        type="radio"
+                        name="AssistanceRequired"
+                        value="No"
+                        checked={support === "No"}
+                        onChange={(e) => {
+                          setSupport(e.target.value);
+                          setValue("AssistanceRequired", "No");
+                        }}
+                        className="accent-yellow-400 w-4 h-4"
+                      />
+                      <span className="text-sm font-medium">No</span>
+                    </label>
                   </div>
-                  <div className={support === "Yes" ? "flex flex-col" : "hidden"}>
-                    <span>
-                      * <span>Can You tell What type of Support You Need</span>
+                  <input type="hidden" {...register("AssistanceRequired")} value={support} />
+
+                  {/* Support Type Dropdown */}
+                  <div className={support === "Yes" ? "flex flex-col gap-2 mt-2" : "hidden"}>
+                    <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                      <span className="text-red-500">*</span><span>Can You tell What type of Support You Need</span>
                     </span>
                     <select
                       defaultValue=""
                       id="AssistanceType"
-                      className="p-3 w-full bg-richblack-600 h-11 form-style rounded-lg outline-none focus:ring-2 focus:ring-blue-400 transition"
+                      className="w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white"
                       {...register("AssistanceType", { required: support === "Yes" ? "Please select a support type" : false })}
                     >
                       <option value="" disabled>
@@ -3249,35 +3384,43 @@ if(loading){
                       ))}
                     </select>
                   </div>
-                </label>
-                <div className='flex justify-around gap-2 flex-col'>
-                  <label htmlFor="JoiningReason" className="block font-semibold mb-2 ">
-                    <span className="flex items-center gap-2"> * <span>What is Your main Reason for Joining</span>    {errors.JoiningReason && (
-        <span className="text-red-500">{errors.JoiningReason.message}</span>
-      )} </span>
+                </div>
+
+                {/* Joining Reason */}
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="JoiningReason" className="flex flex-col gap-2">
+                    <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                      <span className="text-red-500">*</span><span>What is Your main Reason for Joining</span>
+                      {errors.JoiningReason && (
+                        <span className="text-red-500 text-xs ml-2">{errors.JoiningReason.message}</span>
+                      )}
+                    </span>
                   </label>
-          <textarea
+                  <textarea
                     id="JoiningReason"
                     name="JoiningReason"
                     placeholder="Write a short bio (max 250 characters)"
                     maxLength={250}
                     rows={4}
-                     value={fields.JoiningReason}
-                    className="w-full p-3 bg-richblack-600 text-white rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 resize-none"
+                    value={fields.JoiningReason}
+                    className="w-full p-3 bg-richblack-700 border border-richblack-600 text-white rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition resize-none placeholder-gray-500"
                     {...register("JoiningReason",{required:"Your reason for joining "})}
-                      onChange={handleChange}
+                    onChange={handleChange}
                   />
-                <p className="text-sm text-gray-400 mt-1 flex justify-end">
-        {countWords(fields.JoiningReason)} / Max 250 words
-      </p>
+                  <p className="text-xs text-gray-400 flex justify-end">
+                    {countWords(fields.JoiningReason)} / Max 250 words
+                  </p>
                 </div>
-                <div className="w-full flex justify-around items-center Last_Field">
-                  <div className="flex flex-col justify-around items-center">
-                    <span className="flex gap-1">
-                      *<span>Do You Have any Certifications in this field</span>
+
+                {/* Certifications, Experience & Collaboration */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 Last_Field">
+                  {/* Certifications */}
+                  <div className="flex flex-col gap-3 bg-richblack-700/50 rounded-lg px-5 py-4 border border-richblack-600">
+                    <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                      <span className="text-red-500">*</span><span>Do You Have any Certifications in this field</span>
                     </span>
-                    <div className="flex gap-2">
-                      <label>
+                    <div className="flex gap-3">
+                      <label className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${certified === "Yes" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
                         <input
                           type="checkbox"
                           name="Certified"
@@ -3287,13 +3430,14 @@ if(loading){
                             setCertified(e.target.value);
                             setValue("Certified", "Yes");
                           }}
+                          className="accent-yellow-400 w-4 h-4"
                         />
-                        Yes
+                        <span className="text-sm font-medium">Yes</span>
                       </label>
-                      <label>
+                      <label className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${certified === "No" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
                         <input
                           type="checkbox"
-                          name="Certified"  
+                          name="Certified"
                           value="No"
                           checked={certified === "No"}
                           onChange={(e) => {
@@ -3301,18 +3445,21 @@ if(loading){
                             setValue("Certified", "No");
                             setValue("certifications",[])
                           }}
+                          className="accent-yellow-400 w-4 h-4"
                         />
-                        No
+                        <span className="text-sm font-medium">No</span>
                       </label>
                     </div>
                     <input type="hidden" {...register("Certified")} value={certified} />
                   </div>
-                  <div className="flex flex-col justify-around items-center">
-                    <span className="flex gap-1">
-                      *<span>Do You Have Any Experience Collaborating with Others</span>
+
+                  {/* Experience Collaborating */}
+                  <div className="flex flex-col gap-3 bg-richblack-700/50 rounded-lg px-5 py-4 border border-richblack-600">
+                    <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                      <span className="text-red-500">*</span><span>Do You Have Any Experience Collaborating with Others</span>
                     </span>
-                    <div className="flex gap-2">
-                      <label>
+                    <div className="flex gap-3">
+                      <label className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${experience === "Yes" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
                         <input
                           type="radio"
                           name="Experience"
@@ -3322,10 +3469,11 @@ if(loading){
                             setExperience(e.target.value);
                             setValue("Experience", "Yes");
                           }}
+                          className="accent-yellow-400 w-4 h-4"
                         />
-                        Yes
+                        <span className="text-sm font-medium">Yes</span>
                       </label>
-                      <label>
+                      <label className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${experience === "No" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
                         <input
                           type="radio"
                           name="Experience"
@@ -3335,18 +3483,21 @@ if(loading){
                             setExperience(e.target.value);
                             setValue("Experience", "No");
                           }}
+                          className="accent-yellow-400 w-4 h-4"
                         />
-                        No
+                        <span className="text-sm font-medium">No</span>
                       </label>
                     </div>
                     <input type="hidden" {...register("Experience")} value={experience} />
                   </div>
-                  <div className="flex flex-col justify-around items-center">
-                    <span className="flex gap-1">
-                      *<span>Are You Comfortable With Collaboration</span>
+
+                  {/* Comfortable With Collaboration */}
+                  <div className="flex flex-col gap-3 bg-richblack-700/50 rounded-lg px-5 py-4 border border-richblack-600">
+                    <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                      <span className="text-red-500">*</span><span>Are You Comfortable With Collaboration</span>
                     </span>
-                    <div className="flex gap-2">
-                      <label>
+                    <div className="flex gap-3">
+                      <label className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${collabration === "Yes" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
                         <input
                           type="radio"
                           name="Collaboration"
@@ -3356,10 +3507,11 @@ if(loading){
                             setCollabration(e.target.value);
                             setValue("Collaboration", "Yes");
                           }}
+                          className="accent-yellow-400 w-4 h-4"
                         />
-                        Yes
+                        <span className="text-sm font-medium">Yes</span>
                       </label>
-                      <label>
+                      <label className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${collabration === "No" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
                         <input
                           type="radio"
                           name="Collaboration"
@@ -3369,316 +3521,309 @@ if(loading){
                             setCollabration(e.target.value);
                             setValue("Collaboration", "No");
                           }}
+                          className="accent-yellow-400 w-4 h-4"
                         />
-                        No
+                        <span className="text-sm font-medium">No</span>
                       </label>
                     </div>
                     <input type="hidden" {...register("Collaboration")} value={collabration} />
                   </div>
                 </div>
+
+                {/* Certifications Show/Hide Toggle */}
                 {certified === "Yes" && cert && (
-  <div className="flex gap-1 One">
-    <FaCaretDown
-      className="text-2xl cursor-pointer fill-red-600"
-      onClick={() => setCert(false)}
-    />
-    <span>Hide Certifications</span>
-  </div>
-)}
-               
-{certified === "Yes" && (
-  <div className={`${cert ? "hidden" : "w-full One flex flex-col justify-around gap-2"}`}>
-    <div className="flex flex-row">
-      <FaCaretDown
-        className="text-2xl cursor-pointer"
-        onClick={() => setCert(true)}
-      />
-      <span>Show Certifications</span>
-    </div>
+                  <div className="flex items-center gap-2 cursor-pointer text-yellow-400 hover:text-yellow-300 transition One" onClick={() => setCert(false)}>
+                    <FaCaretDown className="text-xl transform -rotate-90 transition-transform" />
+                    <span className="text-sm font-semibold">Show Certifications</span>
+                  </div>
+                )}
 
-    {/* Fields Mapping */}
-    {certifications.map((field, index) => (
-      <div
-        className="flex gap-4 p-3 border-b border-gray-700 w-full justify-around items-center"
-        key={field.id}
-      >
-        {/* Certificate Name */}
-        <label className="flex flex-col gap-2">
-          <span className="flex justify-start items-center gap-3">
-            {errors?.certifications?.[index]?.CertificateName && (
-              <span className="text-red-500 text-sm">
-                {errors.certifications[index].CertificateName.message}
-              </span>
-            )}
-           {duplicateCertifications.has(index) && (
-      <span className="text-red-500 text-sm">
-        Duplicate Certificate name detected!
-      </span>
-    )}
-            *<span>Certificate Name</span>                        
-          </span>
-          <input
-            type="text"
-            placeholder="Enter Your Certificate Name"
-            className={`form-style h-9 w-[390px] bg-richblack-600 rounded-2xl px-3${
-      duplicateCertifications.has(index) ? "border-2 border-red-500" : ""
-    }`}
-            {...register(`certifications.${index}.CertificateName`, {
-              required: certified === "Yes" ? "Certificate name is required" : false,
-                validate: (val) => {
-        const allNames = getValues("certifications").map((entry, i) =>
-          (i === index ? val : entry?.CertificateName || "")
-            .toLowerCase()
-            .replace(/\s+/g, "")
-            .trim()
-        );
+                {/* Certifications Entries */}
+                {certified === "Yes" && (
+                  <div className={`${cert ? "hidden" : "w-full One flex flex-col gap-4"}`}>
+                    <div className="flex items-center gap-2 cursor-pointer text-yellow-400 hover:text-yellow-300 transition" onClick={() => setCert(true)}>
+                      <FaCaretDown className="text-xl transition-transform" />
+                      <span className="text-sm font-semibold">Hide Certifications</span>
+                    </div>
 
-        const normalized = val.toLowerCase().replace(/\s+/g, "").trim();
+                    {/* Fields Mapping */}
+                    {certifications.map((field, index) => (
+                      <div className="relative bg-richblack-700/40 border border-richblack-600 rounded-xl p-5" key={field.id}>
+                        {/* Entry number badge */}
+                        <div className="absolute -top-3 left-4 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full">
+                          Certificate {index + 1}
+                        </div>
 
-        return allNames.filter((name) => name && name === normalized).length > 1
-          ? ""
-          : true;
-      },    
-            })}
-           onChange={(e) => {
-      const value = e.target.value;
+                        {/* Remove Button */}
+                        <div
+                          className="absolute top-3 right-3 w-7 h-7 flex justify-center items-center rounded-full bg-richblack-600 hover:bg-red-600 cursor-pointer transition-colors"
+                          onClick={() => {
+                            if (certifications.length === 1) {
+                              setCertError("You need to keep at least one field");
+                            } else {
+                              removeCert(index);
+                              setCertError("");
+                            }
+                          }}
+                        >
+                          <RxCross1 className="text-richblack-100 text-xs" />
+                        </div>
 
-      setValue(`certifications.${index}.CertificateName`, value, {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-3">
+                          {/* Certificate Name */}
+                          <label className="flex flex-col gap-2">
+                            <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span><span>Certificate Name</span>
+                            </span>
+                            {errors?.certifications?.[index]?.CertificateName && (
+                              <span className="text-red-500 text-xs">{errors.certifications[index].CertificateName.message}</span>
+                            )}
+                            {duplicateCertifications.has(index) && (
+                              <span className="text-red-500 text-xs">Duplicate Certificate name detected!</span>
+                            )}
+                            <input
+                              type="text"
+                              placeholder="Enter Your Certificate Name"
+                              className={`w-full p-3 bg-richblack-700 border form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500 ${
+                                duplicateCertifications.has(index) ? "border-2 border-red-500" : "border-richblack-600"
+                              }`}
+                              {...register(`certifications.${index}.CertificateName`, {
+                                required: certified === "Yes" ? "Certificate name is required" : false,
+                                validate: (val) => {
+                                  const allNames = getValues("certifications").map((entry, i) =>
+                                    (i === index ? val : entry?.CertificateName || "")
+                                      .toLowerCase()
+                                      .replace(/\s+/g, "")
+                                      .trim()
+                                  );
+                                  const normalized = val.toLowerCase().replace(/\s+/g, "").trim();
+                                  return allNames.filter((name) => name && name === normalized).length > 1
+                                    ? ""
+                                    : true;
+                                },
+                              })}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                setValue(`certifications.${index}.CertificateName`, value, {
+                                  shouldValidate: true,
+                                  shouldDirty: true,
+                                });
+                                const allNames = getValues("certifications").map((entry, i) =>
+                                  (i === index ? value : entry?.CertificateName || "")
+                                    .toLowerCase()
+                                    .replace(/\s+/g, "")
+                                    .trim()
+                                );
+                                const counts = {};
+                                allNames.forEach((n) => {
+                                  if (!n) return;
+                                  counts[n] = (counts[n] || 0) + 1;
+                                });
+                                const newDuplicates = new Set();
+                                allNames.forEach((n, i) => {
+                                  if (n && counts[n] > 1) newDuplicates.add(i);
+                                });
+                                setduplicateCertifications(newDuplicates);
+                                {/* duplicateCertifications, setduplicateCertifications */}
+                              }}
+                            />
+                          </label>
 
-      const allNames = getValues("certifications").map((entry, i) =>
-        (i === index ? value : entry?.CertificateName || "")
-          .toLowerCase()
-          .replace(/\s+/g, "")
-          .trim()
-      );
+                          {/* File Upload */}
+                          <label className="flex flex-col gap-2">
+                            <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span><span>Certificate</span>
+                            </span>
+                            {errors?.certifications?.[index]?.Certificatealink && (
+                              <span className="text-red-500 text-xs">{errors.certifications[index].Certificatealink.message}</span>
+                            )}
+                            <input
+                              type="file"
+                              accept=".pdf,.docx,.jpg,.jpeg,.png"
+                              className="w-full p-2.5 bg-richblack-700 border border-richblack-600 form-style rounded-lg text-white text-sm file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-yellow-400/10 file:text-yellow-400 hover:file:bg-yellow-400/20 file:cursor-pointer"
+                              onChange={(e) => {
+                                const files = e.target.files;
+                                const file = files?.[0];
+                                if (file) {
+                                  const allowedTypes = ["application/pdf", "image/png", "image/jpeg"];
+                                  if (!allowedTypes.includes(file.type)) {
+                                    e.target.value = null;
+                                    setValue(`certifications.${index}.Certificatealink`, null, { shouldValidate: true });
+                                    return;
+                                  }
+                                  if (file.size > 5 * 1024 * 1024) {
+                                    e.target.value = null;
+                                    setValue(`certifications.${index}.Certificatealink`, null, { shouldValidate: true });
+                                    alert("File size must be less than 5MB");
+                                    return;
+                                  }
+                                }
+                                setValue(`certifications.${index}.Certificatealink`, files, { shouldValidate: true });
+                              }}
+                            />
+                          </label>
 
-      const counts = {};
-      allNames.forEach((n) => {
-        if (!n) return;
-        counts[n] = (counts[n] || 0) + 1;
-      });
+                          {/* Completion Date */}
+                          <label className="flex flex-col gap-2">
+                            <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span><span>Certificate Completion Date</span>
+                            </span>
+                            {errors?.certifications?.[index]?.CertDate && (
+                              <span className="text-red-500 text-xs">{errors.certifications[index].CertDate.message}</span>
+                            )}
+                            <input
+                              type="month"
+                              className="w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white"
+                              {...register(`certifications.${index}.CertDate`, {
+                                required: "Date is required",
+                              })}
+                            />
+                          </label>
+                        </div>
+                      </div>
+                    ))}
 
-      const newDuplicates = new Set();
-      allNames.forEach((n, i) => {
-        if (n && counts[n] > 1) newDuplicates.add(i);
-      });
-
-      setduplicateCertifications(newDuplicates);
-    
-            {/* duplicateCertifications, setduplicateCertifications */}
-    }} 
-          />
-        </label>
-
-        {/* File Upload */}
-        <label className="flex flex-col gap-2">
-          <span className="flex items-center gap-3">
-            {errors?.certifications?.[index]?.Certificatealink && (
-              <span className="text-red-500 text-sm">
-                {errors.certifications[index].Certificatealink.message}
-              </span>
-            )}
-            *<span>Certificate</span>
-          </span>
-          <input
-            type="file"
-            accept=".pdf,.docx,.jpg,.jpeg,.png"
-            className="form-style bg-richblack-600 rounded-2xl p-2"
-            onChange={(e) => {
-              const files = e.target.files;
-              const file = files?.[0];
-              if (file) {
-                const allowedTypes = ["application/pdf", "image/png", "image/jpeg"];
-                if (!allowedTypes.includes(file.type)) {
-                  e.target.value = null;
-                  setValue(`certifications.${index}.Certificatealink`, null, { shouldValidate: true });
-                  return;
-                }
-                if (file.size > 5 * 1024 * 1024) {
-                  e.target.value = null;
-                  setValue(`certifications.${index}.Certificatealink`, null, { shouldValidate: true });
-                  alert("File size must be less than 5MB");
-                  return;
-                }
-              }
-              setValue(`certifications.${index}.Certificatealink`, files, { shouldValidate: true });
-            }}
-          />
-        </label>
-
-        {/* Completion Date */}
-        <label className="flex flex-col gap-2">
-          {errors?.certifications?.[index]?.CertDate && (
-            <span className="text-red-500 text-sm">
-              {errors.certifications[index].CertDate.message}
-            </span>
-          )}
-          <span className="flex items-center gap-3">*<span>Certificate Completion Date</span></span>
-          <input
-            type="month"
-            className="form-style h-9 w-[140px] bg-richblack-600 rounded-2xl px-2"
-            {...register(`certifications.${index}.CertDate`, {
-              required: "Date is required",
-            })}
-          />
-        </label>
-
-        {/* Remove Button */}
-        <div
-          className="flex justify-center items-center w-8 h-8 rounded-full hover:bg-red-600 cursor-pointer"
-          onClick={() => {
-            if (certifications.length === 1) {
-              setCertError("You need to keep at least one field");
-            } else {
-              removeCert(index);
-              setCertError("");
-            }
-          }}
-        >
-          <RxCross1 className="text-richblack-100" />
-        </div>
-      </div>
-    ))}
-
-    {/* Error + Add More */}
-    {certError && (
-      <span className="text-red-500 text-sm flex justify-center items-center">
-        {certError}
-      </span>
-    )}
-    <button
-      type="button"
-      className="px-4 py-1 bg-blue-600 text-white rounded Adding w-full"
-      onClick={() => {
-        if (certifications.length >= 4) {
-          setCertError("You can create 4 fields only");
-        } else {
-          appendCert({ CertificateName: "", Certificatealink: null, CertDate: "" });
-          setCertError("");
-        }
-      }}
-    >
-      Add more
-    </button>
-  </div>
-)}
+                    {/* Error + Add More */}
+                    {certError && (
+                      <span className="text-red-500 text-xs flex justify-center items-center">
+                        {certError}
+                      </span>
+                    )}
+                    <button
+                      type="button"
+                      className="self-start px-6 py-2.5 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold rounded-lg hover:from-yellow-500 hover:to-yellow-600 transition-all shadow-md hover:shadow-lg text-sm Adding"
+                      onClick={() => {
+                        if (certifications.length >= 4) {
+                          setCertError("You can create 4 fields only");
+                        } else {
+                          appendCert({ CertificateName: "", Certificatealink: null, CertDate: "" });
+                          setCertError("");
+                        }
+                      }}
+                    >
+                      + Add More Certifications
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
             {/* Roles */}
-            <div className='w-full Roles bg-richblack-800 rounded-md'>
-              <p className="text-xl font-bold text-yellow-400 mb-6 text-center flex justify-start items-start Verificationss">Role Specific Question</p>
-              
-              <div className='w-full'>
-                <div className="w-full flex justify-around items-center gap-2 role">
-        <div className="flex flex-col justify-around items-center gap-2">
-          <span>
-            *<span>What Role Suits You</span>
-          </span>
-          <div className="flex w-[320px] bg-[#656874] rounded-full overflow-hidden">
-            {["Director", "Producer"].map((role, idx) => (
-              <button
-                key={role}
-                type="button"
-                className={`flex-1 px-6 py-3 transition-colors font-semibold Btnes
-                  ${
-                    selectedRole === role
-                      ? "bg-richblack-900 text-white"
-                      : "bg-[#656874] text-white hover:bg-yellow-400 hover:text-black"
-                  }
-                  ${idx === 0 ? "rounded-l-full" : "rounded-r-full"}
-                `}
-                onClick={() => {
-                  setSelectedRole(role);
-                  setRoleError("");
-                  setValue("selectedRole", role, { shouldValidate: true }); // ✅ tell RHF
-                }}
-              >
-                {role}
-              </button>
-            ))}
-          </div>
-          {roleError && (
-            <span className="text-red-500 text-sm mt-1">{roleError}</span>
-          )}
-          {errors.selectedRole && (
-            <span className="text-red-500 text-sm mt-1">
-              {errors.selectedRole.message}
-            </span>
-          )}
-          <input
-            type="hidden"
-            {...register("selectedRole", { required: "Role is required" })}
-            value={selectedRole}
-          />
-        </div>
+            <div className="w-full Roles bg-richblack-800 rounded-xl border border-richblack-700 shadow-lg overflow-hidden">
+              <div className="bg-gradient-to-r from-yellow-400/10 to-transparent border-b border-richblack-700 px-8 py-5">
+                <p className="text-2xl font-bold text-yellow-400 Verificationss">Role Specific Question</p>
+                <p className="text-sm text-gray-400 mt-1">Select your role and experience level to unlock relevant questions</p>
+              </div>
 
-        {/* Experience Section */}
-        <div className="flex flex-col justify-around items-center gap-2">
-          <span>
-            *<span>Do You have Any Experience in This field</span>
-          </span>
-          <div className="flex w-[320px] bg-[#656874] rounded-full overflow-hidden">
-            {["Fresher", "Experienced"].map((exp, idx) => (
-              <button
-                key={exp}
-                type="button"
-                className={`flex-1 px-6 py-3 transition-colors font-semibold Btnes
-                  ${
-                    experiences === exp
-                      ? "bg-richblack-900 text-white"
-                      : "bg-[#656874] text-white hover:bg-yellow-400 hover:text-black"
-                  }
-                  ${idx === 0 ? "rounded-l-full" : "rounded-r-full"}
-                `}
-                onClick={() => {
-                  setExperiences(exp);
-                  setExperienceError("");
-                  setValue("experiences", exp, { shouldValidate: true }); 
-                }}
-                style={{ cursor: "pointer" }}
-              >
-                {exp}
-              </button>
-            ))}
-          </div>
-          {experienceError && (
-            <span className="text-red-500 text-sm mt-1">
-              {experienceError}
-            </span>
-          )}
-          <input
-            type="hidden"
-            {...register("experiences", {
-              required: "Experience level is required",
-            })}
-            value={experiences}
-          />
-          {errors.experiences && (
-            <span className="text-red-500 text-sm mt-1">
-              {errors.experiences.message}
-            </span>
-          )}
-        </div>
-      </div>
+              <div className="p-8 space-y-8">
+                {/* Role & Experience Selection */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 role">
+                  {/* Role Selection */}
+                  <div className="flex flex-col gap-3 bg-richblack-700/50 rounded-lg px-5 py-4 border border-richblack-600">
+                    <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                      <span className="text-red-500">*</span><span>What Role Suits You</span>
+                    </span>
+                    <div className="flex w-full bg-richblack-600 rounded-full overflow-hidden border border-richblack-500">
+                      {["Director", "Producer"].map((role, idx) => (
+                        <button
+                          key={role}
+                          type="button"
+                          className={`flex-1 px-6 py-3 transition-all font-semibold Btnes text-sm
+                            ${
+                              selectedRole === role
+                                ? "bg-yellow-400 text-black shadow-md"
+                                : "bg-transparent text-gray-300 hover:bg-yellow-400/10 hover:text-yellow-400"
+                            }
+                            ${idx === 0 ? "rounded-l-full" : "rounded-r-full"}
+                          `}
+                          onClick={() => {
+                            setSelectedRole(role);
+                            setRoleError("");
+                            setValue("selectedRole", role, { shouldValidate: true });
+                          }}
+                        >
+                          {role}
+                        </button>
+                      ))}
+                    </div>
+                    {roleError && (
+                      <span className="text-red-500 text-xs mt-1">{roleError}</span>
+                    )}
+                    {errors.selectedRole && (
+                      <span className="text-red-500 text-xs mt-1">
+                        {errors.selectedRole.message}
+                      </span>
+                    )}
+                    <input
+                      type="hidden"
+                      {...register("selectedRole", { required: "Role is required" })}
+                      value={selectedRole}
+                    />
+                  </div>
+
+                  {/* Experience Section */}
+                  <div className="flex flex-col gap-3 bg-richblack-700/50 rounded-lg px-5 py-4 border border-richblack-600">
+                    <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                      <span className="text-red-500">*</span><span>Do You have Any Experience in This field</span>
+                    </span>
+                    <div className="flex w-full bg-richblack-600 rounded-full overflow-hidden border border-richblack-500">
+                      {["Fresher", "Experienced"].map((exp, idx) => (
+                        <button
+                          key={exp}
+                          type="button"
+                          className={`flex-1 px-6 py-3 transition-all font-semibold Btnes text-sm
+                            ${
+                              experiences === exp
+                                ? "bg-yellow-400 text-black shadow-md"
+                                : "bg-transparent text-gray-300 hover:bg-yellow-400/10 hover:text-yellow-400"
+                            }
+                            ${idx === 0 ? "rounded-l-full" : "rounded-r-full"}
+                          `}
+                          onClick={() => {
+                            setExperiences(exp);
+                            setExperienceError("");
+                            setValue("experiences", exp, { shouldValidate: true });
+                          }}
+                          style={{ cursor: "pointer" }}
+                        >
+                          {exp}
+                        </button>
+                      ))}
+                    </div>
+                    {experienceError && (
+                      <span className="text-red-500 text-xs mt-1">
+                        {experienceError}
+                      </span>
+                    )}
+                    <input
+                      type="hidden"
+                      {...register("experiences", {
+                        required: "Experience level is required",
+                      })}
+                      value={experiences}
+                    />
+                    {errors.experiences && (
+                      <span className="text-red-500 text-xs mt-1">
+                        {errors.experiences.message}
+                      </span>
+                    )}
+                  </div>
+                </div>
                 {/* end one  */}
 
                 <div className="relative w-full">
                   {(!selectedRole || !experiences) && (
                     <div className="bg-opacity-50 backdrop-blur-sm z-10 flex items-center justify-center rounded-lg">
-                      <div className="bg-richblack-800 p-8 rounded-xl shadow-2xl border border-yellow-400 text-center">
-                        <div className="text-6xl text-yellow-400 mb-4">
+                      <div className="bg-richblack-700/50 p-8 rounded-xl shadow-2xl border border-yellow-400/30 text-center">
+                        <div className="text-5xl text-yellow-400 mb-4">
                           🔒
                         </div>
-                        <h3 className="text-xl font-bold text-yellow-400 mb-2">
+                        <h3 className="text-lg font-bold text-yellow-400 mb-2">
                           Complete Your Selection
                         </h3>
-                        <p className="text-gray-300 mb-4">
+                        <p className="text-gray-400 text-sm mb-4">
                           Please choose a role and select your experience level to continue
                         </p>
-                        <div className="flex flex-col gap-2 text-sm text-gray-400">
+                        <div className="flex flex-col gap-2 text-sm text-gray-500">
                           {!selectedRole && <span>• Select your role (Director/Producer)</span>}
                           {!experiences && <span>• Choose your experience level (Fresher/Experienced)</span>}
                         </div>
@@ -3687,401 +3832,408 @@ if(loading){
                   )}
                   <div className={`${(!selectedRole || !experiences) ? 'blur-sm pointer-events-none' : ''}`}>
                     {selectedRole === "Director" && experiences === "Experienced" && (
-                      <div className=' space-y-8  SelectionOne bg-richblack-800 rounded-lg border border-richblack-600'>
-<div className='space-y-4'>
-  <h3 className='text-lg font-semibold text-yellow-400 Liness'>🏆 Awards & Recognition</h3>
-<div className="space-y-3">
-  <span className="flex justify-center items-center gap-2">
-    *
-    <p className="text-white font-medium">
-      Can you name some of the awards you have received for your previous projects?
-    </p>
-  </span>
+                      <div className="space-y-8 SelectionOne bg-richblack-700/30 rounded-xl border border-richblack-600 p-6">
 
-  <div className="flex gap-4 justify-center items-center">
-    <label className="flex items-center gap-2 cursor-pointer">
-      <input
-        type="radio"
-        name="Awards"
-        value="Yes"
-        className="w-4 h-4 text-yellow-400 bg-richblack-800 border-richblack-600 focus:ring-yellow-400"
-        {...register("Awards", { required: "Awards is reqired" })}
-        checked={hasAwards === "Yes"}
-        onChange={(e) => {
-          setHasAwards(e.target.value);
-          setValue("hasAwards", "Yes");
-        }}
-      />
-      <span className="text-white">Yes</span>
-    </label>
+                        {/* Awards & Recognition */}
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3 Liness">Awards & Recognition</h3>
+                          <div className="space-y-4">
+                            <div className="bg-richblack-700/50 rounded-lg px-5 py-4 border border-richblack-600">
+                              <span className="text-sm font-semibold text-gray-300 flex items-center gap-1 mb-3">
+                                <span className="text-red-500">*</span>
+                                <span>Can you name some of the awards you have received for your previous projects?</span>
+                              </span>
 
-    <label className="flex items-center gap-2 cursor-pointer">
-      <input
-        type="radio"
-        name="Awards"
-        value="No"
-        className="w-4 h-4 text-yellow-400 bg-richblack-800 border-richblack-600 focus:ring-yellow-400"
-        {...register("Awards", { required: "Awards is reqired" })}
-        checked={hasAwards === "No"}
-        onChange={(e) => {
-          setHasAwards(e.target.value);
-          setValue("hasAwards", "No");
-        }}
-      />
-      <span className="text-white">No</span>
-    </label>
-  </div>
+                              <div className="flex gap-3">
+                                <label className={`flex items-center gap-2 px-5 py-2.5 rounded-lg border cursor-pointer transition-all ${hasAwards === "Yes" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
+                                  <input
+                                    type="radio"
+                                    name="Awards"
+                                    value="Yes"
+                                    className="accent-yellow-400 w-4 h-4"
+                                    {...register("Awards", { required: "Awards is reqired" })}
+                                    checked={hasAwards === "Yes"}
+                                    onChange={(e) => {
+                                      setHasAwards(e.target.value);
+                                      setValue("hasAwards", "Yes");
+                                    }}
+                                  />
+                                  <span className="text-sm font-medium">Yes</span>
+                                </label>
 
-  {hasAwards === "Yes" && (
-    <div
-      className="flex gap-1 items-center cursor-pointer"
-      onClick={() => setAwardSectionOpen((prev) => !prev)}
-    >
-      <FaCaretDown
-        className={`text-2xl transition-transform ${
-          awardSectionOpen ? "rotate-180 fill-red-600" : ""
-        }`}
-      />
-      <span>{awardSectionOpen ? "Hide Awards" : "Show Awards"}</span>
-    </div>
-  )}
+                                <label className={`flex items-center gap-2 px-5 py-2.5 rounded-lg border cursor-pointer transition-all ${hasAwards === "No" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
+                                  <input
+                                    type="radio"
+                                    name="Awards"
+                                    value="No"
+                                    className="accent-yellow-400 w-4 h-4"
+                                    {...register("Awards", { required: "Awards is reqired" })}
+                                    checked={hasAwards === "No"}
+                                    onChange={(e) => {
+                                      setHasAwards(e.target.value);
+                                      setValue("hasAwards", "No");
+                                    }}
+                                  />
+                                  <span className="text-sm font-medium">No</span>
+                                </label>
+                              </div>
+                            </div>
 
-  {hasAwards === "Yes" && awardSectionOpen && (
-    <div className="w-full flex flex-col gap-4">
-      {awards.map((field, index) => (
-        <div
-          key={field.id}
-          className="flex flex-col gap-4 p-3 border-b border-gray-700 w-full"
-        >
-          {/* ================= ROW 1 ================= */}
-          <div className="flex gap-4 w-full">
-            {/* Award Category */}
-            <label className="flex flex-col gap-2 w-[20%]">
-              <span>* Award Category</span>
-              <select
-                className="form-style h-12 bg-richblack-600 rounded-2xl awar"
-                {...register(`Awards.${index}.category`, {
-                  required: "Category is required",
-                })}
-              >
-                <option value="">Select Award</option>
-                {Projects.awardCategories.map((data, idx) => (
-                  <option key={idx}>{data}</option>
-                ))}
-              </select>
-            </label>
+                            {hasAwards === "Yes" && (
+                              <div
+                                className="flex items-center gap-2 cursor-pointer text-yellow-400 hover:text-yellow-300 transition"
+                                onClick={() => setAwardSectionOpen((prev) => !prev)}
+                              >
+                                <FaCaretDown
+                                  className={`text-xl transition-transform ${
+                                    awardSectionOpen ? "rotate-180" : ""
+                                  }`}
+                                />
+                                <span className="text-sm font-semibold">{awardSectionOpen ? "Hide Awards" : "Show Awards"}</span>
+                              </div>
+                            )}
 
-            {/* Award Name */}
-            <label className="flex flex-col gap-2 w-[40%]">
-              <span>* Name of Award / Festival</span>
-              <input
-                type="text"
-                className="form-style h-9 bg-richblack-800 rounded-2xl px-3 awar"
-                {...register(`Awards.${index}.awardName`, {
-                  required: hasAwards === "Yes",
-                })}
-              />
-            </label>
+                            {hasAwards === "Yes" && awardSectionOpen && (
+                              <div className="w-full flex flex-col gap-4">
+                                {awards.map((field, index) => (
+                                  <div
+                                    key={field.id}
+                                    className="relative bg-richblack-700/40 border border-richblack-600 rounded-xl p-5"
+                                  >
+                                    {/* Entry badge */}
+                                    <div className="absolute -top-3 left-4 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full">
+                                      Award {index + 1}
+                                    </div>
 
-            {/* Movie Name */}
-            <label className="flex flex-col gap-2 w-[40%]">
-              <span>* Movie / Web Series Name</span>
-              <input
-                type="text"
-                className="form-style h-9 bg-richblack-800 rounded-2xl px-3 awar"
-                {...register(`Awards.${index}.movieName`, {
-                  required: hasAwards === "Yes",
-                })}
-              />
-            </label>
-          </div>
+                                    {/* Delete */}
+                                    <div
+                                      className="absolute top-3 right-3 w-7 h-7 flex justify-center items-center rounded-full bg-richblack-600 hover:bg-red-600 cursor-pointer transition-colors"
+                                      onClick={() => {
+                                        if (awards.length === 1) {
+                                          setAwardError("You need to keep at least one award");
+                                        } else {
+                                          removeAward(index);
+                                          setAwardError("");
+                                        }
+                                      }}
+                                    >
+                                      <RxCross1 className="text-richblack-100 text-xs" />
+                                    </div>
 
-          {/* ================= ROW 2 ================= */}
-          <div className="flex gap-4 w-full">
-            {/* Release Date */}
-            <label className="flex flex-col gap-2 w-[15%]">
-              <span>* Release Date</span>
-              <input
-                type="date"
-                className="form-style h-9 bg-richblack-600 rounded-2xl px-2 awar"
-                {...register(`Awards.${index}.releaseDate`, {
-                  required: "Release Date is required",
-                })}
-              />
-            </label>
+                                    {/* ROW 1 */}
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-3">
+                                      <label className="flex flex-col gap-2 awar">
+                                        <span className="text-sm font-semibold text-gray-300 flex items-center gap-1"><span className="text-red-500">*</span> Award Category</span>
+                                        <select
+                                          className="w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white"
+                                          {...register(`Awards.${index}.category`, {
+                                            required: "Category is required",
+                                          })}
+                                        >
+                                          <option value="">Select Award</option>
+                                          {Projects.awardCategories.map((data, idx) => (
+                                            <option key={idx}>{data}</option>
+                                          ))}
+                                        </select>
+                                      </label>
 
-            {/* Currency */}
-            <label className="flex flex-col gap-2 w-[25%]">
-              <span>* Currency</span>
-              <select
-                className="form-style h-12 bg-richblack-600 rounded-2xl awar"
-                {...register(`Awards.${index}.Currencey`, {
-                  required: "Currencey is required",
-                })}
-              >
-                <option value="">Select Currencey</option>
-                {Projects.currencies.map((data, idx) => (
-                  <option key={idx} value={data.code}>
-                    {data.name} - {data.symbol}
-                  </option>
-                ))}
-              </select>
-            </label>
+                                      <label className="flex flex-col gap-2 awar">
+                                        <span className="text-sm font-semibold text-gray-300 flex items-center gap-1"><span className="text-red-500">*</span> Name of Award / Festival</span>
+                                        <input
+                                          type="text"
+                                          className="w-full p-3 bg-richblack-700 border border-richblack-600 form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500"
+                                          {...register(`Awards.${index}.awardName`, {
+                                            required: hasAwards === "Yes",
+                                          })}
+                                        />
+                                      </label>
 
-            {/* Budget */}
-            <label className="flex flex-col gap-2 w-[30%]">
-              <span>* Total Budget</span>
-              <input
-                type="tel"
-                className="form-style h-9 bg-richblack-800 rounded-2xl px-3 awar"
-                {...register(`Awards.${index}.budget`, {
-                  required: "Budget is required",
-                })}
-              />
-            </label>
+                                      <label className="flex flex-col gap-2 awar">
+                                        <span className="text-sm font-semibold text-gray-300 flex items-center gap-1"><span className="text-red-500">*</span> Movie / Web Series Name</span>
+                                        <input
+                                          type="text"
+                                          className="w-full p-3 bg-richblack-700 border border-richblack-600 form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500"
+                                          {...register(`Awards.${index}.movieName`, {
+                                            required: hasAwards === "Yes",
+                                          })}
+                                        />
+                                      </label>
+                                    </div>
 
-            {/* Earned */}
-            <label className="flex flex-col gap-2 w-[30%]">
-              <span>* Total Earned</span>
-              <input
-                type="tel"
-                className="form-style h-9 bg-richblack-800 rounded-2xl px-3 awar"
-                {...register(`Awards.${index}.earned`, {
-                  required: "Total earned is required",
-                })}
-              />
-            </label>
-          </div>
+                                    {/* ROW 2 */}
+                                    <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mt-4">
+                                      <label className="flex flex-col gap-2 awar">
+                                        <span className="text-sm font-semibold text-gray-300 flex items-center gap-1"><span className="text-red-500">*</span> Release Date</span>
+                                        <input
+                                          type="date"
+                                          className="w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white"
+                                          {...register(`Awards.${index}.releaseDate`, {
+                                            required: "Release Date is required",
+                                          })}
+                                        />
+                                      </label>
 
-          {/* Delete */}
-          <div
-            className="self-end flex justify-center items-center w-8 h-8 rounded-full hover:bg-red-600 cursor-pointer"
-            onClick={() => {
-              if (awards.length === 1) {
-                setAwardError("You need to keep at least one award");
-              } else {
-                removeAward(index);
-                setAwardError("");
-              }
-            }}
-          >
-            <RxCross1 className="text-richblack-100" />
-          </div>
-        </div>
-      ))}
+                                      <label className="flex flex-col gap-2 awar">
+                                        <span className="text-sm font-semibold text-gray-300 flex items-center gap-1"><span className="text-red-500">*</span> Currency</span>
+                                        <select
+                                          className="w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white"
+                                          {...register(`Awards.${index}.Currencey`, {
+                                            required: "Currencey is required",
+                                          })}
+                                        >
+                                          <option value="">Select Currencey</option>
+                                          {Projects.currencies.map((data, idx) => (
+                                            <option key={idx} value={data.code}>
+                                              {data.name} - {data.symbol}
+                                            </option>
+                                          ))}
+                                        </select>
+                                      </label>
 
-      {awardError && (
-        <span className="text-red-500 text-sm flex justify-center">
-          {awardError}
-        </span>
-      )}
+                                      <label className="flex flex-col gap-2 awar">
+                                        <span className="text-sm font-semibold text-gray-300 flex items-center gap-1"><span className="text-red-500">*</span> Total Budget</span>
+                                        <input
+                                          type="tel"
+                                          className="w-full p-3 bg-richblack-700 border border-richblack-600 form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500"
+                                          {...register(`Awards.${index}.budget`, {
+                                            required: "Budget is required",
+                                          })}
+                                        />
+                                      </label>
 
-      <button
-        type="button"
-        className="px-4 py-1 bg-blue-600 text-white rounded w-full Awards"
-        onClick={() => {
-          if (awards.length >= 4) {
-            setAwardError("You can create 4 fields only");
-          } else {
-            appendAward({
-              category: "",
-              awardName: "",
-              movieName: "",
-              releaseDate: "",
-              Currencey: "",
-              budget: "",
-              earned: "",
-            });
-            setAwardError("");
-          }
-        }}
-      >
-        Add more
-      </button>
-    </div>
-  )}
-</div>
+                                      <label className="flex flex-col gap-2 awar">
+                                        <span className="text-sm font-semibold text-gray-300 flex items-center gap-1"><span className="text-red-500">*</span> Total Earned</span>
+                                        <input
+                                          type="tel"
+                                          className="w-full p-3 bg-richblack-700 border border-richblack-600 form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500"
+                                          {...register(`Awards.${index}.earned`, {
+                                            required: "Total earned is required",
+                                          })}
+                                        />
+                                      </label>
+                                    </div>
+                                  </div>
+                                ))}
 
-</div>
-                       <div className='space-y-4 TaS'>
-  <h3 className='text-lg font-semibold text-yellow-400 mb-4'>🛠️ Tools & Software</h3>
-  <div className='space-y-3'>
-    <p className='text-white font-medium flex justify-center items-center'>
-      Can you Name Some of the Software or Tools that you have worked with?
-    </p>
+                                {awardError && (
+                                  <span className="text-red-500 text-xs flex justify-center">
+                                    {awardError}
+                                  </span>
+                                )}
 
-    {/* Yes/No radio */}
-    <div className='flex gap-4 justify-center items-center'>
-      <label className='flex items-center gap-2 cursor-pointer'>
-        <input
-          type="radio"
-          value="Yes"
-          {...register("ToolsChoice")}
-          onChange={(e) => {
-            setSoft("Yes");
-            setValue("ToolsChoice", "Yes");
-          }}
-          checked={Soft === "Yes"}
-          className='w-4 h-4 text-yellow-400 bg-richblack-800 border-richblack-600 focus:ring-yellow-400'
-        />
-        <span className='text-white'>Yes</span>
-      </label>
-      <label className='flex items-center gap-2 cursor-pointer'>
-        <input
-          type="radio"
-          value="No"
-          {...register("ToolsChoice")}
-          onChange={(e) => {
-            setSoft("No");
-            setValue("ToolsChoice", "No");
-            // reset selections if No
-            setSelectedTools([]);
-            setSelectedSoftware([]);
-            setValue("tools", []);
-            setValue("software", []);
-          }}
-          checked={Soft === "No"}
-          className='w-4 h-4 text-yellow-400 bg-richblack-800 border-richblack-600 focus:ring-yellow-400'
-        />
-        <span className='text-white'>No</span>
-      </label>
-    </div>
+                                <button
+                                  type="button"
+                                  className="self-start px-6 py-2.5 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold rounded-lg hover:from-yellow-500 hover:to-yellow-600 transition-all shadow-md hover:shadow-lg text-sm Awards"
+                                  onClick={() => {
+                                    if (awards.length >= 4) {
+                                      setAwardError("You can create 4 fields only");
+                                    } else {
+                                      appendAward({
+                                        category: "",
+                                        awardName: "",
+                                        movieName: "",
+                                        releaseDate: "",
+                                        Currencey: "",
+                                        budget: "",
+                                        earned: "",
+                                      });
+                                      setAwardError("");
+                                    }
+                                  }}
+                                >
+                                  + Add More Awards
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
 
-    {Soft === "Yes" && (selectedTools.length === 0 || selectedSoftware.length === 0) && (
-      <p className="text-red-500 text-sm mt-2 S">
-        Please select at least one Tool and one Software
-      </p>
-    )}
+                        {/* Tools & Software */}
+                        <div className="space-y-4 TaS">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3">Tools & Software</h3>
+                          <div className="space-y-4">
+                            <div className="bg-richblack-700/50 rounded-lg px-5 py-4 border border-richblack-600">
+                              <span className="text-sm font-semibold text-gray-300 block mb-3">
+                                Can you Name Some of the Software or Tools that you have worked with?
+                              </span>
 
-    {/* Selection section */}
-    <section
-      className={
-        Soft === "Yes"
-          ? "grid grid-cols-2 grid-rows-1 border w-full h-fit bg-richblack-800 border-richblack-600 rounded-md p-3 Softs"
-          : "hidden"
-      }
-    >
-      {/* ---------------------- TOOLS SECTION ---------------------- */}
-      <div className="h-[300px] w-full flex flex-col">
-        <p className="text-red-600 font-bold italic text-center">Select Tools</p>
+                              <div className="flex gap-3">
+                                <label className={`flex items-center gap-2 px-5 py-2.5 rounded-lg border cursor-pointer transition-all ${Soft === "Yes" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
+                                  <input
+                                    type="radio"
+                                    value="Yes"
+                                    {...register("ToolsChoice")}
+                                    onChange={(e) => {
+                                      setSoft("Yes");
+                                      setValue("ToolsChoice", "Yes");
+                                    }}
+                                    checked={Soft === "Yes"}
+                                    className="accent-yellow-400 w-4 h-4"
+                                  />
+                                  <span className="text-sm font-medium">Yes</span>
+                                </label>
+                                <label className={`flex items-center gap-2 px-5 py-2.5 rounded-lg border cursor-pointer transition-all ${Soft === "No" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
+                                  <input
+                                    type="radio"
+                                    value="No"
+                                    {...register("ToolsChoice")}
+                                    onChange={(e) => {
+                                      setSoft("No");
+                                      setValue("ToolsChoice", "No");
+                                      // reset selections if No
+                                      setSelectedTools([]);
+                                      setSelectedSoftware([]);
+                                      setValue("tools", []);
+                                      setValue("software", []);
+                                    }}
+                                    checked={Soft === "No"}
+                                    className="accent-yellow-400 w-4 h-4"
+                                  />
+                                  <span className="text-sm font-medium">No</span>
+                                </label>
+                              </div>
+                            </div>
 
-        <div className="grid grid-cols-3 grid-row-5 w-full h-full overflow-y-auto gap-2 p-2 space-y-1">
-          {Tools.tools.map((tool, index) => {
-            const isSelected = selectedTools.includes(tool);
+                            {Soft === "Yes" && (selectedTools.length === 0 || selectedSoftware.length === 0) && (
+                              <p className="text-red-500 text-xs S">
+                                Please select at least one Tool and one Software
+                              </p>
+                            )}
 
-            return (
-              <div
-                key={index}
-                className={`relative p-2 rounded-md shadow-sm cursor-pointer w-fit h-fit selectTool flex justify-center items-center gap-2
-                  ${isSelected
-                    ? "bg-yellow-200 text-black"
-                    : "bg-richblack-700 text-white hover:bg-richblack-500 active:bg-richblack-600"
-                  }`}
-                onClick={() => {
-                  if (isSelected) {
-                    const updated = selectedTools.filter((t) => t !== tool);
-                    setSelectedTools(updated);
-                    setValue("tools", updated, { shouldValidate: true });
-                    if (updated.length <= 10) setToolError("");
-                  } else {
-                    if (selectedTools.length >= 10) {
-                      setToolError("You cannot select more than 10 tools");
-                      return;
-                    }
-                    const updated = [...selectedTools, tool];
-                    setSelectedTools(updated);
-                    setValue("tools", updated, { shouldValidate: true });
-                  }
-                }}
-              >
-                {tool}
+                            {/* Selection section */}
+                            <section
+                              className={
+                                Soft === "Yes"
+                                  ? "grid grid-cols-1 md:grid-cols-2 gap-4 w-full h-fit bg-richblack-700/30 border border-richblack-600 rounded-xl p-5 Softs"
+                                  : "hidden"
+                              }
+                            >
+                              {/* TOOLS SECTION */}
+                              <div className="h-[300px] w-full flex flex-col gap-2">
+                                <p className="text-yellow-400 font-semibold text-sm text-center bg-richblack-700/50 rounded-lg py-2 border border-richblack-600">Select Tools</p>
 
-                {isSelected && (
-                  <span
-                    className="absolute top-1 right-1 cursor-pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const updated = selectedTools.filter((t) => t !== tool);
-                      setSelectedTools(updated);
-                      setValue("tools", updated, { shouldValidate: true });
-                      if (updated.length <= 10) setToolError("");
-                    }}
-                  >
-                    <RxCross1 className="text-black hover:text-red-600" />
-                  </span>
-                )}
-              </div>
-            );
-          })}
-        </div>
-        {toolError && <p className="text-red-500 text-xl mt-2">{toolError}</p>}
-      </div>
+                                <div className="grid grid-cols-2 lg:grid-cols-3 w-full h-full overflow-y-auto gap-2 p-2">
+                                  {Tools.tools.map((tool, index) => {
+                                    const isSelected = selectedTools.includes(tool);
 
-      {/* ---------------------- SOFTWARE SECTION ---------------------- */}
-      <div className="h-[300px] w-full flex flex-col">
-        <p className="text-red-600 font-bold italic text-center">Select Software</p>
+                                    return (
+                                      <div
+                                        key={index}
+                                        className={`relative p-2.5 rounded-lg shadow-sm cursor-pointer w-full h-fit selectTool flex justify-center items-center gap-2 text-xs font-medium transition-all
+                                          ${isSelected
+                                            ? "bg-yellow-400 text-black shadow-md"
+                                            : "bg-richblack-600 text-gray-300 hover:bg-yellow-400/20 hover:text-yellow-400 border border-richblack-500"
+                                          }`}
+                                        onClick={() => {
+                                          if (isSelected) {
+                                            const updated = selectedTools.filter((t) => t !== tool);
+                                            setSelectedTools(updated);
+                                            setValue("tools", updated, { shouldValidate: true });
+                                            if (updated.length <= 10) setToolError("");
+                                          } else {
+                                            if (selectedTools.length >= 10) {
+                                              setToolError("You cannot select more than 10 tools");
+                                              return;
+                                            }
+                                            const updated = [...selectedTools, tool];
+                                            setSelectedTools(updated);
+                                            setValue("tools", updated, { shouldValidate: true });
+                                          }
+                                        }}
+                                      >
+                                        {tool}
 
-        <div className="grid grid-cols-3 grid-row-5 w-full h-full overflow-y-auto gap-2 p-2 space-y-1">
-          {Tools.software.map((tool, index) => {
-            const isSelected = selectedSoftware.includes(tool);
+                                        {isSelected && (
+                                          <span
+                                            className="absolute top-1 right-1 cursor-pointer"
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              const updated = selectedTools.filter((t) => t !== tool);
+                                              setSelectedTools(updated);
+                                              setValue("tools", updated, { shouldValidate: true });
+                                              if (updated.length <= 10) setToolError("");
+                                            }}
+                                          >
+                                            <RxCross1 className="text-black hover:text-red-600" size={10} />
+                                          </span>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                                {toolError && <p className="text-red-500 text-xs mt-1">{toolError}</p>}
+                              </div>
 
-            return (
-              <div
-                key={index}
-                className={`relative p-2 rounded-md shadow-sm cursor-pointer w-fit h-fit selectTool flex justify-center items-center gap-2
-                  ${isSelected
-                    ? "bg-yellow-200 text-black"
-                    : "bg-richblack-700 text-white hover:bg-richblack-500 active:bg-richblack-600"
-                  }`}
-                onClick={() => {
-                  if (isSelected) {
-                    const updated = selectedSoftware.filter((t) => t !== tool);
-                    setSelectedSoftware(updated);
-                    setValue("software", updated, { shouldValidate: true });
-                    if (updated.length <= 10) setSoftwareError("");
-                  } else {
-                    if (selectedSoftware.length >= 10) {
-                      setSoftwareError("You cannot select more than 10 software");
-                      return;
-                    }
-                    const updated = [...selectedSoftware, tool];
-                    setSelectedSoftware(updated);
-                    setValue("software", updated, { shouldValidate: true });
-                  }
-                }}
-              >
-                {tool}
-                {isSelected && (
-                  <span
-                    className="absolute top-1 right-1 cursor-pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const updated = selectedSoftware.filter((t) => t !== tool);
-                      setSelectedSoftware(updated);
-                      setValue("software", updated, { shouldValidate: true });
-                      if (updated.length <= 10) setSoftwareError("");
-                    }}
-                  >
-                    <RxCross1 className="text-black hover:text-red-600" />
-                  </span>
-                )}
-              </div>
-            );
-          })}
-        </div>
-        {softwareError && (
-          <p className="text-red-500 text-xl mt-2">{softwareError}</p>
-        )}
-      </div>
-    </section>
-  </div>
-</div>
+                              {/* SOFTWARE SECTION */}
+                              <div className="h-[300px] w-full flex flex-col gap-2">
+                                <p className="text-yellow-400 font-semibold text-sm text-center bg-richblack-700/50 rounded-lg py-2 border border-richblack-600">Select Software</p>
 
-                        <div className='space-y-4 TaS'>
-                          <h3 className='text-lg font-semibold text-yellow-400 mb-4'>👥 Team Management</h3>
-                          <div className='space-y-2 T flex flex-col gap-3'>
-                          <span className='flex justify-center items-center gap-2'> * <label className='block text-sm font-medium text-gray-300'>What Can be Your Typical Team Size For a Project ? {errors.teamSize&&<span className='text-red-500 text-xl'>{errors.teamSize.message}</span>}</label></span>
-                            <select defaultValue="" className='w-full px-3 py-2 bg-richblack-800 border border-richblack-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-yellow-400' {...register("teamSize",{required:"Team Size is required"})}>
+                                <div className="grid grid-cols-2 lg:grid-cols-3 w-full h-full overflow-y-auto gap-2 p-2">
+                                  {Tools.software.map((tool, index) => {
+                                    const isSelected = selectedSoftware.includes(tool);
+
+                                    return (
+                                      <div
+                                        key={index}
+                                        className={`relative p-2.5 rounded-lg shadow-sm cursor-pointer w-full h-fit selectTool flex justify-center items-center gap-2 text-xs font-medium transition-all
+                                          ${isSelected
+                                            ? "bg-yellow-400 text-black shadow-md"
+                                            : "bg-richblack-600 text-gray-300 hover:bg-yellow-400/20 hover:text-yellow-400 border border-richblack-500"
+                                          }`}
+                                        onClick={() => {
+                                          if (isSelected) {
+                                            const updated = selectedSoftware.filter((t) => t !== tool);
+                                            setSelectedSoftware(updated);
+                                            setValue("software", updated, { shouldValidate: true });
+                                            if (updated.length <= 10) setSoftwareError("");
+                                          } else {
+                                            if (selectedSoftware.length >= 10) {
+                                              setSoftwareError("You cannot select more than 10 software");
+                                              return;
+                                            }
+                                            const updated = [...selectedSoftware, tool];
+                                            setSelectedSoftware(updated);
+                                            setValue("software", updated, { shouldValidate: true });
+                                          }
+                                        }}
+                                      >
+                                        {tool}
+                                        {isSelected && (
+                                          <span
+                                            className="absolute top-1 right-1 cursor-pointer"
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              const updated = selectedSoftware.filter((t) => t !== tool);
+                                              setSelectedSoftware(updated);
+                                              setValue("software", updated, { shouldValidate: true });
+                                              if (updated.length <= 10) setSoftwareError("");
+                                            }}
+                                          >
+                                            <RxCross1 className="text-black hover:text-red-600" size={10} />
+                                          </span>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                                {softwareError && (
+                                  <p className="text-red-500 text-xs mt-1">{softwareError}</p>
+                                )}
+                              </div>
+                            </section>
+                          </div>
+                        </div>
+
+                        {/* Team Management */}
+                        <div className="space-y-4 TaS">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3">Team Management</h3>
+                          <div className="space-y-2 T flex flex-col gap-3">
+                            <label className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span>
+                              <span>What Can be Your Typical Team Size For a Project ?</span>
+                              {errors.teamSize && <span className="text-red-500 text-xs ml-2">{errors.teamSize.message}</span>}
+                            </label>
+                            <select defaultValue="" className="w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white" {...register("teamSize",{required:"Team Size is required"})}>
                               <option value="" disabled>Select Team Size</option>
                               {Projects.typicalTeamSizeRanges.map((data, index) => {
                                 const value = data === "Depends On Project" ? "" :data.replace("+", "")
@@ -4092,303 +4244,297 @@ if(loading){
                             </select>
                           </div>
                         </div>
-                      
+
                       </div>
                     )}
 
                     {selectedRole === "Producer" && experiences === "Experienced" && (
-                      <div className='space-y-8 SelectionOne bg-richblack-700 rounded-lg border border-richblack-600'>
-                        <h1 className="text-red-500 flex justify-center items-center gap-2"> All The Fields are Required in this Section </h1>
-                        <div className='space-y-4'>
-                          <h3 className='text-lg font-semibold text-yellow-400 Liness'>📄 Production Resume</h3>
-                          <div className='space-y-2'>
-                            <label className='block text-sm font-medium text-gray-300'>Upload Your Production Resume <span className='text-red-500'>*</span> {errors.supportingDocs && <span className="text-red-500">{errors.supportingDocs.message}</span>}</label>
-                            <div className='relative'>
-                           <input
-  type="file"
-  accept="application/pdf"
-  className='w-full px-3 py-2 bg-richblack-800 border border-richblack-600 rounded-md text-white 
-             file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold 
-             file:bg-yellow-400 file:text-black hover:file:bg-yellow-300 focus:outline-none 
-             focus:ring-2 focus:ring-yellow-400'
-  {...register("supportingDocs", {
-    required: "Resume is required",
-    validate: (files) => {
-      if (files && files[0] && files[0].size > 10 * 1024 * 1024) {
-        return "File size should be less than 10MB";
-      }
-      return true;
-    },
-  })}
-  onChange={(e) => {
-    const file = e.target.files[0];
-    if (file && file.size > 10 * 1024 * 1024) {
-      alert("File size should be less than 10MB");
-      e.target.value = ""; 
-    }
-  }}
-/>
-                              <p className='text-xs text-gray-400 mt-1'>PDF files only, max size 10MB</p>
+                      <div className="space-y-8 SelectionOne bg-richblack-700/30 rounded-xl border border-richblack-600 p-6">
+                        <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-2.5 text-center">
+                          <span className="text-red-400 text-sm font-medium">All The Fields are Required in this Section</span>
+                        </div>
+
+                        {/* Production Resume */}
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3 Liness">Production Resume</h3>
+                          <div className="space-y-2">
+                            <label className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              Upload Your Production Resume <span className="text-red-500">*</span>
+                              {errors.supportingDocs && <span className="text-red-500 text-xs ml-2">{errors.supportingDocs.message}</span>}
+                            </label>
+                            <div className="relative">
+                              <input
+                                type="file"
+                                accept="application/pdf"
+                                className="w-full p-2.5 bg-richblack-700 border border-richblack-600 rounded-lg text-white text-sm file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-yellow-400/10 file:text-yellow-400 hover:file:bg-yellow-400/20 file:cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                                {...register("supportingDocs", {
+                                  required: "Resume is required",
+                                  validate: (files) => {
+                                    if (files && files[0] && files[0].size > 10 * 1024 * 1024) {
+                                      return "File size should be less than 10MB";
+                                    }
+                                    return true;
+                                  },
+                                })}
+                                onChange={(e) => {
+                                  const file = e.target.files[0];
+                                  if (file && file.size > 10 * 1024 * 1024) {
+                                    alert("File size should be less than 10MB");
+                                    e.target.value = "";
+                                  }
+                                }}
+                              />
+                              <p className="text-xs text-gray-500 mt-1">PDF files only, max size 10MB</p>
                             </div>
                           </div>
                         </div>
 
-                       <div className="space-y-4 Fundes">
-  <h3 className="text-lg font-semibold text-yellow-400 mb-4">
-    💰 Funding & Finance
-  </h3>
-  <div className="space-y-2">
-    <label className="block text-sm font-medium text-gray-300">
-      Can You Tell Us What are the various ways That you have Used to fund your
-      Projects? <span className="text-red-500">*</span>
-    </label>
+                        {/* Funding & Finance */}
+                        <div className="space-y-4 Fundes">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3">
+                            Funding & Finance
+                          </h3>
+                          <div className="space-y-3">
+                            <label className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              Can You Tell Us What are the various ways That you have Used to fund your
+                              Projects? <span className="text-red-500">*</span>
+                            </label>
 
-    {funding ? (
-      <div className="flex gap-1 One">
-        <FaCaretDown
-          className="text-2xl cursor-pointer fill-red-600"
-          onClick={() => setfunding(false)} // hides this section
-        />
-        <span>
-          Close{" "}
-          {errors.fundingSources && (
-            <span className="text-red-500">
-              {errors.fundingSources.message}
-            </span>
-          )}
-        </span>
-      </div>
-    ) : (
-      <div className="w-full bg-richblack-800 p-4 rounded-md flex flex-col gap-4">
-        <div className="flex flex-row One">
-          <FaCaretDown
-            className="text-2xl cursor-pointer"
-            onClick={() => setfunding(true)} // shows again
-          />
-          <span>
-            OPEN{" "}
-            {errors.fundingSources && (
-              <span className="text-red-500">
-                {errors.fundingSources.message}
-              </span>
-            )}
-          </span>
-        </div>
+                            {funding ? (
+                              <div className="flex items-center gap-2 cursor-pointer text-yellow-400 hover:text-yellow-300 transition One" onClick={() => setfunding(false)}>
+                                <FaCaretDown className="text-xl transform -rotate-90 transition-transform" />
+                                <span className="text-sm font-semibold">
+                                  Show Funding Sources
+                                  {errors.fundingSources && (
+                                    <span className="text-red-500 text-xs ml-2">
+                                      {errors.fundingSources.message}
+                                    </span>
+                                  )}
+                                </span>
+                              </div>
+                            ) : (
+                              <div className="w-full bg-richblack-700/40 border border-richblack-600 p-5 rounded-xl flex flex-col gap-4">
+                                <div className="flex items-center gap-2 cursor-pointer text-yellow-400 hover:text-yellow-300 transition One" onClick={() => setfunding(true)}>
+                                  <FaCaretDown className="text-xl transition-transform" />
+                                  <span className="text-sm font-semibold">
+                                    Hide Funding Sources
+                                    {errors.fundingSources && (
+                                      <span className="text-red-500 text-xs ml-2">
+                                        {errors.fundingSources.message}
+                                      </span>
+                                    )}
+                                  </span>
+                                </div>
 
-        <div
-          className={`w-full grid grid-cols-2 grid-rows-1 md:grid-cols-2 gap-2 Fundings ${
-            errors.fundingSources ? "border border-red-500" : ""
-          } ${funding ? "hidden" : "flex flex-wrap gap-2"}`}
-        >
-          {Profession.fundingSources.map((data, index) => {
-            const selected = finance.includes(data);
+                                <div
+                                  className={`w-full grid grid-cols-2 md:grid-cols-3 gap-2 Fundings ${
+                                    errors.fundingSources ? "border border-red-500 rounded-lg p-2" : ""
+                                  } ${funding ? "hidden" : ""}`}
+                                >
+                                  {Profession.fundingSources.map((data, index) => {
+                                    const selected = finance.includes(data);
 
-            return (
-              <span
-                key={index}
-                className={`hover:bg-yellow-500 w-fit h-fit f flex justify-center items-center gap-2 rounded-md ${
-                  selected
-                    ? "bg-yellow-200 text-black"
-                    : "bg-richblack-700 text-white hover:bg-richblack-500 active:bg-richblack-600"
-                }`}
-                onClick={() => {
-                  if (selected) {
-                    const updated = finance.filter((f) => f !== data);
-                    setfinance(updated);
-                    setValue("fundingSources", updated, {
-                      shouldValidate: true,
-                    });
-                    if (updated.length <= 5) setfinanceError("");
-                  } else {
-                    if (finance.length >= 5) {
-                      setfinanceError(
-                        "You cannot select more than 5 Funding source"
-                      );
-                      return;
-                    }
-                    const updated = [...finance, data];
-                    setfinance(updated);
-                    setValue("fundingSources", updated, {
-                      shouldValidate: true,
-                    });
-                  }
-                }}
-              >
-                {data}{" "}
-                {selected && (
-                  <RxCross1
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const updated = finance.filter((f) => f !== data);
-                      setfinance(updated);
-                      setValue("fundingSources", updated, {
-                        shouldValidate: true,
-                      });
-                      if (updated.length <= 5) setfinanceError("");
-                    }}
-                  />
-                )}
-              </span>
-            );
-          })}
+                                    return (
+                                      <span
+                                        key={index}
+                                        className={`p-2.5 rounded-lg text-xs font-medium f flex justify-center items-center gap-2 cursor-pointer transition-all ${
+                                          selected
+                                            ? "bg-yellow-400 text-black shadow-md"
+                                            : "bg-richblack-600 text-gray-300 hover:bg-yellow-400/20 hover:text-yellow-400 border border-richblack-500"
+                                        }`}
+                                        onClick={() => {
+                                          if (selected) {
+                                            const updated = finance.filter((f) => f !== data);
+                                            setfinance(updated);
+                                            setValue("fundingSources", updated, {
+                                              shouldValidate: true,
+                                            });
+                                            if (updated.length <= 5) setfinanceError("");
+                                          } else {
+                                            if (finance.length >= 5) {
+                                              setfinanceError(
+                                                "You cannot select more than 5 Funding source"
+                                              );
+                                              return;
+                                            }
+                                            const updated = [...finance, data];
+                                            setfinance(updated);
+                                            setValue("fundingSources", updated, {
+                                              shouldValidate: true,
+                                            });
+                                          }
+                                        }}
+                                      >
+                                        {data}{" "}
+                                        {selected && (
+                                          <RxCross1
+                                            size={10}
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              const updated = finance.filter((f) => f !== data);
+                                              setfinance(updated);
+                                              setValue("fundingSources", updated, {
+                                                shouldValidate: true,
+                                              });
+                                              if (updated.length <= 5) setfinanceError("");
+                                            }}
+                                          />
+                                        )}
+                                      </span>
+                                    );
+                                  })}
 
-          {/* Hidden input synced with RHF */}
-          <input
-            type="hidden"
-            {...register("fundingSources", {
-              required: "Please select at least one Funding Source",
-              validate: (value) =>
-                value && value.length > 0
-                  ? true
-                  : "Please select at least one Funding Source",
-            })}
-          />
-        </div>
+                                  {/* Hidden input synced with RHF */}
+                                  <input
+                                    type="hidden"
+                                    {...register("fundingSources", {
+                                      required: "Please select at least one Funding Source",
+                                      validate: (value) =>
+                                        value && value.length > 0
+                                          ? true
+                                          : "Please select at least one Funding Source",
+                                    })}
+                                  />
+                                </div>
 
-        {financeError && (
-          <p className="text-red-500 text-xl mt-2">{financeError}</p>
-        )}
-      </div>
-    )}
-  </div>
-</div>
+                                {financeError && (
+                                  <p className="text-red-500 text-xs mt-1">{financeError}</p>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
 
 
-                       <div className="space-y-4 Fundes">
-  <h3 className="text-lg font-semibold text-yellow-400 mb-4">
-    🏛️ Professional Affiliations
-  </h3>
-  <div className="space-y-3">
-    <p className="text-white font-medium flex justify-center items-center">
-      <span className="text-red-500">*</span>
-      Are you affiliated with any union, guild, or professional film association?
-    </p>
+                        {/* Professional Affiliations */}
+                        <div className="space-y-4 Fundes">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3">
+                            Professional Affiliations
+                          </h3>
+                          <div className="space-y-4">
+                            <div className="bg-richblack-700/50 rounded-lg px-5 py-4 border border-richblack-600">
+                              <span className="text-sm font-semibold text-gray-300 flex items-center gap-1 mb-3">
+                                <span className="text-red-500">*</span>
+                                <span>Are you affiliated with any union, guild, or professional film association?</span>
+                              </span>
 
-    {/* Radio Buttons */}
-    <div className="flex gap-4 justify-center items-center">
-      <label className="flex items-center gap-2 cursor-pointer">
-        <input
-          type="radio"
-          value="Yes"
-          className="w-4 h-4 text-yellow-400 bg-richblack-800 border-richblack-600 focus:ring-yellow-400"
-          checked={affilitions === "Yes"}
-          {...register("affiliation", { required: "Affiliation selection is required" })}
-          onChange={(e)=>{
-            setaffilition("Yes")
-            setValue("affiliation",e.target.value)
-          }}
-        />
-        <span className="text-white">Yes</span>
-      </label>
-      <label className="flex items-center gap-2 cursor-pointer">
-        <input
-          type="radio"
-          value="No"
-          className="w-4 h-4 text-yellow-400 bg-richblack-800 border-richblack-600 focus:ring-yellow-400"
-          checked={affilitions === "No"}
-          {...register("affiliation", { required: "Affiliation selection is required" })}
-          onChange={(e)=>{
-            setaffilition("No")
-            setValue("affiliation",e.target.value)
-          }}
-        />
-        <span className="text-white">No</span>
-      </label>
-    </div>
+                              <div className="flex gap-3">
+                                <label className={`flex items-center gap-2 px-5 py-2.5 rounded-lg border cursor-pointer transition-all ${affilitions === "Yes" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
+                                  <input
+                                    type="radio"
+                                    value="Yes"
+                                    className="accent-yellow-400 w-4 h-4"
+                                    checked={affilitions === "Yes"}
+                                    {...register("affiliation", { required: "Affiliation selection is required" })}
+                                    onChange={(e)=>{
+                                      setaffilition("Yes")
+                                      setValue("affiliation",e.target.value)
+                                    }}
+                                  />
+                                  <span className="text-sm font-medium">Yes</span>
+                                </label>
+                                <label className={`flex items-center gap-2 px-5 py-2.5 rounded-lg border cursor-pointer transition-all ${affilitions === "No" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
+                                  <input
+                                    type="radio"
+                                    value="No"
+                                    className="accent-yellow-400 w-4 h-4"
+                                    checked={affilitions === "No"}
+                                    {...register("affiliation", { required: "Affiliation selection is required" })}
+                                    onChange={(e)=>{
+                                      setaffilition("No")
+                                      setValue("affiliation",e.target.value)
+                                    }}
+                                  />
+                                  <span className="text-sm font-medium">No</span>
+                                </label>
+                              </div>
 
-    {errors.affiliation && (
-      <p className="text-red-500 text-sm">{errors.affiliation.message}</p>
-    )}
+                              {errors.affiliation && (
+                                <p className="text-red-500 text-xs mt-2">{errors.affiliation.message}</p>
+                              )}
+                            </div>
 
-    {affilitions === "Yes" && (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-        {/* Guild/Union */}
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-300">
-            Select Guild/Union <span className="text-red-500">*</span>
-          </label>
-          <select
-            defaultValue=""
-            className="w-full px-3 py-2 bg-richblack-800 border border-richblack-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            {...register("guildUnion", { required: "Guild/Union is required" })}
-          >
-            <option value="" disabled>
-              Select Guild/Union
-            </option>
-            {Profession.unionsGuildsAffiliations.map((data, index) => (
-              <option key={index} value={data}>
-                {data}
-              </option>
-            ))}
-          </select>
-          {errors.guildUnion && (
-            <p className="text-red-500 text-sm">
-              {errors.guildUnion.message}
-            </p>
-          )}
-        </div>
+                            {affilitions === "Yes" && (
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 bg-richblack-700/40 border border-richblack-600 rounded-xl p-5">
+                                <div className="flex flex-col gap-2">
+                                  <label className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                                    Select Guild/Union <span className="text-red-500">*</span>
+                                  </label>
+                                  <select
+                                    defaultValue=""
+                                    className="w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white"
+                                    {...register("guildUnion", { required: "Guild/Union is required" })}
+                                  >
+                                    <option value="" disabled>
+                                      Select Guild/Union
+                                    </option>
+                                    {Profession.unionsGuildsAffiliations.map((data, index) => (
+                                      <option key={index} value={data}>
+                                        {data}
+                                      </option>
+                                    ))}
+                                  </select>
+                                  {errors.guildUnion && (
+                                    <p className="text-red-500 text-xs">{errors.guildUnion.message}</p>
+                                  )}
+                                </div>
 
-        {/* Membership ID */}
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-300">
-            Membership ID <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            placeholder="Enter Your Membership ID"
-            className="w-full px-3 py-2 bg-richblack-800 border border-richblack-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            {...register("membershipId", { required: "Membership ID is required" })}
-          />
-          {errors.membershipId && (
-            <p className="text-red-500 text-sm">
-              {errors.membershipId.message}
-            </p>
-          )}
-        </div>
+                                <div className="flex flex-col gap-2">
+                                  <label className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                                    Membership ID <span className="text-red-500">*</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    placeholder="Enter Your Membership ID"
+                                    className="w-full p-3 bg-richblack-700 border border-richblack-600 form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500"
+                                    {...register("membershipId", { required: "Membership ID is required" })}
+                                  />
+                                  {errors.membershipId && (
+                                    <p className="text-red-500 text-xs">{errors.membershipId.message}</p>
+                                  )}
+                                </div>
 
-        {/* Year Joined */}
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-300">
-            Year Joined <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="date"
-            className="w-full px-3 py-2 bg-richblack-800 border border-richblack-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            {...register("yearJoined", { required: "Year joined is required" })}
-          />
-          {errors.yearJoined && (
-            <p className="text-red-500 text-sm">
-              {errors.yearJoined.message}
-            </p>
-          )}
-        </div>
+                                <div className="flex flex-col gap-2">
+                                  <label className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                                    Year Joined <span className="text-red-500">*</span>
+                                  </label>
+                                  <input
+                                    type="date"
+                                    className="w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white"
+                                    {...register("yearJoined", { required: "Year joined is required" })}
+                                  />
+                                  {errors.yearJoined && (
+                                    <p className="text-red-500 text-xs">{errors.yearJoined.message}</p>
+                                  )}
+                                </div>
 
-        {/* Expiry Date */}
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-300">
-            Expiry Date <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="date"
-            className="w-full px-3 py-2 bg-richblack-800 border border-richblack-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            {...register("expiryDate", { required: "Expiry date is required" })}
-          />
-          {errors.expiryDate && (
-            <p className="text-red-500 text-sm">
-              {errors.expiryDate.message}
-            </p>
-          )}
-        </div>
-      </div>
-    )}
-  </div>
-</div>
+                                <div className="flex flex-col gap-2">
+                                  <label className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                                    Expiry Date <span className="text-red-500">*</span>
+                                  </label>
+                                  <input
+                                    type="date"
+                                    className="w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white"
+                                    {...register("expiryDate", { required: "Expiry date is required" })}
+                                  />
+                                  {errors.expiryDate && (
+                                    <p className="text-red-500 text-xs">{errors.expiryDate.message}</p>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
 
-                        <div className='space-y-4 Fundes'>
-                          <h3 className='text-lg font-semibold text-yellow-400 mb-4'>👥 Team Management</h3>
-                          <div className='space-y-2'>
-                            <label className='block text-sm font-medium text-gray-300'>What Can be Your Typical Team Size For a Project? <span className='text-red-500'>*</span>{errors.teamSize && <span className="text-red-500 text-sm mt-1">{errors.teamSize.message}</span>}</label>
-                            <select defaultValue="" className='w-full px-3 py-2 any  bg-richblack-800 border border-richblack-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-yellow-400' {...register("teamSize", { required: "Team size is required" })}>
+                        {/* Team Management */}
+                        <div className="space-y-4 Fundes">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3">Team Management</h3>
+                          <div className="flex flex-col gap-2">
+                            <label className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              What Can be Your Typical Team Size For a Project? <span className="text-red-500">*</span>
+                              {errors.teamSize && <span className="text-red-500 text-xs ml-2">{errors.teamSize.message}</span>}
+                            </label>
+                            <select defaultValue="" className="w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] any form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white" {...register("teamSize", { required: "Team size is required" })}>
                               <option value="" disabled>Select Team Size</option>
                               {Projects.typicalTeamSizeRanges.map((data, index) => (
                                 <option key={index} value={data}>{data}</option>
@@ -4396,11 +4542,16 @@ if(loading){
                             </select>
                           </div>
                         </div>
-                        <div className='space-y-4 Fundes'>
-                          <h3 className='text-lg font-semibold text-yellow-400 mb-4'>📊 Project Experience</h3>
-                          <div className='space-y-2'>
-                            <label className='block text-sm font-medium text-gray-300'>Number of Projects you have completed Till now <span className='text-red-500'>*</span>{errors.projectCount && <span className="text-red-500 text-sm mt-1">{errors.projectCount.message}</span>}</label>
-                            <select defaultValue="" className='w-full px-3 py-2 any bg-richblack-800 border border-richblack-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-yellow-400' {...register("projectCount", { required: "Project count is required" })}>
+
+                        {/* Project Experience */}
+                        <div className="space-y-4 Fundes">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3">Project Experience</h3>
+                          <div className="flex flex-col gap-2">
+                            <label className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              Number of Projects you have completed Till now <span className="text-red-500">*</span>
+                              {errors.projectCount && <span className="text-red-500 text-xs ml-2">{errors.projectCount.message}</span>}
+                            </label>
+                            <select defaultValue="" className="w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] any form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white" {...register("projectCount", { required: "Project count is required" })}>
                               <option value="" disabled>Select Project Count</option>
                               {Projects.ProjectNumber.map((data, index) => (
                                 <option key={index} value={data}>{data}</option>
@@ -4409,72 +4560,82 @@ if(loading){
                             {/* {errors.projectCount && <span className="text-red-500">{errors.projectCount.message}</span>} */}
                           </div>
                         </div>
-                        <div className='space-y-4 Fundes'>
-                          <h3 className='text-lg font-semibold text-yellow-400 mb-4'>⚠️ Risk Management</h3>
-<div className="space-y-2">
-  <label htmlFor="RiskManagement" className="block font-semibold mb-2">
-    <span className="flex items-center gap-2">
-      * <span>
-        How do you handle Risk while working on a project (with example)
-        {errors.RiskManagement && (
-          <span className="text-red-500">{errors.RiskManagement.message}</span>
-        )}
-      </span>
-      {/* {errors.expiryDate && <span className="text-red-500 text-sm mt-1">{errors.expiryDate.message}</span>} */}
-    </span>
-  </label>
 
-  <textarea
-    id="RiskManagement"
-    name="RiskManagement"
-    placeholder="Describe your risk management approach with specific examples..."
-    maxLength={250}
-    rows={4}
-    value={fields.RiskManagement}
-    className="w-full px-3 py-2 bg-richblack-800 border border-richblack-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"
-    {...register("RiskManagement", { required: "Risk management description is required" })}
-    onChange={handleChange}
-  />
+                        {/* Risk Management */}
+                        <div className="space-y-4 Fundes">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3">Risk Management</h3>
+                          <div className="flex flex-col gap-2">
+                            <label htmlFor="RiskManagement" className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span>
+                              <span>How do you handle Risk while working on a project (with example)</span>
+                              {errors.RiskManagement && (
+                                <span className="text-red-500 text-xs ml-2">{errors.RiskManagement.message}</span>
+                              )}
+                              {/* {errors.expiryDate && <span className="text-red-500 text-sm mt-1">{errors.expiryDate.message}</span>} */}
+                            </label>
 
-  <p className="text-sm text-gray-400 mt-1 flex justify-end">
-    {countWords(fields.RiskManagement)} / Max 250 words
-  </p>
-</div>
+                            <textarea
+                              id="RiskManagement"
+                              name="RiskManagement"
+                              placeholder="Describe your risk management approach with specific examples..."
+                              maxLength={250}
+                              rows={4}
+                              value={fields.RiskManagement}
+                              className="w-full p-3 bg-richblack-700 border border-richblack-600 rounded-lg text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition resize-none"
+                              {...register("RiskManagement", { required: "Risk management description is required" })}
+                              onChange={handleChange}
+                            />
 
-
+                            <p className="text-xs text-gray-400 flex justify-end">
+                              {countWords(fields.RiskManagement)} / Max 250 words
+                            </p>
+                          </div>
                         </div>
                       </div>
                     )}
 
                     {selectedRole === "Director" && experiences === "Fresher" && (
-                      <div className=' space-y-8 SelectionOne bg-richblack-700 rounded-lg border border-richblack-600'>
-                        <h1 className="text-red-500 flex justify-center items-center gap-2"> All The Fields are Required in this Section </h1>
-                        <div className='space-y-4'>
-                          <h3 className='text-lg font-semibold text-yellow-400 Liness'>💡 Inspiration & Motivation</h3>
-                          <div className='space-y-2'>
-                             <label htmlFor="DirectorInspiration" className="block font-semibold mb-2 ">
-                      <span className="flex items-center gap-2"> * <span>What inspires you to become a director?     {errors.DirectorInspiration && <span className="text-red-500">{errors.DirectorInspiration.message}</span> }</span></span>
-                  </label>
-          <textarea
-                    id="DirectorInspiration"
-                    name="DirectorInspiration"
-                    placeholder="Tell Me Your Inspiration (max 250 characters)"
-                    maxLength={250}
-                    rows={4}
-                     value={fields.DirectorInspiration}
-                                              className='w-full Texetions bg-richblack-800 border border-richblack-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none'
-                    {...register("DirectorInspiration",{required:"Inspiration is required"})}
-                      onChange={handleChange}
-                  />
-                <p className="text-sm text-gray-400 mt-1 flex justify-end">
-        {countWords(fields.DirectorInspiration)} / Max 250 words
-      </p>                          </div>
+                      <div className="space-y-8 SelectionOne bg-richblack-700/30 rounded-xl border border-richblack-600 p-6">
+                        <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-2.5 text-center">
+                          <span className="text-red-400 text-sm font-medium">All The Fields are Required in this Section</span>
                         </div>
-                        <div className='space-y-4'>
-                          <h3 className='text-lg font-semibold text-yellow-400 Liness'>🎬 Project Experience</h3>
-                          <div className='space-y-2'>
-                            <label className='block text-sm font-medium text-gray-300'>Projects done till now  {errors.fresherProjects && <span className="text-red-500">{errors.fresherProjects.message}</span>}  </label>
-                            <select defaultValue="" className='w-full Texetions bg-richblack-800 border border-richblack-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-yellow-400' {...register("fresherProjects",{required:"Project Count is required"})}>
+
+                        {/* Inspiration & Motivation */}
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3 Liness">Inspiration & Motivation</h3>
+                          <div className="flex flex-col gap-2">
+                            <label htmlFor="DirectorInspiration" className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span>
+                              <span>What inspires you to become a director?</span>
+                              {errors.DirectorInspiration && <span className="text-red-500 text-xs ml-2">{errors.DirectorInspiration.message}</span>}
+                            </label>
+                            <textarea
+                              id="DirectorInspiration"
+                              name="DirectorInspiration"
+                              placeholder="Tell Me Your Inspiration (max 250 characters)"
+                              maxLength={250}
+                              rows={4}
+                              value={fields.DirectorInspiration}
+                              className="w-full p-3 Texetions bg-richblack-700 border border-richblack-600 rounded-lg text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition resize-none"
+                              {...register("DirectorInspiration",{required:"Inspiration is required"})}
+                              onChange={handleChange}
+                            />
+                            <p className="text-xs text-gray-400 flex justify-end">
+                              {countWords(fields.DirectorInspiration)} / Max 250 words
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Project Experience */}
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3 Liness">Project Experience</h3>
+                          <div className="flex flex-col gap-2">
+                            <label className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span>
+                              <span>Projects done till now</span>
+                              {errors.fresherProjects && <span className="text-red-500 text-xs ml-2">{errors.fresherProjects.message}</span>}
+                            </label>
+                            <select defaultValue="" className="w-full p-3 Texetions bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white" {...register("fresherProjects",{required:"Project Count is required"})}>
                               <option value="" disabled>Select Project Count</option>
                               {Projects.typicalTeamSizeRanges.map((data, index) => (
                                 <option key={index} value={data}>{data}</option>
@@ -4482,144 +4643,162 @@ if(loading){
                             </select>
                           </div>
                         </div>
-                        <div className='space-y-4'>
-                          <h3 className='text-lg font-semibold text-yellow-400 Liness'>🚧 Early Challenges</h3>
-                          <div className='space-y-2'>
-                               <label htmlFor="EarlyChallengs" className="block font-semibold mb-2 ">
-                      <span className="flex items-center gap-2"> * <span>What are the Early Challenges that you have Faced?     {errors.EarlyChallengs && <span className="text-red-500">{errors.EarlyChallengs.message}</span>} </span></span>
-                  </label>
-          <textarea
-                    id="EarlyChallengs"
-                    name="EarlyChallengs"
-                    placeholder="What Earl Challenges You have faced (max 250 characters)"
-                    maxLength={250}
-                    rows={4}
-                     value={fields.EarlyChallengs}
-                                              className='w-full Texetions bg-richblack-800 border border-richblack-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none'
-                    {...register("EarlyChallengs",{required:"Early Challenges is required"})}
-                      onChange={handleChange}
-                  />
-                <p className="text-sm text-gray-400 mt-1 flex justify-end">
-        {countWords(fields.EarlyChallengs)} / Max 250 words
-      </p> 
+
+                        {/* Early Challenges */}
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3 Liness">Early Challenges</h3>
+                          <div className="flex flex-col gap-2">
+                            <label htmlFor="EarlyChallengs" className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span>
+                              <span>What are the Early Challenges that you have Faced?</span>
+                              {errors.EarlyChallengs && <span className="text-red-500 text-xs ml-2">{errors.EarlyChallengs.message}</span>}
+                            </label>
+                            <textarea
+                              id="EarlyChallengs"
+                              name="EarlyChallengs"
+                              placeholder="What Earl Challenges You have faced (max 250 characters)"
+                              maxLength={250}
+                              rows={4}
+                              value={fields.EarlyChallengs}
+                              className="w-full p-3 Texetions bg-richblack-700 border border-richblack-600 rounded-lg text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition resize-none"
+                              {...register("EarlyChallengs",{required:"Early Challenges is required"})}
+                              onChange={handleChange}
+                            />
+                            <p className="text-xs text-gray-400 flex justify-end">
+                              {countWords(fields.EarlyChallengs)} / Max 250 words
+                            </p>
                           </div>
                         </div>
-                        <div className='space-y-4'>
-                          <h3 className='text-lg font-semibold text-yellow-400 Liness'>📋 Project Planning</h3>
-                          <div className='space-y-2'>
-          <label htmlFor="ProjectPlanning" className="block font-semibold mb-2 ">
-                      <span className="flex items-center gap-2"> * <span>How do you plan to PRopose the strateger Of Marketing For Your SHow      {errors.ProjectPlanning && <span className="text-red-500">{errors.ProjectPlanning.message}</span> }</span></span>
-                  </label>
-          <textarea
-                    id="ProjectPlanning"
-                    name="ProjectPlanning"
-                    placeholder="Project Planning (max 250 characters)"
-                    maxLength={250}
-                    rows={4}
-                     value={fields.ProjectPlanning}
-                                              className='w-full Texetions bg-richblack-800 border border-richblack-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none'
-                    {...register("ProjectPlanning",{required:"Project Planning is required"})}
-                      onChange={handleChange}
-                  />
-                <p className="text-sm text-gray-400 mt-1 flex justify-end">
-        {countWords(fields.ProjectPlanning)} / Max 250 words
-      </p> 
+
+                        {/* Project Planning */}
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3 Liness">Project Planning</h3>
+                          <div className="flex flex-col gap-2">
+                            <label htmlFor="ProjectPlanning" className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span>
+                              <span>How do you plan to PRopose the strateger Of Marketing For Your SHow</span>
+                              {errors.ProjectPlanning && <span className="text-red-500 text-xs ml-2">{errors.ProjectPlanning.message}</span>}
+                            </label>
+                            <textarea
+                              id="ProjectPlanning"
+                              name="ProjectPlanning"
+                              placeholder="Project Planning (max 250 characters)"
+                              maxLength={250}
+                              rows={4}
+                              value={fields.ProjectPlanning}
+                              className="w-full p-3 Texetions bg-richblack-700 border border-richblack-600 rounded-lg text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition resize-none"
+                              {...register("ProjectPlanning",{required:"Project Planning is required"})}
+                              onChange={handleChange}
+                            />
+                            <p className="text-xs text-gray-400 flex justify-end">
+                              {countWords(fields.ProjectPlanning)} / Max 250 words
+                            </p>
                           </div>
                         </div>
-                        <div className='space-y-4'>
-                          <h3 className='text-lg font-semibold text-yellow-400 Liness'>📢 Promotion & Marketing</h3>
-                          <div className='space-y-2'>
-                                  <label htmlFor="ProjectPromotion" className="block font-semibold mb-2 ">
-                      <span className="flex items-center gap-2"> * <span>What inspires you to become a director?     {errors.ProjectPromotion && <span className="text-red-500">{errors.ProjectPromotion.message}</span> }</span></span>
-                  </label>
-          <textarea
-                    id="ProjectPromotion"
-                    name="ProjectPromotion"
-                    placeholder="How do you Handle The Promotion (max 250 characters)"
-                    maxLength={250}
-                    rows={4}
-                     value={fields.ProjectPromotion}
-                                              className='w-full Texetions bg-richblack-800 border border-richblack-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none'
-                    {...register("ProjectPromotion",{required:"Project Promotion is required"})}
-                      onChange={handleChange}
-                  />
-                <p className="text-sm text-gray-400 mt-1 flex justify-end">
-        {countWords(fields.ProjectPromotion)} / Max 250 words
-      </p> 
+
+                        {/* Promotion & Marketing */}
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3 Liness">Promotion & Marketing</h3>
+                          <div className="flex flex-col gap-2">
+                            <label htmlFor="ProjectPromotion" className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span>
+                              <span>What inspires you to become a director?</span>
+                              {errors.ProjectPromotion && <span className="text-red-500 text-xs ml-2">{errors.ProjectPromotion.message}</span>}
+                            </label>
+                            <textarea
+                              id="ProjectPromotion"
+                              name="ProjectPromotion"
+                              placeholder="How do you Handle The Promotion (max 250 characters)"
+                              maxLength={250}
+                              rows={4}
+                              value={fields.ProjectPromotion}
+                              className="w-full p-3 Texetions bg-richblack-700 border border-richblack-600 rounded-lg text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition resize-none"
+                              {...register("ProjectPromotion",{required:"Project Promotion is required"})}
+                              onChange={handleChange}
+                            />
+                            <p className="text-xs text-gray-400 flex justify-end">
+                              {countWords(fields.ProjectPromotion)} / Max 250 words
+                            </p>
                           </div>
                         </div>
-                        <div className='space-y-4'>
-                          <h3 className='text-lg font-semibold text-yellow-400 Liness'>🎭 Scene Visualization</h3>
-                          <div className='space-y-2'>
-                                 <label htmlFor="SceneVisualize" className="block font-semibold mb-2 ">
-                      <span className="flex items-center gap-2"> * <span>Before Recording a scene, how do you visualize a scene that is going to happen?     {errors.SceneVisualize && <span className="text-red-500">{errors.SceneVisualize.message}</span> }</span></span>
-                  </label>
-          <textarea
-                    id="SceneVisualize"
-                    name="SceneVisualize"
-                    placeholder="Scene Visualization (max 250 characters)"
-                    maxLength={250}
-                    rows={4}
-                     value={fields.SceneVisualize}
-                                              className='w-full Texetions bg-richblack-800 border border-richblack-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none'
-                    {...register("SceneVisualize",{required:"Scene Visualization is required"})}
-                      onChange={handleChange}
-                  />
-                <p className="text-sm text-gray-400 mt-1 flex justify-end">
-        {countWords(fields.SceneVisualize)} / Max 250 words
-      </p> 
+
+                        {/* Scene Visualization */}
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3 Liness">Scene Visualization</h3>
+                          <div className="flex flex-col gap-2">
+                            <label htmlFor="SceneVisualize" className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span>
+                              <span>Before Recording a scene, how do you visualize a scene that is going to happen?</span>
+                              {errors.SceneVisualize && <span className="text-red-500 text-xs ml-2">{errors.SceneVisualize.message}</span>}
+                            </label>
+                            <textarea
+                              id="SceneVisualize"
+                              name="SceneVisualize"
+                              placeholder="Scene Visualization (max 250 characters)"
+                              maxLength={250}
+                              rows={4}
+                              value={fields.SceneVisualize}
+                              className="w-full p-3 Texetions bg-richblack-700 border border-richblack-600 rounded-lg text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition resize-none"
+                              {...register("SceneVisualize",{required:"Scene Visualization is required"})}
+                              onChange={handleChange}
+                            />
+                            <p className="text-xs text-gray-400 flex justify-end">
+                              {countWords(fields.SceneVisualize)} / Max 250 words
+                            </p>
                           </div>
                         </div>
                       </div>
                     )}
 
                     {selectedRole === "Producer" && experiences === "Fresher" && (
-                      <div className='space-y-8 SelectionOne bg-richblack-700 rounded-lg border border-richblack-600'>
-                        <h1 className="text-red-500 flex justify-center items-center gap-2"> All The Fields are Required in this Section </h1>
-
-                        <div className='space-y-4'>
-                          <h3 className='text-lg font-semibold text-yellow-400  Liness'>💡 Inspiration & Motivation</h3>
-                     <div className='space-y-2'>
-  <label htmlFor="DirectorInspiration" className="block font-semibold mb-2 ">
-    <span className="flex items-center gap-2">
-      * <span>What inspires you to become a Producer?</span>
-      {errors.DirectorInspiration && (
-        <span className="text-red-500">
-          {errors.DirectorInspiration.message}
-        </span>
-      )}
-    </span>
-  </label>
-
-  <textarea
-    id="DirectorInspiration"
-    name="DirectorInspiration"   // 👈 matches the key in fields
-    placeholder="Inspiration (max 250 words)"
-    rows={4}
-    value={fields.DirectorInspiration}
-    className="w-full Texetions bg-richblack-800 border border-richblack-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"
-    {...register("DirectorInspiration", {
-      required: "Director Inspiration is required",
-    })}
-    onChange={handleChange}
-  />
-
-  <p className="text-sm text-gray-400 mt-1 flex justify-end">
-    {countWords(fields.DirectorInspiration)} / Max 250 words
-  </p>
-</div>
-
-
+                      <div className="space-y-8 SelectionOne bg-richblack-700/30 rounded-xl border border-richblack-600 p-6">
+                        <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-2.5 text-center">
+                          <span className="text-red-400 text-sm font-medium">All The Fields are Required in this Section</span>
                         </div>
-                        <div className='space-y-4'>
-                          <h3 className='text-lg font-semibold text-yellow-400 mb-4 Liness'>🎬 Project Experience</h3>
-                          <div className='space-y-2'>
-                            <label className='block text-sm font-medium text-gray-300'><span> * Projects done till now </span> {errors.fresherProjects && (
-        <span className="text-red-500">
-          {errors.fresherProjects.message}
-        </span>
-      )} </label>
-                            <select defaultValue="" className='w-full px-3 py-2 COUNTS bg-richblack-800 border border-richblack-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-yellow-400' {...register("fresherProjects",{required:"Project Count is required"})}>
+
+                        {/* Inspiration & Motivation */}
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3 Liness">Inspiration & Motivation</h3>
+                          <div className="flex flex-col gap-2">
+                            <label htmlFor="DirectorInspiration" className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span>
+                              <span>What inspires you to become a Producer?</span>
+                              {errors.DirectorInspiration && (
+                                <span className="text-red-500 text-xs ml-2">{errors.DirectorInspiration.message}</span>
+                              )}
+                            </label>
+
+                            <textarea
+                              id="DirectorInspiration"
+                              name="DirectorInspiration"
+                              placeholder="Inspiration (max 250 words)"
+                              rows={4}
+                              value={fields.DirectorInspiration}
+                              className="w-full p-3 Texetions bg-richblack-700 border border-richblack-600 rounded-lg text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition resize-none"
+                              {...register("DirectorInspiration", {
+                                required: "Director Inspiration is required",
+                              })}
+                              onChange={handleChange}
+                            />
+
+                            <p className="text-xs text-gray-400 flex justify-end">
+                              {countWords(fields.DirectorInspiration)} / Max 250 words
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Project Experience */}
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3 Liness">Project Experience</h3>
+                          <div className="flex flex-col gap-2">
+                            <label className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span>
+                              <span>Projects done till now</span>
+                              {errors.fresherProjects && (
+                                <span className="text-red-500 text-xs ml-2">{errors.fresherProjects.message}</span>
+                              )}
+                            </label>
+                            <select defaultValue="" className="w-full p-3 COUNTS bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white" {...register("fresherProjects",{required:"Project Count is required"})}>
                               <option value="" disabled>Select Project Count</option>
                               {Projects.typicalTeamSizeRanges.map((data, index) => (
                                 <option key={index} value={data}>{data}</option>
@@ -4627,378 +4806,384 @@ if(loading){
                             </select>
                           </div>
                         </div>
-                        <div className='space-y-4'>
-                          <h3 className='text-lg font-semibold text-yellow-400 mb-4 Liness b'>💰 Budget Planning</h3>
-<div className="space-y-2">
-  <label htmlFor="BudgetHandling" className="block font-semibold mb-2">
-    <span className="flex items-center gap-2">
-      * <span>
-        How do you plan a budget for a film?
-        {errors.BudgetHandling && (
-          <span className="text-red-500">{errors.BudgetHandling.message}</span>
-        )}
-      </span>
-    </span>
-  </label>
 
-  <textarea
-    id="BudgetHandling"
-    name="BudgetHandling"
-    placeholder="Budget planning and financial management... (max 250 words)" 
-    maxLength={250}
-    rows={4}
-    value={fields.BudgetHandling}
-    className="w-full Texetions bg-richblack-800 border border-richblack-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"
-    {...register("BudgetHandling", { required: "Budget planning is required" })}
-    onChange={handleChange}
-  />
+                        {/* Budget Planning */}
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3 Liness b">Budget Planning</h3>
+                          <div className="flex flex-col gap-2">
+                            <label htmlFor="BudgetHandling" className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span>
+                              <span>How do you plan a budget for a film?</span>
+                              {errors.BudgetHandling && (
+                                <span className="text-red-500 text-xs ml-2">{errors.BudgetHandling.message}</span>
+                              )}
+                            </label>
 
-  <p className="text-sm text-gray-400 mt-1 flex justify-end">
-    {countWords(fields.BudgetHandling)} / Max 250 words
-  </p>
-</div>
+                            <textarea
+                              id="BudgetHandling"
+                              name="BudgetHandling"
+                              placeholder="Budget planning and financial management... (max 250 words)"
+                              maxLength={250}
+                              rows={4}
+                              value={fields.BudgetHandling}
+                              className="w-full p-3 Texetions bg-richblack-700 border border-richblack-600 rounded-lg text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition resize-none"
+                              {...register("BudgetHandling", { required: "Budget planning is required" })}
+                              onChange={handleChange}
+                            />
 
+                            <p className="text-xs text-gray-400 flex justify-end">
+                              {countWords(fields.BudgetHandling)} / Max 250 words
+                            </p>
+                          </div>
                         </div>
-                        <div className='space-y-4'>
-                          <h3 className='text-lg font-semibold text-yellow-400 mb-4 Liness'>🎓 Experience & Funding</h3>
-                         {/* Internship Experience Section */}
-<div className="flex flex-col justify-around items-center">
-  <span className="flex gap-1">
-    *<span>Do you have any Internship or Crowd Funding Experience?</span>
-  </span>
-  <div className="flex gap-2">
-    <label>
-      <input
-        type="radio"
-        name="internshipExperience"
-        value="Yes"
-        checked={internship === "Yes"}
-        onChange={() => {
-          setInternship("Yes");
-          setValue("internshipExperience", "Yes");
-        }}
-      />
-      Yes
-    </label>
-    <label>
-      <input
-        type="radio"
-        name="internshipExperience"
-        value="No"
-        checked={internship === "No"}
-        onChange={() => {
-          setInternship("No");
-          setValue("internshipExperience", "No");
-        }}
-      />
-      No
-    </label>
-  </div>
-  <input type="hidden" {...register("internshipExperience", { required: "Experience is required" })} value={internship} />
-</div>
 
-{/* Hide / Show toggle */}
-{internship === "Yes" && openIntern && (
-  <div className="flex gap-1 One">
-    <FaCaretDown
-      className="text-2xl cursor-pointer fill-red-600"
-      onClick={() => setOpenIntern(false)}
-    />
-    <span>Hide Internship</span>
-  </div>
-)}
+                        {/* Experience & Funding */}
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3 Liness">Experience & Funding</h3>
 
-{internship === "Yes" && (
-  <div className={`${openIntern ? "hidden" : "w-full One flex flex-col justify-around gap-2"}`}>
-    <div className="flex flex-row">
-      <FaCaretDown
-        className="text-2xl cursor-pointer"
-        onClick={() => setOpenIntern(true)}
-      />
-      <span>Show Internship</span>
-    </div>
+                          {/* Internship Experience */}
+                          <div className="bg-richblack-700/50 rounded-lg px-5 py-4 border border-richblack-600">
+                            <span className="text-sm font-semibold text-gray-300 flex items-center gap-1 mb-3">
+                              <span className="text-red-500">*</span>
+                              <span>Do you have any Internship or Crowd Funding Experience?</span>
+                            </span>
+                            <div className="flex gap-3">
+                              <label className={`flex items-center gap-2 px-5 py-2.5 rounded-lg border cursor-pointer transition-all ${internship === "Yes" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
+                                <input
+                                  type="radio"
+                                  name="internshipExperience"
+                                  value="Yes"
+                                  checked={internship === "Yes"}
+                                  onChange={() => {
+                                    setInternship("Yes");
+                                    setValue("internshipExperience", "Yes");
+                                  }}
+                                  className="accent-yellow-400 w-4 h-4"
+                                />
+                                <span className="text-sm font-medium">Yes</span>
+                              </label>
+                              <label className={`flex items-center gap-2 px-5 py-2.5 rounded-lg border cursor-pointer transition-all ${internship === "No" ? "bg-yellow-400/10 border-yellow-400 text-yellow-400" : "bg-richblack-700 border-richblack-600 text-gray-300 hover:border-gray-500"}`}>
+                                <input
+                                  type="radio"
+                                  name="internshipExperience"
+                                  value="No"
+                                  checked={internship === "No"}
+                                  onChange={() => {
+                                    setInternship("No");
+                                    setValue("internshipExperience", "No");
+                                  }}
+                                  className="accent-yellow-400 w-4 h-4"
+                                />
+                                <span className="text-sm font-medium">No</span>
+                              </label>
+                            </div>
+                            <input type="hidden" {...register("internshipExperience", { required: "Experience is required" })} value={internship} />
+                          </div>
 
-    {/* Dynamic Internship Fields */}
-    {internships.map((field, index) => (
-      <div
-        className="flex gap-4 p-3  w-full justify-around items-center bg-richblack-800 rounded-md"
-        key={field.id}
-      >
-        {/* Internship Name */}
-      <label htmlFor={`internships.${index}.InternshipName`} className="flex flex-col gap-2">
-  <span className="flex justify-start items-center gap-3">
-    {duplicateinternship.has(index) && (
-      <span className="text-red-500 text-sm">
-        Duplicate Internship Name Detected!
-      </span>
-    )}
-    *<span>Internship Name</span>
-  </span>
+                          {/* Hide / Show toggle */}
+                          {internship === "Yes" && openIntern && (
+                            <div className="flex items-center gap-2 cursor-pointer text-yellow-400 hover:text-yellow-300 transition One" onClick={() => setOpenIntern(false)}>
+                              <FaCaretDown className="text-xl transform -rotate-90 transition-transform" />
+                              <span className="text-sm font-semibold">Show Internship</span>
+                            </div>
+                          )}
 
-  <input
-    type="text"
-    placeholder="Enter Internship Name"
-    className={`form-style h-9 w-[250px] bg-richblack-600 rounded-2xl px-3 ${
-      duplicateinternship.has(index) ? "border-2 border-red-500" : ""
-    }`}
-    {...register(`internships.${index}.InternshipName`, {
-      required: internship === "Yes" ? "Internship name is required" : false,
-      validate: (val) => {
-        const allNames = getValues("internships").map((entry, i) =>
-          (i === index ? val : entry?.InternshipName || "")
-            .toLowerCase()
-            .replace(/\s+/g, "")
-            .trim()
-        );
+                          {internship === "Yes" && (
+                            <div className={`${openIntern ? "hidden" : "w-full One flex flex-col gap-4"}`}>
+                              <div className="flex items-center gap-2 cursor-pointer text-yellow-400 hover:text-yellow-300 transition" onClick={() => setOpenIntern(true)}>
+                                <FaCaretDown className="text-xl transition-transform" />
+                                <span className="text-sm font-semibold">Hide Internship</span>
+                              </div>
 
-        const normalized = val.toLowerCase().replace(/\s+/g, "").trim();
+                              {/* Dynamic Internship Fields */}
+                              {internships.map((field, index) => (
+                                <div
+                                  className="relative bg-richblack-700/40 border border-richblack-600 rounded-xl p-5"
+                                  key={field.id}
+                                >
+                                  {/* Entry badge */}
+                                  <div className="absolute -top-3 left-4 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full">
+                                    Internship {index + 1}
+                                  </div>
 
-        return allNames.filter((name) => name && name === normalized).length > 1
-          ? ""
-          : true;
-      },
-    })}
-    onChange={(e) => {
-      const value = e.target.value;
+                                  {/* Remove Button */}
+                                  <div
+                                    className="absolute top-3 right-3 w-7 h-7 flex justify-center items-center rounded-full bg-richblack-600 hover:bg-red-600 cursor-pointer transition-colors"
+                                    onClick={() => {
+                                      if (internships.length === 1) {
+                                        setInternError("You need to keep at least one field");
+                                      } else {
+                                        removeIntern(index);
+                                        setInternError("");
+                                      }
+                                    }}
+                                  >
+                                    <RxCross1 className="text-richblack-100 text-xs" />
+                                  </div>
 
-      setValue(`internships.${index}.InternshipName`, value, {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
+                                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mt-3">
+                                    {/* Internship Name */}
+                                    <label htmlFor={`internships.${index}.InternshipName`} className="flex flex-col gap-2">
+                                      <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                                        <span className="text-red-500">*</span><span>Internship Name</span>
+                                      </span>
+                                      {duplicateinternship.has(index) && (
+                                        <span className="text-red-500 text-xs">Duplicate Internship Name Detected!</span>
+                                      )}
 
-      const allNames = getValues("internships").map((entry, i) =>
-        (i === index ? value : entry?.InternshipName || "")
-          .toLowerCase()
-          .replace(/\s+/g, "")
-          .trim()
-      );
+                                      <input
+                                        type="text"
+                                        placeholder="Enter Internship Name"
+                                        className={`w-full p-3 bg-richblack-700 border form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white placeholder-gray-500 ${
+                                          duplicateinternship.has(index) ? "border-2 border-red-500" : "border-richblack-600"
+                                        }`}
+                                        {...register(`internships.${index}.InternshipName`, {
+                                          required: internship === "Yes" ? "Internship name is required" : false,
+                                          validate: (val) => {
+                                            const allNames = getValues("internships").map((entry, i) =>
+                                              (i === index ? val : entry?.InternshipName || "")
+                                                .toLowerCase()
+                                                .replace(/\s+/g, "")
+                                                .trim()
+                                            );
 
-      const counts = {};
-      allNames.forEach((n) => {
-        if (!n) return;
-        counts[n] = (counts[n] || 0) + 1;
-      });
+                                            const normalized = val.toLowerCase().replace(/\s+/g, "").trim();
 
-      const newDuplicates = new Set();
-      allNames.forEach((n, idx) => {
-        if (n && counts[n] > 1) newDuplicates.add(idx);
-      });
+                                            return allNames.filter((name) => name && name === normalized).length > 1
+                                              ? ""
+                                              : true;
+                                          },
+                                        })}
+                                        onChange={(e) => {
+                                          const value = e.target.value;
 
-      setduplicateinternship(newDuplicates);
-    }}
-  />
+                                          setValue(`internships.${index}.InternshipName`, value, {
+                                            shouldValidate: true,
+                                            shouldDirty: true,
+                                          });
 
-  {errors?.internships?.[index]?.InternshipName && (
-    <span className="text-red-500 text-sm">
-      {errors.internships[index].InternshipName.message}
-    </span>
-  )}
-</label>
+                                          const allNames = getValues("internships").map((entry, i) =>
+                                            (i === index ? value : entry?.InternshipName || "")
+                                              .toLowerCase()
+                                              .replace(/\s+/g, "")
+                                              .trim()
+                                          );
 
+                                          const counts = {};
+                                          allNames.forEach((n) => {
+                                            if (!n) return;
+                                            counts[n] = (counts[n] || 0) + 1;
+                                          });
 
-        {/* Internship Documents */}
-        <label htmlFor={`internships.${index}.InternshipDocs`} className="flex flex-col gap-2">
-          <span className="flex items-center gap-3">
-            *<span>Certificate / Documents</span>
-          </span>
-          <input
-            type="file"
-            accept=".pdf,.jpg,.jpeg,.png"
-            className="form-style bg-richblack-800 rounded-2xl p-2"
-            {...register(`internships.${index}.InternshipDocs`, {
-              required: "Internship file is required",
-              validate:{
-                  fileSize: (files) => {
-                  if (files && files[0]) {
-                    return (
-                      files[0].size <= 5 * 1024 * 1024 ||
-                      "File size must be less than 5MB"
-                    );
-                  }
-                  return true;
-                },
-              }
-            }
-            )}
-          />
-          {errors?.internships?.[index]?.InternshipDocs && (
-            <span className="text-red-500 text-sm">
-              {errors.internships[index].InternshipDocs.message}
-            </span>
-          )}
-        </label>
+                                          const newDuplicates = new Set();
+                                          allNames.forEach((n, idx) => {
+                                            if (n && counts[n] > 1) newDuplicates.add(idx);
+                                          });
 
-        {/* Start Date */}
-        <label htmlFor={`internships.${index}.StartDate`} className="flex flex-col gap-2">
-          <span className="flex items-center gap-3">*<span>Start Date</span></span>
-          <input
-            type="date"
-            className="form-style h-9 w-[150px] bg-richblack-600 rounded-2xl px-2"
-            {...register(`internships.${index}.StartDate`, {
-              required: "Start date is required",
-            })}
-          />
-          {errors?.internships?.[index]?.StartDate && (
-            <span className="text-red-500 text-sm">
-              {errors.internships[index].StartDate.message}
-            </span>
-          )}
-        </label>
+                                          setduplicateinternship(newDuplicates);
+                                        }}
+                                      />
 
-        {/* Completion Date */}
-        <label htmlFor={`internships.${index}.EndDate`} className="flex flex-col gap-2">
-          <span className="flex items-center gap-3">*<span>Completion Date</span></span>
-          <input
-            type="date"
-            className="form-style h-9 w-[150px] bg-richblack-600 rounded-2xl px-2"
-            {...register(`internships.${index}.EndDate`, {
-              required: "Completion date is required",
-            })}
-          />
-          {errors?.internships?.[index]?.EndDate && (
-            <span className="text-red-500 text-sm">
-              {errors.internships[index].EndDate.message}
-            </span>
-          )}
-        </label>
+                                      {errors?.internships?.[index]?.InternshipName && (
+                                        <span className="text-red-500 text-xs">
+                                          {errors.internships[index].InternshipName.message}
+                                        </span>
+                                      )}
+                                    </label>
 
-        {/* Remove Button */}
-        <div
-          className="flex justify-center items-center w-8 h-8 rounded-full hover:bg-red-600 cursor-pointer"
-          onClick={() => {
-            if (internships.length === 1) {
-              setInternError("You need to keep at least one field");
-            } else {
-              removeIntern(index);
-              setInternError("");
-            }
-          }}
-        >
-          <RxCross1 className="text-richblack-100" />
-        </div>
-      </div>
-    ))}
+                                    {/* Internship Documents */}
+                                    <label htmlFor={`internships.${index}.InternshipDocs`} className="flex flex-col gap-2">
+                                      <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                                        <span className="text-red-500">*</span><span>Certificate / Documents</span>
+                                      </span>
+                                      <input
+                                        type="file"
+                                        accept=".pdf,.jpg,.jpeg,.png"
+                                        className="w-full p-2.5 bg-richblack-700 border border-richblack-600 form-style rounded-lg text-white text-sm file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-yellow-400/10 file:text-yellow-400 hover:file:bg-yellow-400/20 file:cursor-pointer"
+                                        {...register(`internships.${index}.InternshipDocs`, {
+                                          required: "Internship file is required",
+                                          validate:{
+                                              fileSize: (files) => {
+                                              if (files && files[0]) {
+                                                return (
+                                                  files[0].size <= 5 * 1024 * 1024 ||
+                                                  "File size must be less than 5MB"
+                                                );
+                                              }
+                                              return true;
+                                            },
+                                          }
+                                        }
+                                        )}
+                                      />
+                                      {errors?.internships?.[index]?.InternshipDocs && (
+                                        <span className="text-red-500 text-xs">
+                                          {errors.internships[index].InternshipDocs.message}
+                                        </span>
+                                      )}
+                                    </label>
 
-    {/* Error */}
-    {internError && (
-      <span className="text-red-500 text-sm flex justify-center items-center">
-        {internError}
-      </span>
-    )}
+                                    {/* Start Date */}
+                                    <label htmlFor={`internships.${index}.StartDate`} className="flex flex-col gap-2">
+                                      <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                                        <span className="text-red-500">*</span><span>Start Date</span>
+                                      </span>
+                                      <input
+                                        type="date"
+                                        className="w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white"
+                                        {...register(`internships.${index}.StartDate`, {
+                                          required: "Start date is required",
+                                        })}
+                                      />
+                                      {errors?.internships?.[index]?.StartDate && (
+                                        <span className="text-red-500 text-xs">
+                                          {errors.internships[index].StartDate.message}
+                                        </span>
+                                      )}
+                                    </label>
 
-    {/* Add More */}
-    <button
-      type="button"
-      className="px-4 py-1 bg-blue-600 text-white rounded Adding w-full"
-      onClick={() => {
-        if (internships.length >= 4) {
-          setInternError("You can create 4 fields only");
-        } else {
-          appendIntern({ InternshipName: "", InternshipDocs: "", StartDate: "", EndDate: "" });
-          setInternError("");
-        }
-      }}
-    >
-      Add more
-    </button>
-  </div>
-)}
+                                    {/* Completion Date */}
+                                    <label htmlFor={`internships.${index}.EndDate`} className="flex flex-col gap-2">
+                                      <span className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                                        <span className="text-red-500">*</span><span>Completion Date</span>
+                                      </span>
+                                      <input
+                                        type="date"
+                                        className="w-full p-3 bg-richblack-700 border border-richblack-600 h-[46px] form-style rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition text-white"
+                                        {...register(`internships.${index}.EndDate`, {
+                                          required: "Completion date is required",
+                                        })}
+                                      />
+                                      {errors?.internships?.[index]?.EndDate && (
+                                        <span className="text-red-500 text-xs">
+                                          {errors.internships[index].EndDate.message}
+                                        </span>
+                                      )}
+                                    </label>
+                                  </div>
+                                </div>
+                              ))}
 
+                              {/* Error */}
+                              {internError && (
+                                <span className="text-red-500 text-xs flex justify-center items-center">
+                                  {internError}
+                                </span>
+                              )}
+
+                              {/* Add More */}
+                              <button
+                                type="button"
+                                className="self-start px-6 py-2.5 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold rounded-lg hover:from-yellow-500 hover:to-yellow-600 transition-all shadow-md hover:shadow-lg text-sm Adding"
+                                onClick={() => {
+                                  if (internships.length >= 4) {
+                                    setInternError("You can create 4 fields only");
+                                  } else {
+                                    appendIntern({ InternshipName: "", InternshipDocs: "", StartDate: "", EndDate: "" });
+                                    setInternError("");
+                                  }
+                                }}
+                              >
+                                + Add More Internships
+                              </button>
+                            </div>
+                          )}
                         </div>
-                        <div className='space-y-4'>
-                          <h3 className='text-lg font-semibold text-yellow-400 mb-4 Liness'>🤝 Networking & Industry Relations</h3>
-<div className="space-y-2">
-  <label htmlFor="Networking" className="block font-semibold mb-2">
-    <span className="flex items-center gap-2">
-      * <span>
-        How do you plan to network with other people of the industry?
-        {errors.Networking && (
-          <span className="text-red-500">{errors.Networking.message}</span>
-        )}
-      </span>
-    </span>
-  </label>
 
-  <textarea
-    id="Networking"
-    name="Networking"
-    placeholder="Networking strategy (max 250 words)"
-    maxLength={250}
-    rows={3}
-    value={fields.Networking}
-    className="w-full Texetions bg-richblack-800 border border-richblack-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"
-    {...register("Networking", { required: "Networking plan is required" })}
-    onChange={handleChange}
-  />
+                        {/* Networking & Industry Relations */}
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3 Liness">Networking & Industry Relations</h3>
+                          <div className="flex flex-col gap-2">
+                            <label htmlFor="Networking" className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span>
+                              <span>How do you plan to network with other people of the industry?</span>
+                              {errors.Networking && (
+                                <span className="text-red-500 text-xs ml-2">{errors.Networking.message}</span>
+                              )}
+                            </label>
 
-  <p className="text-sm text-gray-400 mt-1 flex justify-end">
-    {countWords(fields.Networking)} / Max 250 words
-  </p>
-</div>
+                            <textarea
+                              id="Networking"
+                              name="Networking"
+                              placeholder="Networking strategy (max 250 words)"
+                              maxLength={250}
+                              rows={3}
+                              value={fields.Networking}
+                              className="w-full p-3 Texetions bg-richblack-700 border border-richblack-600 rounded-lg text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition resize-none"
+                              {...register("Networking", { required: "Networking plan is required" })}
+                              onChange={handleChange}
+                            />
 
-
+                            <p className="text-xs text-gray-400 flex justify-end">
+                              {countWords(fields.Networking)} / Max 250 words
+                            </p>
+                          </div>
                         </div>
-                        <div className='space-y-4'>
-                          <h3 className='text-lg font-semibold text-yellow-400 mb-4 Liness'>⏰ Risk Management</h3>
-<div className="space-y-2">
-  <label htmlFor="FundDelays" className="block font-semibold mb-2">
-    <span className="flex items-center gap-2">
-      * <span>
-        How do you handle Funding Delays?
-        {errors.FundDelays && (
-          <span className="text-red-500">{errors.FundDelays.message}</span>
-        )}
-      </span>
-    </span>
-  </label>
 
-  <textarea
-    id="FundDelays"
-    name="FundDelays"
-    placeholder="Risk Management (max 250 words)"
-    maxLength={250}
-    rows={3}
-    value={fields.FundDelays}
-    className="w-full Texetions bg-richblack-800 border border-richblack-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"
-    {...register("FundDelays", { required: "Funding delays strategy is required" })}
-    onChange={handleChange}
-  />
+                        {/* Risk Management */}
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold text-yellow-400 border-b border-richblack-600 pb-3 Liness">Risk Management</h3>
+                          <div className="flex flex-col gap-2">
+                            <label htmlFor="FundDelays" className="text-sm font-semibold text-gray-300 flex items-center gap-1">
+                              <span className="text-red-500">*</span>
+                              <span>How do you handle Funding Delays?</span>
+                              {errors.FundDelays && (
+                                <span className="text-red-500 text-xs ml-2">{errors.FundDelays.message}</span>
+                              )}
+                            </label>
 
-  <p className="text-sm text-gray-400 mt-1 flex justify-end">
-    {countWords(fields.FundDelays)} / Max 250 words
-  </p>
-</div>
+                            <textarea
+                              id="FundDelays"
+                              name="FundDelays"
+                              placeholder="Risk Management (max 250 words)"
+                              maxLength={250}
+                              rows={3}
+                              value={fields.FundDelays}
+                              className="w-full p-3 Texetions bg-richblack-700 border border-richblack-600 rounded-lg text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition resize-none"
+                              {...register("FundDelays", { required: "Funding delays strategy is required" })}
+                              onChange={handleChange}
+                            />
 
-
+                            <p className="text-xs text-gray-400 flex justify-end">
+                              {countWords(fields.FundDelays)} / Max 250 words
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    )}  
+                    )}
 
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className='text-white w-full h-[140px] pp bg-richblack-800 rounded-md flex flex-col justify-center items-center gap-3'>
-               <div>
-              <label className='flex justify-center items-center gap-3'>
-                <input
-                  type="checkbox"
-                  {...register("privacyPolicy", { required: "You must agree to the Privacy & Policy" })}/>
-                  I agree to the Privacy & Policy
-              </label>
-              {errors.privacyPolicy && <span className="text-red-500">{errors.privacyPolicy.message}</span>}
-            </div>
-            <div className='text-white'>
-              <label className='flex justify-center items-center gap-3'>
-                <input
-                  type="checkbox"
-                  {...register("termsAndConditions", { required: "You must agree to the terms and conditions" })}/>
-                  I agree to he Terms & Conditions
-              </label>
-              {errors.termsAndConditions && <span className="text-red-500">{errors.termsAndConditions.message}</span>}
-            </div>
-            <button type="submit" className='w-full h-8 bg-yellow-300 rounded-md'>Submit</button>
+            {/* Privacy, Terms & Submit */}
+            <div className="text-white w-full pp bg-richblack-800 rounded-xl border border-richblack-700 shadow-lg overflow-hidden">
+              <div className="p-6 flex flex-col items-center gap-4">
+                <div>
+                  <label className="flex items-center gap-3 cursor-pointer text-sm text-gray-300 hover:text-white transition">
+                    <input
+                      type="checkbox"
+                      className="accent-yellow-400 w-4 h-4 rounded"
+                      {...register("privacyPolicy", { required: "You must agree to the Privacy & Policy" })}/>
+                    I agree to the Privacy & Policy
+                  </label>
+                  {errors.privacyPolicy && <span className="text-red-500 text-xs mt-1 block text-center">{errors.privacyPolicy.message}</span>}
+                </div>
+                <div>
+                  <label className="flex items-center gap-3 cursor-pointer text-sm text-gray-300 hover:text-white transition">
+                    <input
+                      type="checkbox"
+                      className="accent-yellow-400 w-4 h-4 rounded"
+                      {...register("termsAndConditions", { required: "You must agree to the terms and conditions" })}/>
+                    I agree to he Terms & Conditions
+                  </label>
+                  {errors.termsAndConditions && <span className="text-red-500 text-xs mt-1 block text-center">{errors.termsAndConditions.message}</span>}
+                </div>
+                <button type="submit" className="w-full py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-bold rounded-lg hover:from-yellow-500 hover:to-yellow-600 transition-all shadow-md hover:shadow-lg text-sm mt-2">
+                  Submit Application
+                </button>
+              </div>
             </div>
                   {confirmationModal && <Logout modalData={confirmationModal} />}
           </form>

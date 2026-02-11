@@ -94,7 +94,7 @@ const LeftSide = ({direction}) => {
       id: 3,
       disabled:organizerLocked
     },
-    { icon: CiChat1, label: 'Chat', path: '/Dashboard/My-Venues', id: 4 },
+    { icon: CiChat1, label: 'Chat', path: '/Dashboard/Chats', id: 4 },
     { icon: MdReviews, label: 'Reviews', path: '/Dashboard/My-Venues', id: 5 },
     {
       icon: IoSettings, 
@@ -104,6 +104,18 @@ const LeftSide = ({direction}) => {
       disabled: isVerificationDisabled 
     },
   ];
+
+    const adminNav = [
+    { icon: LuUserRound, label: 'My Profile', path: '/Dashboard/My-Profile', id: 1 },
+    { icon: FaBookBookmark, label: 'Org-Verification', path: '/Dashboard/Verifications', id: 2 },
+    { icon: IoSettings, label: 'Genre', path: '/Dashboard/Genre', id: 3 },
+    { icon: IoSettings, label: 'Language Creation', path: '/Dashboard/CreateLanguage', id: 4 },
+    { icon: IoSettings, label: 'Show Verification', path: '/Dashboard/VerifyShows', id: 5 },
+    { icon: IoSettings, label: 'Theatres', path: '/Dashboard/VerifyTheatre', id: 6},
+    { icon: IoSettings, label: 'All Users', path: '/Dashboard/users', id: 7},
+    { icon: CiChat1, label: 'Chat', path: '/Dashboard/Chats', id: 8 },
+  ];
+
 // disabled: isVerificationDisabled
 
   useEffect(() => {
@@ -116,17 +128,6 @@ const LeftSide = ({direction}) => {
   // if(FormSubmited === true){
   //   navigate('/Dashboard/My-Profile');
   // }
-
-  const adminNav = [
-    { icon: LuUserRound, label: 'My Profile', path: '/Dashboard/My-Profile', id: 1 },
-    { icon: FaBookBookmark, label: 'Org-Verification', path: '/Dashboard/Verifications', id: 2 },
-    { icon: IoSettings, label: 'Genre', path: '/Dashboard/Genre', id: 3 },
-    { icon: IoSettings, label: 'Language Creation', path: '/Dashboard/CreateLanguage', id: 4 },
-    { icon: IoSettings, label: 'Show Verification', path: '/Dashboard/VerifyShows', id: 5 },
-    { icon: IoSettings, label: 'Theatres', path: '/Dashboard/VerifyTheatre', id: 6},
-    { icon: IoSettings, label: 'All Users', path: '/Dashboard/users', id: 7},
-    { icon: CiChat1, label: 'Chat', path: '/Dashboard/Chats', id: 8 },
-  ];
 
   const navMap = {
     [ACCOUNT_TYPE.USER]: viewerNav,

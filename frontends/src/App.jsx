@@ -44,6 +44,7 @@ import  VerifyTheatrer from './Components/Dashboard/VerifyTheatrer'
 import CreateTicket from './Components/Dashboard/Tickets/CreateTicketes'
 import TicketAllotment from './Components/Dashboard/Tickets/TicketAllotment'
 import AllTickets from './Components/Dashboard/Tickets/GetAllTicket'
+import Chat from './Components/Dashboard/Chating/Chat'
 
 const Homelayout = ({Notify}) =>{
   return(
@@ -135,6 +136,8 @@ const dispatch = useDispatch()
       <Route path="/Dashboard/Wishlist" element={<Wishlist />} />
       <Route path="/Dashboard/Purchase-History" element={<History />} />
       <Route path="/Dashboard/Tickets" element={<Tickets />} />
+      <Route path="/Dashboard/Chats" element={<Chat/>} />
+
     </>
   )}
 
@@ -152,6 +155,8 @@ const dispatch = useDispatch()
       <Route path="/Dashboard/Tickets/Create" element={<CreateTicket/>} />
       <Route path="/Dashboard/Tickets/Update" element={<TicketAllotment/>} />
       <Route path="/Dashboard/Tickets/All" element={<AllTickets/>} />
+      <Route path="/Dashboard/Chats" element={<Chat/>} />
+
     </>
   )}
 
@@ -164,6 +169,7 @@ const dispatch = useDispatch()
       <Route path="/Dashboard/VerifyShows" element={<VerifyShow/>} />
       <Route path="/Dashboard/VerifyTheatre" element={<VerifyTheatrer/>} />
       <Route path="/Dashboard/users" element={<Users/>} />
+      <Route path="/Dashboard/Chats" element={<Chat/>} />
     </>
   )}
 

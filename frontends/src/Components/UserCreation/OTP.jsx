@@ -88,12 +88,12 @@ const OTP = ({ Style }) => {
 
   const handleVerifyClick = async () => {
     if (data.usertype === 'Viewer') {
-      if (otp === sentOtp || otp === resendOtp) {
+      if (otp === String(sentOtp) || otp === String(resendOtp)) {
         try {
           setLoading(true);
           const fullName = `${data.firstName} ${data.lastName}`;
           const response = await dispatch(
-            UserCreation(fullName, data.password, data.email, data.phoneNumber, otp, data.countrycode)
+            UserCreation(fullName, data.password, data.email, data.phoneNumber, otp, data.countryCode)
           );
           if (response?.success) {
             toast.success('User Created');
@@ -114,13 +114,13 @@ const OTP = ({ Style }) => {
     }
 
     if (data.usertype === 'Organizer') {
-      if (otp === sentOtp || otp === resendOtp) {
+      if (otp === String(sentOtp) || otp === String(resendOtp)) {
         try {
           setLoading(true);
           const fullName = `${data.firstName} ${data.lastName}`;
-          const response = await dispatch(
-            Creation(fullName, data.password, data.email, data.phoneNumber, otp)
-          );
+          // console.log(fullName, data.password, data.email, data.phoneNumber, otp)
+          // console.log(data)
+          const response = await dispatch(Creation(fullName, data.password, data.email, data.phoneNumber, otp, data.countryCode));
           if (response?.success) {
             toast.success('User Created');
             sessionStorage.removeItem(OTP_TIMER_KEY);

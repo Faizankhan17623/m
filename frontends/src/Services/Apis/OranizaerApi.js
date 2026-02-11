@@ -21,7 +21,9 @@ export const GetAllSHowsDetails = {
 }
 
 export const GetAllTheatreDetails = {
-    Getalltheatredetails:BASE_URL+"/Get-All-Theatre-Details"
+    Getalltheatredetails:BASE_URL+"/Get-All-Theatre-Details",
+    ticketdetails:BASE_URL+"/Ticket-Details",
+    AllDetails:BASE_URL+"/All-Ticket-Details"
 }
 
 export const orgainezerdata = {

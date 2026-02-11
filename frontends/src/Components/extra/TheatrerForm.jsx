@@ -63,10 +63,14 @@ const TheatrerForm = () => {
 
   const totalSteps = 3
 
-  const toggleSelection = (item, selected, setSelected) => {
+  const toggleSelection = (item, selected, setSelected, max) => {
     if (selected.includes(item)) {
       setSelected(selected.filter(s => s !== item))
     } else {
+      if (max && selected.length >= max) {
+        toast.error(`You can select a maximum of ${max} options`)
+        return
+      }
       setSelected([...selected, item])
     }
   }
@@ -104,11 +108,16 @@ const TheatrerForm = () => {
     }
 
     if (step === 2) {
-      if (selectedSeats.length === 0) { toast.error('Select at least one seat type'); return }
-      if (selectedScreens.length === 0) { toast.error('Select at least one screen type'); return }
-      if (selectedLanguages.length === 0) { toast.error('Select at least one language'); return }
-      if (selectedFormats.length === 0) { toast.error('Select at least one theatre format'); return }
-      if (selectedParking.length === 0) { toast.error('Select at least one parking option'); return }
+      if (selectedSeats.length < 1) { toast.error('Select at least 1 seat type'); return }
+      if (selectedSeats.length > 6) { toast.error('You can select a maximum of 6 seat types'); return }
+      if (selectedScreens.length < 1) { toast.error('Select at least 1 screen type'); return }
+      if (selectedScreens.length > 9) { toast.error('You can select a maximum of 9 screen types'); return }
+      if (selectedLanguages.length < 1) { toast.error('Select at least 1 language'); return }
+      if (selectedLanguages.length > 10) { toast.error('You can select a maximum of 10 languages'); return }
+      if (selectedFormats.length < 1) { toast.error('Select at least 1 theatre format'); return }
+      if (selectedFormats.length > 10) { toast.error('You can select a maximum of 10 theatre formats'); return }
+      if (selectedParking.length < 1) { toast.error('Select at least 1 parking option'); return }
+      if (selectedParking.length > 5) { toast.error('You can select a maximum of 5 parking options'); return }
     }
 
     setLoading(true)
@@ -224,29 +233,44 @@ window.location.reload()
     </div>
   )
 
-  const ChipSelector = ({ label, options, selected, setSelected }) => (
-    <div className="w-full mb-4">
-      <label className="block text-sm font-semibold text-richblack-5 mb-2">
-        {label} <span className="text-yellow-100">({selected.length} selected)</span>
-      </label>
-      <div className="flex flex-wrap gap-2 max-h-36 overflow-y-auto p-2 bg-richblack-700 rounded-lg border border-richblack-600">
-        {options.map((item) => (
-          <button
-            key={item}
-            type="button"
-            onClick={() => toggleSelection(item, selected, setSelected)}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 border
-              ${selected.includes(item)
-                ? 'bg-yellow-400 text-black border-yellow-400'
-                : 'bg-richblack-600 text-richblack-100 border-richblack-500 hover:border-richblack-300'
-              }`}
-          >
-            {item}
-          </button>
-        ))}
+  const ChipSelector = ({ label, options, selected, setSelected, min = 1, max }) => {
+    const isUnderMin = selected.length < min
+    const isAtMax = max && selected.length >= max
+    return (
+      <div className="w-full mb-4">
+        <label className="block text-sm font-semibold text-richblack-5 mb-1">
+          {label} <span className={`text-xs font-medium ${isUnderMin ? 'text-red-400' : isAtMax ? 'text-orange-400' : 'text-yellow-100'}`}>({selected.length}{max ? `/${max}` : ''} selected)</span>
+        </label>
+        <p className="text-xs text-richblack-300 mb-2">
+          Min: {min} {max ? `| Max: ${max}` : ''}
+          {isAtMax && <span className="text-orange-400 ml-2">— Max limit reached</span>}
+        </p>
+        <div className={`flex flex-wrap gap-2 max-h-36 overflow-y-auto p-2 bg-richblack-700 rounded-lg border ${isUnderMin ? 'border-red-500/50' : isAtMax ? 'border-orange-400/50' : 'border-richblack-600'}`}>
+          {options.map((item) => {
+            const isSelected = selected.includes(item)
+            const isDisabled = !isSelected && isAtMax
+            return (
+              <button
+                key={item}
+                type="button"
+                onClick={() => toggleSelection(item, selected, setSelected, max)}
+                disabled={isDisabled}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 border
+                  ${isSelected
+                    ? 'bg-yellow-400 text-black border-yellow-400'
+                    : isDisabled
+                      ? 'bg-richblack-800 text-richblack-400 border-richblack-700 cursor-not-allowed opacity-50'
+                      : 'bg-richblack-600 text-richblack-100 border-richblack-500 hover:border-richblack-300'
+                  }`}
+              >
+                {item}
+              </button>
+            )
+          })}
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 
   const ImageUploader = ({ label, images, setImages, previews, setPreviews, id }) => (
     <div className="w-full mb-4">
@@ -428,11 +452,11 @@ window.location.reload()
                 </label>
               </div>
 
-              <ChipSelector label="Types of Seats" options={SEAT_TYPES} selected={selectedSeats} setSelected={setSelectedSeats} />
-              <ChipSelector label="Screen Types" options={SCREEN_TYPES} selected={selectedScreens} setSelected={setSelectedScreens} />
-              <ChipSelector label="Languages Available" options={LANGUAGES} selected={selectedLanguages} setSelected={setSelectedLanguages} />
-              <ChipSelector label="Theatre Formats" options={THEATRE_FORMATS} selected={selectedFormats} setSelected={setSelectedFormats} />
-              <ChipSelector label="Parking Options" options={PARKING_OPTIONS} selected={selectedParking} setSelected={setSelectedParking} />
+              <ChipSelector label="Types of Seats" options={SEAT_TYPES} selected={selectedSeats} setSelected={setSelectedSeats} min={1} max={6} />
+              <ChipSelector label="Screen Types" options={SCREEN_TYPES} selected={selectedScreens} setSelected={setSelectedScreens} min={1} max={9} />
+              <ChipSelector label="Languages Available" options={LANGUAGES} selected={selectedLanguages} setSelected={setSelectedLanguages} min={1} max={10} />
+              <ChipSelector label="Theatre Formats" options={THEATRE_FORMATS} selected={selectedFormats} setSelected={setSelectedFormats} min={1} max={10} />
+              <ChipSelector label="Parking Options" options={PARKING_OPTIONS} selected={selectedParking} setSelected={setSelectedParking} min={1} max={5} />
 
               <div className="flex justify-between mt-2">
                 <button

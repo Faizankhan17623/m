@@ -10,12 +10,13 @@ const {createorgainezer,orgainezerlogin} = CreateOrgainezer
 const {OrgainezerData,DirectorFresher,DirectorExperience,ProducerFresher,ProducerExperience} = orgainezerdata
 const {CreateTicket} = Ticket
 const {Allotment} = AllotTheatre
-const {Getalltheatredetails} = GetAllTheatreDetails
+const {Getalltheatredetails,ticketdetails,AllDetails} = GetAllTheatreDetails
 
 export function Creation(name,password,email,number,otp,code){
+  // console.log("log fro mthe creation ",name,password,email,number,otp,code)
     return async (dispatch) => {
         dispatch(setLoading(true));
-        const ToastId = toast.loading("Creating the orgainezer, please 234wait...");
+        const ToastId = toast.loading("Creating the orgainezer, please wait...");
         try{
             if (!name || !password || !email || !number || !otp ||!code) {
         throw new Error('Missing required fields');
@@ -23,19 +24,18 @@ export function Creation(name,password,email,number,otp,code){
 
             const response = await apiConnector("POST",createorgainezer,{
                 name:name,
-                password: password,
                 email: email,
+                password: password,
                 number: number,
-                otp: otp,
-                countrycode:code
-
+                countrycode:code,
+                otp:String(otp)
             })
             //  console.log("This is the responsee data",response)
 
             if(!response.data.success){
                 throw new Error(response.data.message || "Failed to create orgainezer");
             }
-             // toast.success("Signup Successful")
+             // toast.success("Signup Successful")otp
             return { success: true, data: response.data };
         }catch(error){
             console.log("Error in Creating the orgainezer",error)
@@ -715,8 +715,92 @@ export function VerifiedTheatres (token,navigate){
       toast.error(errorMessage);
     } finally {
             toast.dismiss(ToastId);
-
       dispatch(setLoading(false));
     }
   };
 }
+
+export function TicketDetails (token,showid,navigate){
+  return async(dispatch)=>{
+     dispatch(setLoading(true));
+     const ToastId = toast.loading("Fetching Ticket details, please wait...");
+    try{
+       if(!token){
+                             navigate("/Login")
+                             toast.error("Token is Expired Please Create a new One")
+                         }
+
+                          const response = await apiConnector(
+                "GET", 
+                `${ticketdetails}?showId=${showid}`,  // ✅ Add query param to URL
+                null,  // ✅ No body for GET
+                {
+                    Authorization: `Bearer ${token}`
+                }
+            )
+
+      // Handle success
+      if (response?.data?.success) {
+        toast.success(response.data.message);
+        return response.data; // Return full response with success flag and data
+      } else {
+        toast.error(response?.data?.message || "Failed to Get ticket details");
+      }
+    }catch(error){
+       console.error("Ticket error", error);
+      
+      // Better error handling
+      const errorMessage = error?.response?.data?.message 
+        || error?.message 
+        || "Ticket error";
+      
+      toast.error(errorMessage);
+    }finally{
+      toast.dismiss(ToastId);
+      dispatch(setLoading(false));
+    }
+  }
+}
+  
+export function Alldetails (token,navigate){
+  return async(dispatch)=>{
+     dispatch(setLoading(true));
+     const ToastId = toast.loading("Fetching  All Ticket details, please wait...");
+    try{
+       if(!token){
+                             navigate("/Login")
+                             toast.error("Token is Expired Please Create a new One")
+                         }
+
+                          const response = await apiConnector(
+                "GET", 
+                AllDetails,  // ✅ Add query param to URL
+                null,  // ✅ No body for GET
+                {
+                    Authorization: `Bearer ${token}`
+                }
+            )
+
+      // Handle success
+      if (response?.data?.success) {
+        toast.success(response.data.message);
+        return response.data; // Return full response with success flag and data
+      } else {
+        toast.error(response?.data?.message || "Failed to Get  all ticket details");
+      }
+    }catch(error){
+       console.error("Ticket error", error);
+      
+      // Better error handling
+      const errorMessage = error?.response?.data?.message 
+        || error?.message 
+        || "Ticket error";
+      
+      toast.error(errorMessage);
+    }finally{
+      toast.dismiss(ToastId);
+      dispatch(setLoading(false));
+    }
+  }
+}
+

@@ -231,7 +231,7 @@ const AboutUs = () => {
       <FeedbackForm />
 
       {/* Slider */}
-      <div className='bg-gradient-to-b from-richblack-800 to-richblack-800/80 border-y border-richblack-700/50'>
+      <div className='w-full'>
         <Slider />
       </div>
 
