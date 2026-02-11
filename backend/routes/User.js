@@ -11,6 +11,7 @@ const {AllShows,usingtitle} = require('../controllers/common/Showlist')
 const {createRating,getAverageRating,getAllRatingReview} = require("../controllers/common/RatingAndRviews")
 const {TicketPurchased,TicketPurchasedFullDetails} = require("../controllers/Dashboard/UserDashboard")
 const {GetAlluserDetails,FindUserNames,FindLoginEmail,FindNumber,FindCreationEmail} = require('../controllers/user/User')
+const {BannerMovies} = require('../controllers/Dashboard/UserDashboard')
 
 // DONE 
 // This is the first route that will be used to create the user and all the things that the user will do releated to his personal info
@@ -49,7 +50,7 @@ route.get("/Specific-Show",auth,IsUSER,usingtitle)
 // This are the route that are going to be used to like and dislike the banner
 route.put("/Like-Banner",auth, IsUSER,PosterLike) 
 route.put("/Dislike-Banner",auth, IsUSER,BannerDisliked) 
-
+route.get('/Banner',BannerMovies)
 
 route.put("/Comment-Banner",auth, IsUSER,Comment) 
 route.get("/Get-Comment",auth, IsUSER,getAllComment)

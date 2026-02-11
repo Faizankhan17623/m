@@ -20,7 +20,7 @@ const {notUploadedShows,VerifiedButnotUploaded} = require("../controllers/common
 route.put("/Org-Verification",auth,IsAdmin,VerifyOrgainezer)
 route.delete("/delete-Org",auth,IsAdmin,deleteOrgainezer)
 route.delete("/delete-allOrg",auth,IsAdmin,DeleteAllOrgainezers)
-route.get("/Get-All-Orgs",auth,IsAdmin,GetAllorg)
+route.get("/Get-All-Orgs",auth,GetAllorg)
 
 // DONE all the four are rpresetnt in the admin foldeer in the admin verification file
 

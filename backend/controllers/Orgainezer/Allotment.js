@@ -12,11 +12,8 @@ exports.AllotTheatre = async (req, res) => {
         const ShowId = req.query.ShowId;
         const TheatreId = req.query.TheatreId;
         const userId = req.USER.id;
-        const  {TotalTicketsToAllot}  = req.body;
+        const { TotalTicketsToAllot } = req.body;
 
-        // console.log("This is the show id",ShowId)
-        // console.log("This is the theatre id ",TheatreId)
-        // console.log("This is the user id",userId)
         if (!ShowId || !TheatreId || !TotalTicketsToAllot) {
             return res.status(400).json({
                 message: "All input fields are required",
@@ -24,9 +21,7 @@ exports.AllotTheatre = async (req, res) => {
             });
         }
 
-        // Check if the show exists
-        const ShowFinding = await CreateShow.findOne({_id:ShowId});
-        // console.log("This is the show Finding",ShowFinding)
+        const ShowFinding = await CreateShow.findOne({_id: ShowId});
         if (!ShowFinding) {
             return res.status(404).json({
                 message: "Show not found. Please check your input.",
@@ -34,18 +29,15 @@ exports.AllotTheatre = async (req, res) => {
             });
         }
 
-        // here we will also check if the ticketts are created for this show 
-        const TicketsCheckers = await Ticket.findOne({showid:ShowId})
-        if(!TicketsCheckers){
+        const TicketsCheckers = await Ticket.findOne({showid: ShowId})
+        if (!TicketsCheckers) {
             return res.status(404).json({
                 message: "Tickets are not created for this show please go and create ticket",
                 success: false,
             });
         }
-        // Check if the theatre exists
-        const TheatreFinding = await Theatre.findOne({_id:TheatreId});
-        // console.log("This is the Theatre Finding",TheatreFinding)
-        // const {priceoftheTicket} =TheatreFinding 
+
+        const TheatreFinding = await Theatre.findOne({_id: TheatreId});
         if (!TheatreFinding) {
             return res.status(404).json({
                 message: "Theatre not found. Please check your input.",
@@ -53,11 +45,7 @@ exports.AllotTheatre = async (req, res) => {
             });
         }
 
-        // Check if the theatre is already allotted to this show
-        // console.log("This is the show id ",ShowId)
-        // showAlloted: ShowId,
-        const ShowAllottingFinding = await Theatre.findOne({showAlloted: ShowId, _id:TheatreId});
-        // console.log("This is the show allotment Finding",ShowAllottingFinding)
+        const ShowAllottingFinding = await Theatre.findOne({showAlloted: ShowId, _id: TheatreId});
         if (ShowAllottingFinding) {
             return res.status(400).json({
                 message: "This theatre has already been allotted the show",
@@ -65,16 +53,7 @@ exports.AllotTheatre = async (req, res) => {
             });
         }
 
-        // Fetch the ticket details
-        const ticketDetails = await Ticket.findOne({ showid :ShowId });
-        // console.log("This is the ticket Detaiald",ticketDetails)
-        const {priceoftheticket} = ticketDetails 
-        if(ticketDetails.TicketsRemaining === '0'){
-            return res.status(404).json({
-                message: "The tickets for this show are over to allot to the theatre",
-                success: false,
-            });
-        }
+        const ticketDetails = await Ticket.findOne({ showid: ShowId });
         if (!ticketDetails) {
             return res.status(404).json({
                 message: "No ticket details found for the given show",
@@ -82,60 +61,76 @@ exports.AllotTheatre = async (req, res) => {
             });
         }
 
+        const { priceoftheticket } = ticketDetails;
 
-        // const {TicketsRemaining} = ticketDetails
-        // // console.log(TicketsRemaining)
-        const TotalRemaining = ticketDetails.TicketsRemaining - TotalTicketsToAllot;
-        // console.log(typeof ticketDetails.TicketsRemaining)
-        // console.log("we will print all the details of the ticket",ticketDetails)
-        // console.log("These are all the tickets that are remaining",ticketDetails.TicketsRemaining)
+        // ✅ CONVERT TO NUMBERS
+        const ticketsRemaining = Number(ticketDetails.TicketsRemaining);
+        const ticketsToAllot = Number(TotalTicketsToAllot);
 
-        if( ShowFinding.VerifiedByTheAdmin === false && ShowFinding.uploaded === true){
+        // Check if tickets are over
+        if (ticketsRemaining === 0) {
             return res.status(400).json({
-                message:"you cannot proceed forward because you show is not verified by the user and alos not uploaded",
-                success:false
-            })
-        }
-
-
-        if(ticketDetails.TicketsRemaining  <  TotalTicketsToAllot  ){
-            return res.status(400).json({
-                message: "you cannot allote more tickets then created",
+                message: "The tickets for this show are over",
                 success: false,
             });
         }
 
-        if(ticketDetails.TicketsRemaining === '0' ){
-            TotalRemaining += '0'
-        }
-        if(ticketDetails.TicketsRemaining === '0' ){
+        if (ShowFinding.VerifiedByTheAdmin === false && ShowFinding.uploaded === true) {
             return res.status(400).json({
-                message:"The tickets are over",
-                success:false
+                message: "You cannot proceed forward because your show is not verified by the admin",
+                success: false
             })
         }
+
+        // ✅ NOW COMPARE NUMBERS, NOT STRINGS
+        if (ticketsRemaining < ticketsToAllot) {
+            return res.status(400).json({
+                message: `Cannot allot more tickets than available. Available: ${ticketsRemaining}, Requested: ${ticketsToAllot}`,
+                success: false,
+            });
+        }
+
+        // ✅ CALCULATE REMAINING AS NUMBER
+        const TotalRemaining = ticketsRemaining - ticketsToAllot;
+
         // Get current timestamp
         const now = new Date();
         const pattern = date.compile('DD/MM/YYYY HH:mm:ss');
         let AllotmentTime = date.format(now, pattern);
+
         // Update ticket collection
         await Ticket.updateOne(
-            { showid: ShowId ,},
+            { showid: ShowId },
             {
-                timeofAllotmentofTicket: AllotmentTime,TicketsRemaining: TotalRemaining,
-                $push: { allotedToTheatres: TheatreId ,totalTicketsAlloted: TotalTicketsToAllot},
+                timeofAllotmentofTicket: AllotmentTime,
+                TicketsRemaining: TotalRemaining,  // Store as number
+                $push: { 
+                    allotedToTheatres: TheatreId,
+                    totalTicketsAlloted: ticketsToAllot
+                },
             }
         );
+
         // Update theatre collection
         await Theatre.updateOne(
             { _id: TheatreId },
-            { $push: { showAlloted: ShowId ,ticketsReceived:TotalTicketsToAllot} }
+            { $push: { 
+                showAlloted: ShowId,
+                ticketsReceived: ticketsToAllot,  // Store as number
+                ticketsReceivedTime: AllotmentTime,
+                priceoftheTicket: priceoftheticket
+            }}
         );
         
-        await CreateShow.updateOne({_id:ShowId},{$push:{AllotedToTheNumberOfTheatres:TheatreId}})
-        await Theatre.updateOne({_id:TheatreId},{$push:{ticketsReceivedTime:AllotmentTime}});
-        await Theatre.updateOne({_id:TheatreId},{$push:{priceoftheTicket:priceoftheticket}})
-        await USER.updateOne({_id:TheatreId},{$push:{AllotedNumber:TheatreId}})
+        await CreateShow.updateOne(
+            {_id: ShowId},
+            {$push: {AllotedToTheNumberOfTheatres: TheatreId}}
+        )
+        
+        await USER.updateOne(
+            {_id: userId},  // ✅ Fixed: should be userId, not TheatreId
+            {$push: {AllotedNumber: TheatreId}}
+        )
         
         console.log("Allotted tickets successfully");
 
@@ -145,7 +140,7 @@ exports.AllotTheatre = async (req, res) => {
             data: {
                 TheatreId,
                 ShowId,
-                TotalTicketsToAllot,
+                TotalTicketsToAllot: ticketsToAllot,
                 RemainingTickets: TotalRemaining,
             },
         });
@@ -155,6 +150,7 @@ exports.AllotTheatre = async (req, res) => {
         return res.status(500).json({
             message: "An error occurred while allotting tickets to the theatre",
             success: false,
+            error: error.message
         });
     }
 };

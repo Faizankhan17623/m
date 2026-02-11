@@ -6,7 +6,7 @@ const {auth,IsOrganizer,DF,DE,PF,PE} = require('../middlewares/verification')
 const {AllShows, VerifiedButnotUploaded} = require('../controllers/common/Showlist')
 const {AllotTheatre} = require('../controllers/Orgainezer/Allotment')
 const {CreateTicket} = require('../controllers/Orgainezer/CreateTicket')
-const {GetAllTheatreDetails} = require("../controllers/Dashboard/OrgainezerDashboard")
+const {GetAllTheatreDetails,TicketDetails,GetAllTicketDetails} = require("../controllers/Dashboard/OrgainezerDashboard")
 const {notUploadedShows} = require("../controllers/common/Showlist")
 // DONE
 
@@ -23,7 +23,10 @@ route.get("/verified-not-uploaded",auth,IsOrganizer,VerifiedButnotUploaded)
 
 // notUploadedShows
 // DONE
-    
+route.get("/Ticket-Details",auth,IsOrganizer,TicketDetails)
+route.get("/All-Ticket-Details",auth,IsOrganizer,GetAllTicketDetails)
+
+
 // new 
 route.get("/Get-All-Theatre-Details",auth,IsOrganizer,GetAllTheatreDetails)
 route.post("/Org-Data", auth, IsOrganizer ,OrgData)

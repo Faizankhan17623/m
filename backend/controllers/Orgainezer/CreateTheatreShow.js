@@ -12,6 +12,7 @@ const date = require('date-and-time')
 const cookie = require('cookie-parser')
 const cron = require('node-cron')
 const Theatres = require('../../models/Theatres')
+
 // Helper function to convert total seconds to the duration format
 function convertSecondsToDuration(totalSeconds) {
     const hours = Math.floor(totalSeconds / 3600)

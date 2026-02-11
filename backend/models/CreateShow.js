@@ -70,7 +70,7 @@ const CreateShowSchema = new mongoose.Schema({
     },
     movieStatus: {
         type: String,
-        enum: ["Upcoming", "Released", "Expired"],
+        enum: ["Upcoming", "Released", "Expired","Blocked"],
         default: "Upcoming",
         required:true
     },

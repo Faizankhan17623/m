@@ -75,6 +75,7 @@ exports.VerifyOrgainezer = async (req, res) => {
       }, { new: true });
 // console.log("This ist e org date from ",o)
       // ✅ FIX: Use user._id (User document ID), not user.id
+      // console.log(user,"logs for deecgin some user date ")
       const u = await USER.findByIdAndUpdate(user._id, {
         verified: true,
       }, { new: true });

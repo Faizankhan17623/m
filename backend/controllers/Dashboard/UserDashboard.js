@@ -139,3 +139,61 @@ exports.TicketPurchasedFullDetails = async(req,res)=>{
         });        
     }
 }
+
+
+exports.BannerMovies = async(req,res)=>{
+    try{
+
+        const AllMovies = await await CreateShow.find({ uploaded: true, VerifiedByTheAdmin: true })
+if (!AllMovies || AllMovies.length === 0) {
+            return res.status(404).json({
+                message: "Movies not found",
+                success: false
+            })
+        }
+
+
+             const MostLiked = [...AllMovies].sort((a, b) => {
+            return (b.BannerLiked || 0) - (a.BannerLiked || 0)
+        })[0] // Take the first one (highest)
+
+        // 2. Recently Created Movie (most recent createdAt)
+        const RecentlyCreated = [...AllMovies].sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt)
+        })[0] // Take the first one (most recent)
+
+              const ComingSoon = AllMovies.filter((movie) => {
+            return movie.movieStatus === "Upcoming" || movie.movieStatus === "Coming Soon"
+        }).sort((a, b) => {
+            return new Date(a.releasedate) - new Date(b.releasedate)
+        }) // Sort by release date (earliest first)
+
+
+        // Kep this we will work on this later onwrda
+        // const MostRates = [...AllMovies].sort((a, b) => {
+        //     return (b.BannerLiked || 0) - (a.BannerLiked || 0)
+        // })[0] // Take the first one (highest)
+
+          const TopThreeTrending = [...AllMovies].sort((a, b) => {
+            return (b.ticketspurchased || 0) - (a.ticketspurchased || 0)
+        }).slice(0,3) // Take the first one (highest)
+
+
+         return res.status(200).json({
+            message: "Banner movies fetched successfully",
+            success: true,
+            data: {
+                mostLiked: MostLiked,
+                recentlyCreated: RecentlyCreated,
+                comingSoon: ComingSoon,
+                topTrending: TopThreeTrending // ✅ Array of 3 movies
+            }
+        })
+
+
+    }catch(error){
+        console.log(error)
+        console.log(error.message)
+        console.log("Theere is an error in the banner movies code")
+    }
+}
